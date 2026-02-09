@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Builder {
+  id          String   @id @default(uuid())
+  handles     String   // JSON string: { farcaster?: string, x?: string }
+  wallets     String   // JSON string: string[] (primary wallet first)
+  trustScore  Float    @default(0.0)
+  confidenceLevel String @default("UNKNOWN") // "UNKNOWN" | "UNRESOLVED" | "LIKELY_BUILDER" | "KNOWN_BUILDER"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  apps        App[]
+  rewards     RewardEvent[] // Rewards paid by this builder
+}
+
+model App {
+  id            String   @id @default(uuid())
+  builderId     String
+  builder       Builder  @relation(fields: [builderId], references: [id])
+  name          String
+  description   String?
+  urls          String   // JSON string: { baseApp?: string, website?: string, repo?: string }
+  lastEventAt   DateTime @default(now())
+  curationScore Float    @default(0.0)
+  scoreBreakdown String? // JSON string: { authenticity, effort, proof, traction, novelty }
+  status        String   // "CURATED" | "WATCHLIST" | "IGNORED"
+  reasons       String?  // JSON string: why it was curated/ignored
+  agentInsight  String?  // Agent-generated qualitative insight
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  signals       Signal[]
+  rewards       RewardEvent[] // Rewards associated with this app launch
+}
+
+model Signal {
+  id             String   @id @default(uuid())
+  source         String   // "FARCASTER" | "X" | "BASEUP"
+  type           String   // "SHIP_EVENT" | "REWARD_ANNOUNCE" | "OTHER"
+  rawText        String
+  urls           String   // JSON string: string[]
+  authorHandle   String
+  timestamp      DateTime
+  linkedAppId    String?
+  linkedApp      App?     @relation(fields: [linkedAppId], references: [id])
+  metadata       String?  // JSON string: rich context (Curator Note, Dev Context)
+  createdAt      DateTime @default(now())
+}
+
+model RewardEvent {
+  id             String   @id @default(uuid())
+  appId          String?
+  app            App?     @relation(fields: [appId], references: [id])
+  builderId      String?
+  builder        Builder? @relation(fields: [builderId], references: [id])
+  announcedText  String
+  token          String   @default("USDC")
+  announcedAmount Float?
+  windowStart    DateTime
+  windowEnd      DateTime
+  payerWallet    String?
+  matchedTxs     String?  // JSON string: {hash, to, amount, ts}[]
+  verificationTxHash String? @unique
+  status         String   // "VERIFIED_PAID" | "ANNOUNCED_PENDING" | "ANNOUNCED_NOT_PAID" | "CONSISTENT_PAYER"
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
