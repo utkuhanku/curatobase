@@ -1,0 +1,12 @@
+{
+    "crons": [
+        {
+            "path": "/api/cron/trust-report?mode=dry",
+            "schedule": "45 9 * * *"
+        },
+        {
+            "path": "/api/cron/trust-report?mode=live",
+            "schedule": "0 10 * * *"
+        }
+    ]
+}
