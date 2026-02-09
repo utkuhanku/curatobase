@@ -3,11 +3,27 @@ import { RewardStatus } from "@/lib/types";
 import { CheckCircle2, Clock, ExternalLink, Layers, ShieldCheck } from "lucide-react";
 
 export async function RewardList() {
-    const rewards = await prisma.rewardEvent.findMany({
-        orderBy: { createdAt: 'desc' },
-        include: { builder: true },
-        take: 50 // Fetch more to aggregate
-    });
+    let rewards: any[] = [];
+    try {
+        rewards = await prisma.rewardEvent.findMany({
+            orderBy: { createdAt: 'desc' },
+            include: { builder: true },
+            take: 50 // Fetch more to aggregate
+        });
+    } catch (e: any) {
+        if (e?.code === 'P2021') {
+            return (
+                <div className="text-center py-20 bg-white/5 rounded-lg border border-dashed border-gray-800">
+                    <div className="animate-pulse text-green-500 font-mono">
+                        &gt; SYSTEM_INITIALIZING...<br />
+                        <span className="text-xs text-gray-500">DB Schema Sync Pending</span>
+                    </div>
+                </div>
+            )
+        }
+        console.error("RewardList Error:", e);
+        return <div>Error loading rewards.</div>;
+    }
 
     if (rewards.length === 0) {
         return (
@@ -103,7 +119,7 @@ export async function RewardList() {
                         {/* Right: Status & Action */}
                         <div className="flex flex-col items-end gap-2 min-w-[140px]">
                             <span className={`px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded border ${isVerified ? 'bg-green-900/20 text-green-400 border-green-500/20' :
-                                    'bg-yellow-900/20 text-yellow-400 border-yellow-500/20'
+                                'bg-yellow-900/20 text-yellow-400 border-yellow-500/20'
                                 }`}>
                                 {isVerified ? "VERIFIED PROOF" : "PENDING PROOF"}
                             </span>
