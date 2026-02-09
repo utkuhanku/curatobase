@@ -2,6 +2,9 @@ import { RewardList } from "@/components/RewardList";
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function RewardsPage() {
     return (
         <div className="space-y-8">

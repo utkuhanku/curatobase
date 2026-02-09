@@ -1,7 +1,8 @@
 import { prisma } from '@/lib/db';
 import Link from 'next/link';
 
-export const revalidate = 60; // Cache for 1 min
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function ReportsPage() {
     const reports = await prisma.signal.findMany({

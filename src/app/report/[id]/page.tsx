@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ReportViewer from './ReportViewer';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function ReportPage({ params }: { params: { id: string } }) {
     const signal = await prisma.signal.findUnique({

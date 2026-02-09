@@ -3,6 +3,9 @@ import Terminal, { TerminalApp } from './Terminal';
 import { CurationStatus } from '@/lib/types';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function AuditPage() {
 
     // Fetch ALL apps (Terminal handles filtering)
