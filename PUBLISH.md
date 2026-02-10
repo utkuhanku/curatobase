@@ -6,7 +6,8 @@
 ## 1. Vercel Configuration
 - [ ] **Root Directory**: `.` (default)
 - [ ] **Framework Preset**: `Next.js`
-- [ ] **Build Command**: `npm run build` (or `prisma generate && next build`)
+- [ ] **Build Command**: `prisma generate && next build`
+    - ⚠️ **IMPORTANT**: Do NOT run `prisma migrate deploy` here for MVP. We use `/api/admin/db-init` instead.
 - [ ] **Install Command**: `npm install`
 - [ ] **Environment Variables**:
     - `DATABASE_URL`: (Set automatically by Neon integration)
@@ -21,7 +22,7 @@
 - [ ] **Account Association**:
     - You need to generate a signature to prove ownership of the domain.
     - Use the [Farcaster Domain Verification Tool](https://warpcast.com/~/developers/domains) (or CLI).
-    - **Action**: Replace the placeholder `accountAssociation` block in `public/.well-known/farcaster.json` with your real signature.
+    - **Action**: Replace the placeholder signature in `src/app/.well-known/farcaster.json/route.ts` with your real signature.
     - *Tip*: Use the [Farcaster Domain Verification Tool](https://warpcast.com/~/developers/domains).
     - **Payload to Sign**: `{"domain":"curatobase.vercel.app"}`
 - [ ] **Manifest Verification (Critical)**:
@@ -34,13 +35,13 @@
 
 | Variable | Required? | Description | Source |
 | :--- | :--- | :--- | :--- |
-| `DATABASE_URL` | YES | Postgres Connection | Vercel Storage (Neon) |
-| `DATABASE_URL` | YES | Postgres Connection | Vercel Storage (Neon) |
-| `DIRECT_URL` | NO | Removed for MVP Build | n/a |
+| `DATABASE_URL` | YES | Postgres Connection | Vercel Postgres (Auto-Injected) |
 | `CRON_SECRET` | YES | Secures `/api/cron/*` | Generate Manually |
 | `ADMIN_SECRET` | YES | Secures `/api/admin/*` | Generate Manually |
 | `NEYNAR_API_KEY` | NO / OPT | For publishing to Farcaster | Neynar Dashboard |
 | `NEYNAR_SIGNER_UUID` | NO / OPT | For publishing to Farcaster | Neynar Dashboard |
+
+> **Note**: `DIRECT_URL` has been removed. Use `DATABASE_URL` for everything.
 
 *Note: `NEXT_PUBLIC_*` variables are not strictly needed for the current read-only terminal.*
 
