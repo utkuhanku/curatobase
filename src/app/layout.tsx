@@ -8,6 +8,9 @@ const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 export const metadata = {
     title: 'CuratoBase Terminal',
     description: 'Editorial Trust Logs for Base Miniapps',
+    other: {
+        "base:app_id": "698b1100abdd1887a89d98a0",
+    }
 };
 
 export const viewport = {

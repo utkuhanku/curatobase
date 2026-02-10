@@ -23,8 +23,8 @@ export default function AssociationPage() {
         setLoading(true);
         setMsg('');
         try {
-            // Reusing the robust config endpoint we built
-            const res = await fetch('/api/admin/config', {
+            // Use new dedicated endpoint
+            const res = await fetch('/api/admin/association', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${secret}` },
                 body: JSON.stringify({ header, payload, signature })
@@ -122,7 +122,7 @@ export default function AssociationPage() {
                         onClick={saveConfig}
                         disabled={loading || !secret || !signature}
                         className={`flex items-center gap-2 px-6 py-3 rounded font-bold transition-all ${!secret || !signature ? 'bg-gray-800 text-gray-500 cursor-not-allowed' :
-                                'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-900/20'
+                            'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-900/20'
                             }`}
                     >
                         {loading ? 'Saving...' : <><Save size={18} /> Save Association</>}

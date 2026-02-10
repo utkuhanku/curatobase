@@ -58,10 +58,14 @@
 ## 5. Account Association (Signature)
 If `/status` shows **"USING PLACEHOLDER SIGNATURE"**:
 1.  Go to `https://warpcast.com/~/developers/domains` to generate signature for `curatobase.vercel.app`.
-2.  **Go to**: `/admin/association`
-3.  Enter `ADMIN_SECRET` and paste the **Header**, **Payload**, and **Signature**.
+2.  **Go to**: `/admin/association` (requires `ADMIN_SECRET`).
+3.  Paste the **Header**, **Payload**, and **Signature**.
 4.  Click **Save Association**.
-5.  Check `/status` (it should turn GREEN and say "Source: DB/CONFIG").
+5.  Check `/status` (it should turn GREEN and say "Source: DB_MANAGED").
+
+## 6. Base Build Verification
+- **Meta Tag**: Ensure `base:app_id` is present on homepage (Added in layout).
+- **Verify**: In Base Build portal, click "Verify". It should now find the tag.
 
 ## 6. Final Polish
 - [ ] **Icon**: Replace `public/icon.png` and `public/splash.png` with real assets (512x512).

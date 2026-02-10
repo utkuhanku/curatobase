@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
-export const dynamic = 'force-dynamic'; // Allow DB access
-export const revalidate = 60; // Cache for 1 min
+export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export async function GET() {
-    // Default placeholder (fallback)
+    // Default placeholder
     const placeholder = {
         "header": "eyJmaWQiOjg4OTQ5MiwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweEQ2RDE4NDI4OEFhNzlBNWVBZDI1QjA2Y2JBNzE0MTk0NUQxM2U5NTcifQ",
         "payload": "eyJkb21haW4iOiJjdXJhdG9iYXNlLnZlcmNlbC5hcHAifQ",
@@ -15,21 +15,19 @@ export async function GET() {
     let accountAssociation = placeholder;
 
     try {
-        // Try to fetch overwrite from DB
-        const config = await prisma.signal.findFirst({
-            where: { type: 'SYSTEM_CONFIG', source: 'MANIFEST' },
-            orderBy: { createdAt: 'desc' } // Newest first
+        const assoc = await prisma.accountAssociation.findUnique({
+            where: { id: 1 }
         });
 
-        if (config?.metadata) {
-            const meta = JSON.parse(config.metadata);
-            if (meta.accountAssociation) {
-                accountAssociation = meta.accountAssociation;
-            }
+        if (assoc) {
+            accountAssociation = {
+                header: assoc.header,
+                payload: assoc.payload,
+                signature: assoc.signature
+            };
         }
     } catch (e) {
         console.error("Manifest Config Load Error:", e);
-        // Fallback to placeholder
     }
 
     const manifest = {
