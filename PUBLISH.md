@@ -20,6 +20,11 @@
     - Use the [Farcaster Domain Verification Tool](https://warpcast.com/~/developers/domains) (or CLI).
     - **Action**: Replace the placeholder `accountAssociation` block in `public/.well-known/farcaster.json` with your real signature.
     - *Tip*: If you don't have a signature yet, the manifest validator will complain but the app might still load in some contexts. Strict requirement for official directory listing.
+- [ ] **Manifest Verification (Critical)**:
+    - Run: `curl -i https://curatobase.vercel.app/.well-known/farcaster.json`
+    - Verify Status: `200 OK`
+    - Verify Content-Type: `application/json`
+    - Verify JSON contains `"miniapp"` and `"frame"` keys.
 
 ## 3. Env Manifest (Required)
 
