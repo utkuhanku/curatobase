@@ -45,6 +45,14 @@
 
 *Note: `NEXT_PUBLIC_*` variables are not strictly needed for the current read-only terminal.*
 
-## 4. Final Polish
+## 4. Verification & Admin
+- [ ] **Status Page**: `https://curatobase.vercel.app/status`
+- [ ] **Persistence Check**:
+    - Go to `/admin` (Manually type URL).
+    - Enter `ADMIN_SECRET`.
+    - Click "Create Test Report".
+    - Verify success message and check `/reports` to see the new log.
+
+## 5. Final Polish
 - [ ] **Icon**: Replace `public/icon.png` and `public/splash.png` with real assets (512x512).
 - [ ] **Metadata**: Update `src/app/layout.tsx` title/description if desired.

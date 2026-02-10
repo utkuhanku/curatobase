@@ -47,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                             <Link href="/about" className="hover:text-white hover:underline decoration-green-500 underline-offset-4">[ ABOUT ]</Link>
                             <Link href="/status" className="hover:text-white hover:underline decoration-green-500 underline-offset-4 text-green-700">[ STATUS ]</Link>
                         </nav>
+                        {/* Hidden Admin Link Area - Bottom Right fixed maybe? No, keep it clean. User can type /admin manually */}
                     </header>
 
                     {/* MAIN */}
