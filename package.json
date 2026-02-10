@@ -11,7 +11,8 @@
     "daily-pick:dry": "DAILY_PICK_DRY_RUN=true tsx scripts/run-daily-pick.ts",
     "daily-pick:live": "DAILY_PICK_ENABLED=true tsx scripts/run-daily-pick.ts",
     "trust-report:dry": "TRUST_REPORT_DRY_RUN=true tsx scripts/run-trust-report.ts",
-    "trust-report:live": "TRUST_REPORT_ENABLED=true tsx scripts/run-trust-report.ts"
+    "trust-report:live": "TRUST_REPORT_ENABLED=true tsx scripts/run-trust-report.ts",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@farcaster/frame-sdk": "^0.0.64",
