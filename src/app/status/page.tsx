@@ -41,12 +41,19 @@ export default function StatusPage() {
                             {check.status === 'WARN' && <AlertTriangle className="text-yellow-500" size={18} />}
 
                             <div>
-                                <div className="font-bold text-sm">{check.label}</div>
-                                <div className="text-xs text-gray-500 mt-0.5">{check.details}</div>
+                                <div className="font-bold text-sm flex items-center gap-2">
+                                    {check.label}
+                                    {check.id === 'signature' && check.status === 'PASS' && (
+                                        <span className="text-[10px] bg-blue-900/40 text-blue-300 px-1.5 py-0.5 rounded border border-blue-500/30">
+                                            DB_MANAGED
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="text-xs text-gray-500 mt-0.5 whitespace-pre-wrap">{check.details}</div>
                             </div>
                         </div>
                         <div className={`text-xs font-bold px-2 py-1 rounded ${check.status === 'PASS' ? 'bg-green-900/20 text-green-400' :
-                                check.status === 'FAIL' ? 'bg-red-900/20 text-red-400' : 'bg-yellow-900/20 text-yellow-400'
+                            check.status === 'FAIL' ? 'bg-red-900/20 text-red-400' : 'bg-yellow-900/20 text-yellow-400'
                             }`}>
                             {check.status}
                         </div>

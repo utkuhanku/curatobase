@@ -60,11 +60,17 @@ export async function GET() {
             const aa = body.accountAssociation;
             const isPlaceholder = aa?.signature && aa.signature.startsWith("MHg2ODFmZDY3ZjY0ZWEwM2FjMzI5ZGU0YTIxMzQ1NTI4NzRjN2Q4Y2Q2ZWI2OTJhYjIyYzU2N2U5NGQ4ZTZkNDY0NTI0NjQ4MzQ5Y2E2YjZkMjYxZTYxODQ5NzYzYjY4ZmM4YjY5YjYxN2I5YjY0ZTYxN2I5YjY0ZTYxN2I5YjY0ZTYxN2I5");
 
+            // Heuristic for Source: if it's not placeholder, it's likely DB (since we removed static file).
+            // But let's check exact match to known placeholder to be sure.
+            const source = isPlaceholder ? 'PLACEHOLDER' : (aa ? 'DB/CONFIG' : 'UNKNOWN');
+
             results.checks.push({
                 id: 'signature',
                 label: 'Account Association',
                 status: (aa && !isPlaceholder) ? 'PASS' : 'FAIL',
-                details: isPlaceholder ? '⚠️ USING PLACEHOLDER SIGNATURE' : (aa ? 'Signature Present' : 'Missing')
+                details: isPlaceholder
+                    ? `⚠️ USING PLACEHOLDER SIGNATURE`
+                    : (aa ? `✅ Verified (Source: ${source})` : 'Missing')
             });
 
             // 6. Icon Reachability
