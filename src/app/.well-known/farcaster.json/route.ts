@@ -47,7 +47,11 @@ export async function GET() {
             "version": "1",
             "name": "CuratoBase",
             "iconUrl": "https://curatobase.vercel.app/icon.png",
-            "homeUrl": "https://curatobase.vercel.app"
+            "homeUrl": "https://curatobase.vercel.app",
+            "splashImageUrl": "https://curatobase.vercel.app/splash.png",
+            "splashBackgroundColor": "#000000",
+            "primaryCategory": "social",
+            "tags": ["curation", "base", "social"]
         }
     };
 
