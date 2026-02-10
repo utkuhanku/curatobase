@@ -1,5 +1,8 @@
 # CuratoBase Mini App Publish Checklist
 
+
+**🔍 Live Status Dashboard:** `https://curatobase.vercel.app/status` (Check this first!)
+
 ## 1. Vercel Configuration
 - [ ] **Root Directory**: `.` (default)
 - [ ] **Framework Preset**: `Next.js`
