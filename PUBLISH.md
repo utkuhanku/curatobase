@@ -35,7 +35,8 @@
 | Variable | Required? | Description | Source |
 | :--- | :--- | :--- | :--- |
 | `DATABASE_URL` | YES | Postgres Connection | Vercel Storage (Neon) |
-| `DIRECT_URL` | YES | Postgres Direct Connection | Vercel Storage (Neon) |
+| `DATABASE_URL` | YES | Postgres Connection | Vercel Storage (Neon) |
+| `DIRECT_URL` | NO | Removed for MVP Build | n/a |
 | `CRON_SECRET` | YES | Secures `/api/cron/*` | Generate Manually |
 | `ADMIN_SECRET` | YES | Secures `/api/admin/*` | Generate Manually |
 | `NEYNAR_API_KEY` | NO / OPT | For publishing to Farcaster | Neynar Dashboard |
