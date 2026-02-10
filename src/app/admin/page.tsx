@@ -66,18 +66,59 @@ export default function AdminPage() {
                     >
                         {loading ? 'Writing...' : 'Create Test Report'}
                     </button>
+                    {status && (
+                        <div className={`mt-4 p-4 rounded border text-xs ${status.success ? 'border-green-500 bg-green-900/20' : 'border-red-500 bg-red-900/20'}`}>
+                            <pre>{JSON.stringify(status, null, 2)}</pre>
+                        </div>
+                    )}
                 </div>
 
-                {status && (
-                    <div className={`p-4 rounded border text-xs ${status.success ? 'border-green-500 bg-green-900/20' : 'border-red-500 bg-red-900/20'}`}>
-                        <pre>{JSON.stringify(status, null, 2)}</pre>
-                        {status.success && (
-                            <p className="mt-2 text-green-300">
-                                ✅ Record persisted! <a href="/reports" className="underline hover:text-white">View in Trust Logs</a>
-                            </p>
-                        )}
-                    </div>
-                )}
+                <ConfigForm secret={secret} />
+            </div>
+        </div>
+    );
+}
+
+function ConfigForm({ secret }: { secret: string }) {
+    const [header, setHeader] = useState('');
+    const [payload, setPayload] = useState('');
+    const [signature, setSignature] = useState('');
+    const [msg, setMsg] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const saveConfig = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch('/api/admin/config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${secret}` },
+                body: JSON.stringify({ header, payload, signature })
+            });
+            const d = await res.json();
+            setMsg(d.success ? '✅ Saved! Check /status' : `❌ Error: ${d.error}`);
+        } catch (e: any) {
+            setMsg(`❌ Error: ${e.message}`);
+        }
+        setLoading(false);
+    };
+
+    return (
+        <div className="p-4 border border-blue-900 rounded bg-blue-900/10">
+            <h3 className="font-bold text-sm mb-4 flex items-center gap-2 text-blue-400">
+                <ShieldCheck size={16} /> Account Association (Signature)
+            </h3>
+            <div className="space-y-3">
+                <input placeholder="Header (eyJ...)" value={header} onChange={e => setHeader(e.target.value)} className="w-full bg-black border border-gray-700 p-2 text-xs rounded text-white" />
+                <input placeholder="Payload (eyJ...)" value={payload} onChange={e => setPayload(e.target.value)} className="w-full bg-black border border-gray-700 p-2 text-xs rounded text-white" />
+                <input placeholder="Signature (0x...)" value={signature} onChange={e => setSignature(e.target.value)} className="w-full bg-black border border-gray-700 p-2 text-xs rounded text-white" />
+
+                <div className="flex justify-between items-center">
+                    <a href="https://warpcast.com/~/developers/domains" target="_blank" className="text-xs text-blue-400 underline">Generate Signature &rarr;</a>
+                    <button onClick={saveConfig} disabled={loading || !secret} className="bg-blue-600 text-white px-4 py-2 rounded text-xs font-bold hover:bg-blue-500">
+                        {loading ? 'Saving...' : 'Save Configuration'}
+                    </button>
+                </div>
+                {msg && <p className="text-xs font-mono">{msg}</p>}
             </div>
         </div>
     );

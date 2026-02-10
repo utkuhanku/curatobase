@@ -53,6 +53,16 @@
     - Click "Create Test Report".
     - Verify success message and check `/reports` to see the new log.
 
-## 5. Final Polish
+    - Verify success message and check `/reports` to see the new log.
+
+## 5. Account Association (Signature)
+If `/status` shows **"USING PLACEHOLDER SIGNATURE"**:
+1.  Go to `https://warpcast.com/~/developers/domains` to generate signature for `curatobase.vercel.app`.
+2.  Go to `/admin` in your app.
+3.  Enter `ADMIN_SECRET` and paste the **Header**, **Payload**, and **Signature** into the form.
+4.  Click **Save Configuration**.
+5.  Check `/status` again (it should turn GREEN).
+
+## 6. Final Polish
 - [ ] **Icon**: Replace `public/icon.png` and `public/splash.png` with real assets (512x512).
 - [ ] **Metadata**: Update `src/app/layout.tsx` title/description if desired.
