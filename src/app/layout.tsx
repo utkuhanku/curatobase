@@ -1,6 +1,7 @@
 import './globals.css';
 import { JetBrains_Mono } from 'next/font/google';
 import Uptime from '@/components/Uptime';
+import NotificationToggle from '@/components/NotificationToggle';
 import Link from 'next/link';
 
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
@@ -38,8 +39,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                                     <p>AGENT: CURATOR_V1</p>
                                 </div>
                             </div>
-                            <div className="text-xs opacity-50 font-mono text-right">
+                            <div className="text-xs opacity-50 font-mono text-right flex flex-col items-end gap-2">
                                 <Uptime />
+                                <NotificationToggle />
                             </div>
                         </div>
 
