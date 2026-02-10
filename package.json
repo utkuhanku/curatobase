@@ -14,6 +14,7 @@
     "trust-report:live": "TRUST_REPORT_ENABLED=true tsx scripts/run-trust-report.ts"
   },
   "dependencies": {
+    "@farcaster/frame-sdk": "^0.0.64",
     "@neynar/nodejs-sdk": "^1.5.0",
     "@prisma/client": "^5.10.2",
     "clsx": "^2.1.0",
