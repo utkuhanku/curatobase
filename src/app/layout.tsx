@@ -45,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                             <Link href="/reports" className="hover:text-white hover:underline decoration-green-500 underline-offset-4">[ TRUST_LOGS ]</Link>
                             <Link href="/prestige" className="hover:text-white hover:underline decoration-green-500 underline-offset-4">[ PRESTIGE ]</Link>
                             <Link href="/about" className="hover:text-white hover:underline decoration-green-500 underline-offset-4">[ ABOUT ]</Link>
+                            <Link href="/status" className="hover:text-white hover:underline decoration-green-500 underline-offset-4 text-green-700">[ STATUS ]</Link>
                         </nav>
                     </header>
 
