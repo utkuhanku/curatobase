@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/db";
 import { CurationStatus } from "@/lib/types";
-import { Hexagon, Radio, Zap, Activity, Info, Eye, Database, Globe, Cpu } from "lucide-react";
+import { Hexagon, Radio, Zap, Activity, Database, Globe, Cpu, Scan, Signal, Award } from "lucide-react";
 import { CyberCard } from "@/components/ui/CyberCard";
-import Link from "next/link";
+import Image from "next/image";
 
 export async function RadarDashboard() {
     // Fetch stats
@@ -20,137 +20,152 @@ export async function RadarDashboard() {
     });
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-12 relative">
 
-            {/* 1. DATA MATRIX */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Left: Global Scanner Stats */}
-                <CyberCard title="NETWORK_ACTIVITY" icon={<Activity size={14} />} variant="scanner">
-                    <div className="flex items-baseline justify-between mb-2">
-                        <span className="text-4xl font-bold text-white tracking-tighter">{stats.scanned.toLocaleString()}</span>
-                        <span className="text-xs font-mono text-electric-blue animate-pulse">● LIVE</span>
+            {/* 1. HERO HUD: GLOBAL METRICS */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* A. LIVE SCANNER */}
+                <div className="md:col-span-2 relative overflow-hidden rounded-2xl bg-[#030303] border border-white/10 group hover:border-electric-blue/50 transition-all duration-500">
+                    <div className="absolute inset-0 opacity-20 pointer-events-none">
+                        <Image src="/assets/grid-texture.png" alt="grid" fill className="object-cover" />
                     </div>
-                    <div className="text-xs text-gray-500 font-mono mb-4">
-                        FARCASTER CASTS INTERCEPTED (24H)
-                    </div>
-                    <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                        <div className="h-full bg-electric-blue w-[75%] shadow-[0_0_10px_#1652F0]"></div>
-                    </div>
-                    <p className="mt-4 text-[11px] text-gray-400 leading-relaxed border-l-2 border-electric-blue/30 pl-3">
-                        The Agent autonomously scans the Optimism Superchain text stream for "base.app" signatures and shipping keywords.
-                    </p>
-                </CyberCard>
+                    <div className="absolute top-0 right-0 p-4 opacity-50"><Activity className="text-electric-blue animate-pulse" size={24} /></div>
 
-                {/* Right: Curation Funnel */}
-                <CyberCard title="CURATION_ENGINE" icon={<Cpu size={14} />}>
-                    <div className="grid grid-cols-2 gap-4 text-center">
-                        <div className="p-3 bg-white/5 rounded border border-white/5">
-                            <div className="text-2xl font-bold text-white">{stats.candidates}</div>
-                            <div className="text-[10px] text-gray-500 uppercase">Filtered</div>
+                    <div className="relative z-10 p-6 flex flex-col justify-between h-full">
+                        <div>
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="w-2 h-2 bg-electric-blue rounded-full animate-ping" />
+                                <h3 className="text-xs font-mono font-bold text-electric-blue tracking-widest">REALTIME_SCANNER_FEED</h3>
+                            </div>
                         </div>
-                        <div className="p-3 bg-green-500/10 rounded border border-green-500/20">
-                            <div className="text-2xl font-bold text-green-400">{stats.curated}</div>
-                            <div className="text-[10px] text-green-500 uppercase">Verified</div>
+
+                        <div className="flex items-end gap-4 mt-6">
+                            <div>
+                                <div className="text-5xl font-black text-white tracking-tighter tabular-nums leading-none">
+                                    {stats.scanned.toLocaleString()}
+                                </div>
+                                <div className="text-[10px] text-gray-500 uppercase tracking-widest mt-1 font-mono">Casts Analyzed (24h)</div>
+                            </div>
+                        </div>
+
+                        <div className="mt-6 pt-4 border-t border-white/5 flex gap-8">
+                            <div>
+                                <div className="text-2xl font-bold text-gray-300">{stats.candidates}</div>
+                                <div className="text-[10px] text-gray-600 uppercase">Filtered</div>
+                            </div>
+                            <div>
+                                <div className="text-2xl font-bold text-green-400">{stats.curated}</div>
+                                <div className="text-[10px] text-green-600 uppercase">Selected</div>
+                            </div>
                         </div>
                     </div>
-                    <div className="mt-4 space-y-2">
-                        <div className="flex items-center gap-3 text-xs text-gray-400 font-mono">
-                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full shadow-[0_0_5px_#00ff00]" />
-                            <span>REPUTATION_CHECK_PASSED</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-xs text-gray-400 font-mono">
-                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full shadow-[0_0_5px_#00ff00]" />
-                            <span>URL_REACHABILITY_VERIFIED</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-xs text-gray-400 font-mono">
-                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full shadow-[0_0_5px_#00ff00]" />
-                            <span>NO_SPAM_DETECTED</span>
-                        </div>
-                    </div>
-                </CyberCard>
+                </div>
+
+                {/* B. CURATION CRITERIA */}
+                <div className="rounded-2xl bg-[#050607] border border-white/10 p-6 flex flex-col justify-center relative hover:bg-white/5 transition-colors">
+                    <div className="absolute top-2 right-2"><Cpu size={16} className="text-gray-700" /></div>
+                    <h3 className="text-xs font-mono font-bold text-gray-500 tracking-widest mb-4">CRITERIA_MATRIX</h3>
+                    <ul className="space-y-3">
+                        <li className="flex items-center gap-3">
+                            <div className="w-6 h-6 rounded bg-green-500/10 flex items-center justify-center text-green-500 border border-green-500/20"><Scan size={12} /></div>
+                            <span className="text-sm font-bold text-gray-300">Verified Builder</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <div className="w-6 h-6 rounded bg-green-500/10 flex items-center justify-center text-green-500 border border-green-500/20"><Globe size={12} /></div>
+                            <span className="text-sm font-bold text-gray-300">Live URL</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <div className="w-6 h-6 rounded bg-green-500/10 flex items-center justify-center text-green-500 border border-green-500/20"><Signal size={12} /></div>
+                            <span className="text-sm font-bold text-gray-300">Organic Signal</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
-            {/* 2. SPOTLIGHT MODULE */}
-            <div className="relative">
-                <div className="absolute -top-3 left-4 bg-[#050607] px-2 text-[10px] font-mono text-electric-blue border border-electric-blue/30 rounded z-10">
-                    INCOMING_SIGNAL_DETECTED
+
+            {/* 2. TOP SIGNAL SPOTLIGHT (The "Frame") */}
+            <div className="relative group">
+                {/* Decorative Frame Image Overlay - positioned absolutely to frame content */}
+                <div className="absolute -inset-[20px] pointer-events-none z-20 flex items-center justify-center opacity-80 select-none">
+                    <Image src="/assets/hud-frame.png" alt="HUD" width={800} height={400} className="w-full h-full object-fill opacity-60" />
                 </div>
-                <CyberCard className="border-electric-blue/40 shadow-[0_0_30px_rgba(22,82,240,0.1)]">
+
+                {/* Main Content Container - Inner Box */}
+                <div className="relative z-10 bg-[#030303] border border-electric-blue/30 rounded-xl p-8 md:p-12 overflow-hidden">
+
+                    {/* Background Glow */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-electric-blue/10 blur-[100px] rounded-full pointer-events-none" />
+
                     {topApp ? (
-                        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-                            {/* App Info */}
-                            <div className="md:col-span-3 space-y-4">
-                                <div>
-                                    <h2 className="text-4xl font-black text-white tracking-tight mb-2">{topApp.name}</h2>
-                                    <p className="text-base text-gray-300 leading-relaxed font-light border-l border-white/20 pl-4">
-                                        {topApp.description}
-                                    </p>
+                        <div className="relative z-20">
+                            <div className="flex justify-between items-start mb-6">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-electric-blue/10 border border-electric-blue/30 text-electric-blue text-[10px] font-mono font-bold tracking-widest">
+                                    <Zap size={10} fill="currentColor" /> ACTIVE_SIGNAL_DETECTED
                                 </div>
-                                <div className="flex gap-3 pt-2">
-                                    {topApp.urls && JSON.parse(topApp.urls).baseApp && (
-                                        <a href={JSON.parse(topApp.urls).baseApp} target="_blank"
-                                            className="px-5 py-2.5 bg-white text-black font-bold text-sm rounded bg-gradient-to-r from-white to-gray-200 hover:to-white transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(255,255,255,0.3)] hover:scale-105 transform duration-200">
-                                            <Hexagon size={16} fill="black" /> OPEN MINI APP
-                                        </a>
-                                    )}
-                                    {topApp.urls && JSON.parse(topApp.urls).website && (
-                                        <a href={JSON.parse(topApp.urls).website} target="_blank"
-                                            className="px-5 py-2.5 bg-white/5 text-white font-bold text-sm rounded border border-white/10 hover:bg-white/10 transition-all flex items-center gap-2">
-                                            <Globe size={16} /> WEBSITE
-                                        </a>
-                                    )}
+                                <div className="text-right">
+                                    <div className="text-[10px] text-gray-500 font-mono">CONFIDENCE_SCORE</div>
+                                    <div className="text-xl font-black text-white">{(topApp.curationScore || 0)}<span className="text-sm text-gray-500">/100</span></div>
                                 </div>
                             </div>
 
-                            {/* Agent Analysis */}
-                            <div className="md:col-span-2 bg-black/40 rounded-lg p-4 border border-white/5 font-mono text-xs">
-                                <div className="text-[10px] text-gray-500 uppercase mb-3 tracking-widest border-b border-white/5 pb-1">Agent Analysis Log</div>
-                                <div className="space-y-3">
-                                    <div>
-                                        <span className="text-gray-500 block mb-0.5">INSIGHT</span>
-                                        <span className="text-electric-blue">"{topApp.agentInsight}"</span>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <span className="text-gray-500 block mb-0.5">SCORE</span>
-                                            <span className="text-white text-lg font-bold">{(topApp.curationScore || 0)}/100</span>
-                                        </div>
-                                        <div>
-                                            <span className="text-gray-500 block mb-0.5">BUILDER</span>
-                                            <span className="text-white">VERIFIED</span>
-                                        </div>
-                                    </div>
+                            <h2 className="text-5xl md:text-6xl font-black text-white mb-4 tracking-tighter uppercase drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                                {topApp.name}
+                            </h2>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                                <p className="text-lg text-gray-400 font-light leading-relaxed">
+                                    {topApp.description}
+                                </p>
+                                <div className="bg-electric-blue/5 border-l-2 border-electric-blue p-4">
+                                    <p className="font-mono text-xs text-electric-blue mb-1">AGENT_ANALYSIS_LOG:</p>
+                                    <p className="text-sm text-gray-300 italic">"{topApp.agentInsight}"</p>
                                 </div>
+                            </div>
+
+                            <div className="flex gap-4">
+                                {topApp.urls && JSON.parse(topApp.urls).baseApp && (
+                                    <a href={JSON.parse(topApp.urls).baseApp} target="_blank"
+                                        className="pl-5 pr-6 py-3 bg-white text-black font-extrabold text-sm clip-corner-sample hover:bg-electric-blue hover:text-white transition-colors flex items-center gap-2 group/btn">
+                                        <Hexagon size={18} className="group-hover/btn:rotate-90 transition-transform" />
+                                        OPEN MINI APP
+                                    </a>
+                                )}
                             </div>
                         </div>
                     ) : (
-                        <div className="text-center py-12 text-gray-500 font-mono animate-pulse">
-                            SCANNING_MEMPOOL...
+                        <div className="text-center py-20">
+                            <Scan size={48} className="text-gray-700 mx-auto mb-4 animate-spin-slow" />
+                            <p className="text-gray-500 font-mono tracking-widest">SCANNING_MEMPOOL_FOR_SIGNAL...</p>
                         </div>
                     )}
-                </CyberCard>
+                </div>
             </div>
 
-            {/* 3. PROTOCOL INSTRUCTIONS */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[
-                    { title: "BUILD", desc: "Create a Base Mini App", step: "01", icon: Database },
-                    { title: "SHIP", desc: "Deploy via verified Builder ID", step: "02", icon: Zap },
-                    { title: "SIGNAL", desc: "Post 'base.app' link on Farcaster", step: "03", icon: Radio }
-                ].map((item, i) => (
-                    <div key={i} className="group relative bg-[#0a0a0a] border border-white/10 p-5 rounded-lg hover:border-white/20 transition-all">
-                        <div className="absolute top-3 right-3 text-[50px] font-black text-white/5 leading-none select-none group-hover:text-white/10 transition-colors">
-                            {item.step}
-                        </div>
-                        <div className="relative z-10">
-                            <div className="w-8 h-8 bg-electric-blue/10 text-electric-blue rounded flex items-center justify-center mb-3">
-                                <item.icon size={16} />
+            {/* 3. PROMOTION PROTOCOL STEPS */}
+            <div>
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="h-px bg-white/10 flex-grow" />
+                    <h3 className="text-xs font-mono font-bold text-gray-600 tracking-[0.3em]">PROMOTION_PROTOCOL_V1</h3>
+                    <div className="h-px bg-white/10 flex-grow" />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {[
+                        { step: "01", title: "BUILD", sub: "ON BASE", icon: Database, desc: "Deploy your app on Base. The Agent monitors on-chain contracts and deployments." },
+                        { step: "02", title: "SIGNAL", sub: "ON FARCASTER", icon: Radio, desc: "Post with your 'base.app' link. This is the trigger signal the Agent listens for." },
+                        { step: "03", title: "EARN", sub: "CURATION", icon: Award, desc: "High signal apps are verified and automatically promoted to this dashboard." }
+                    ].map((s, i) => (
+                        <div key={i} className="group relative p-6 border border-white/5 hover:border-white/20 hover:bg-white/[0.02] transition-colors rounded-xl">
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="text-4xl font-black text-white/5 font-mono group-hover:text-electric-blue/20 transition-colors">{s.step}</div>
+                                <div className="p-2 rounded-lg bg-white/5 text-gray-400 group-hover:text-white transition-colors border border-white/5"><s.icon size={18} /></div>
                             </div>
-                            <h3 className="font-bold text-white text-sm tracking-wide mb-1">{item.title}</h3>
-                            <p className="text-xs text-gray-500">{item.desc}</p>
+                            <h4 className="text-lg font-black text-white tracking-tight mb-1">{s.title}</h4>
+                            <div className="text-[10px] font-mono text-electric-blue uppercase tracking-widest mb-3">{s.sub}</div>
+                            <p className="text-xs text-gray-500 leading-relaxed group-hover:text-gray-400 transition-colors">{s.desc}</p>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
 
         </div>
