@@ -25,7 +25,7 @@ import FarcasterProvider from '@/components/FarcasterProvider';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en" className={`${mono.variable} font-mono bg-[#050607] text-white`}>
+        <html lang="en" className={`${mono.variable}`}>
             <body className="min-h-screen flex flex-col p-4 md:p-8 max-w-3xl mx-auto selection:bg-[#001133] selection:text-white relative">
                 <div className="cyber-grid" />
                 <FarcasterProvider>
@@ -74,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     </main>
 
                     {/* FOOTER */}
-                    <footer className="mt-12 text-[10px] text-gray-600 border-t border-white/5 pt-6 pb-8 flex flex-col md:flex-row justify-between items-center gap-4 font-mono">
+                    <footer className="mt-12 text-[10px] text-gray-600 border-t border-white/5 pt-6 pb-8 flex flex-col md:flex-row justify-between items-center gap-4">
                         <p>ID: 0x{Math.random().toString(16).slice(2, 10).toUpperCase()} // ENCRYPTED</p>
                         <div className="flex gap-4">
                             <span>TERMS</span>
