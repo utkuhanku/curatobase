@@ -4,10 +4,10 @@
 
 :root {
   --crt-bg: #050607;
-  --crt-green: #00FF7A;
-  --crt-green-dim: #7CFFB2;
-  --crt-green-dark: #2B5C3F;
-  --crt-border: #0A2A1A;
+  --crt-green: #1652F0; /* Electric Blue */
+  --crt-green-dim: #4B85FF;
+  --crt-green-dark: #0A1A33;
+  --crt-border: #163060;
   --crt-amber: #FFD166;
   --crt-red: #FF4D4D;
   --crt-gold: #FFD700;
