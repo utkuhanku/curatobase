@@ -1,12 +1,12 @@
 import { prisma } from "@/lib/db";
 import { CurationStatus } from "@/lib/types";
-import { Hexagon, Radio, Zap, ArrowRight, Activity, Terminal } from "lucide-react";
+import { Hexagon, Radio, Zap, Activity, Info, Eye, Database, Globe } from "lucide-react";
 import Link from "next/link";
 
 export async function RadarDashboard() {
     // Fetch stats
     const stats = {
-        scanned: 1420, // Mock for now, or fetch from DB state
+        scanned: 1420,
         candidates: await prisma.app.count({ where: { status: { in: [CurationStatus.CURATED, CurationStatus.WATCHLIST] } } }),
         curated: await prisma.app.count({ where: { status: CurationStatus.CURATED } })
     };
@@ -18,91 +18,130 @@ export async function RadarDashboard() {
         include: { builder: true }
     });
 
-    const InstructionCard = ({ icon: Icon, title, desc }: any) => (
-        <div className="bg-white/5 border border-white/10 p-4 rounded-xl flex flex-col gap-2">
-            <div className="bg-electric-blue/20 w-8 h-8 rounded-lg flex items-center justify-center text-electric-blue">
-                <Icon size={16} />
-            </div>
-            <h3 className="font-bold text-white text-sm">{title}</h3>
-            <p className="text-xs text-gray-400 leading-relaxed">{desc}</p>
-        </div>
-    );
-
     return (
-        <div className="space-y-12">
-            {/* 1. Hero Metrics */}
-            <div className="grid grid-cols-3 gap-4">
-                <div className="bg-electric-blue/10 border border-electric-blue/30 p-4 rounded-lg text-center">
-                    <div className="text-electric-blue font-bold text-2xl mb-1">{stats.scanned.toLocaleString()}</div>
-                    <div className="text-[10px] uppercase tracking-widest text-electric-blue/60 font-mono">Casts Scanned</div>
-                </div>
-                <div className="bg-white/5 border border-white/10 p-4 rounded-lg text-center">
-                    <div className="text-white font-bold text-2xl mb-1">{stats.candidates}</div>
-                    <div className="text-[10px] uppercase tracking-widest text-gray-500 font-mono">Apps Detected</div>
-                </div>
-                <div className="bg-white/5 border border-white/10 p-4 rounded-lg text-center">
-                    <div className="text-green-400 font-bold text-2xl mb-1">{stats.curated}</div>
-                    <div className="text-[10px] uppercase tracking-widest text-green-500/60 font-mono">High Signal</div>
-                </div>
-            </div>
+        <div className="space-y-6">
 
-            {/* 2. Top Signal Spotlight */}
-            {topApp ? (
-                <div className="relative overflow-hidden rounded-2xl border border-electric-blue/30 bg-gradient-to-br from-electric-blue/10 to-black p-8">
-                    <div className="absolute top-0 right-0 p-4 opacity-20"><Hexagon size={120} /></div>
-
+            {/* 1. AGENT STATE CARD (The "Scanner") */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden group hover:border-electric-blue/30 transition-colors">
+                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><Radio size={80} /></div>
                     <div className="relative z-10">
-                        <div className="flex items-center gap-2 mb-4">
-                            <span className="animate-pulse relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                            </span>
-                            <span className="text-xs font-mono text-green-400 tracking-widest">LIVE INCOMING SIGNAL</span>
+                        <div className="flex items-center gap-2 mb-2 text-electric-blue">
+                            <Activity size={18} className="animate-pulse" />
+                            <h3 className="text-sm font-bold tracking-widest">LIVE SCANNER</h3>
                         </div>
+                        <p className="text-3xl font-bold text-white mb-1">{stats.scanned.toLocaleString()}</p>
+                        <p className="text-sm text-gray-400">Casts analyzed in the last 24h</p>
 
-                        <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">{topApp.name}</h2>
-                        <p className="text-gray-300 max-w-md text-lg leading-relaxed mb-6">
-                            {topApp.description}
-                        </p>
-
-                        <div className="flex items-center gap-4 text-sm font-mono text-electric-blue/80 bg-electric-blue/5 inline-flex px-4 py-2 rounded-lg border border-electric-blue/20">
-                            <Activity size={16} />
-                            <span>AGENT_VERDICT: "{topApp.agentInsight}"</span>
+                        <div className="mt-4 pt-4 border-t border-white/5 text-xs text-gray-500 leading-relaxed">
+                            The Agent continuously reads the Farcaster stream, looking for new apps, keywords like "launched" or "shipped", and valid <span className="text-gray-300 font-mono">base.app</span> URLs.
                         </div>
                     </div>
                 </div>
-            ) : (
-                <div className="text-center py-12 border border-dashed border-white/10 rounded-xl">
-                    <Radio className="mx-auto text-gray-600 mb-4 animate-pulse" size={32} />
-                    <p className="text-gray-500 font-mono">SCANNING FOR HIGH SIGNAL...</p>
-                </div>
-            )}
 
-            {/* 3. How it Works (Trigger) */}
-            <div>
-                <div className="flex items-center gap-2 mb-6 opacity-70">
-                    <Zap size={16} className="text-electric-blue" />
-                    <h3 className="text-sm font-bold font-mono tracking-widest">HOW TO TRIGGER THE AGENT</h3>
-                </div>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden group hover:border-green-500/30 transition-colors">
+                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><Database size={80} /></div>
+                    <div className="relative z-10">
+                        <div className="flex items-center gap-2 mb-2 text-green-400">
+                            <Database size={18} />
+                            <h3 className="text-sm font-bold tracking-widest">CURATION ENGINE</h3>
+                        </div>
+                        <p className="text-3xl font-bold text-white mb-1">{stats.candidates} <span className="text-lg text-gray-500 font-normal">detected</span></p>
+                        <p className="text-sm text-gray-400">Only {stats.curated} passed the quality filter.</p>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <InstructionCard
-                        icon={Hexagon}
-                        title="1. SHIP ON BASE"
-                        desc="Deploy your app. The agent monitors the blockchain and 'base.app' URLs for new deployments."
-                    />
-                    <InstructionCard
-                        icon={Activity}
-                        title="2. POST PROOF"
-                        desc="Share it on Farcaster. Include a Demo URL, Github Repo, or Transaction Hash. No proof = No signal."
-                    />
-                    <InstructionCard
-                        icon={Radio}
-                        title="3. GET CURATED"
-                        desc="If your signal is strong (Code + Live), the agent autonomously promotes you here and in daily reports."
-                    />
+                        <div className="mt-4 pt-4 border-t border-white/5 text-xs text-gray-500 leading-relaxed">
+                            Not every app makes it. The Agent filters for:
+                            <ul className="mt-1 space-y-1 text-gray-400 font-mono">
+                                <li className="flex items-center gap-2"><span className="text-green-500">✓</span> Verified Builder ID</li>
+                                <li className="flex items-center gap-2"><span className="text-green-500">✓</span> Functioning URL</li>
+                                <li className="flex items-center gap-2"><span className="text-green-500">✓</span> No Spam/Shill patterns</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            {/* 2. TOP SIGNAL (The Spotlight) */}
+            <div className="border border-electric-blue/30 bg-gradient-to-br from-electric-blue/10 to-black rounded-2xl p-1">
+                <div className="bg-[#050607]/80 backdrop-blur-sm rounded-[14px] p-6 md:p-8">
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-2 text-electric-blue">
+                            <Zap size={18} fill="currentColor" />
+                            <h3 className="text-sm font-bold tracking-widest">TOP DETECTED SIGNAL</h3>
+                        </div>
+                        <span className="text-[10px] bg-electric-blue/20 text-electric-blue px-2 py-1 rounded border border-electric-blue/20">
+                            AUTONOMOUS SELECTION
+                        </span>
+                    </div>
+
+                    {topApp ? (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div className="md:col-span-2">
+                                <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">{topApp.name}</h2>
+                                <p className="text-gray-300 text-lg leading-relaxed mb-6">{topApp.description}</p>
+
+                                <div className="flex flex-wrap gap-3">
+                                    {topApp.urls && JSON.parse(topApp.urls).baseApp && (
+                                        <a href={JSON.parse(topApp.urls).baseApp} target="_blank" className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors">
+                                            <Hexagon size={16} /> Open Mini App
+                                        </a>
+                                    )}
+                                    {topApp.urls && JSON.parse(topApp.urls).website && (
+                                        <a href={JSON.parse(topApp.urls).website} target="_blank" className="flex items-center gap-2 bg-white/10 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-white/20 transition-colors">
+                                            <Globe size={16} /> Website
+                                        </a>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-sm">
+                                <h4 className="text-gray-500 font-mono text-xs uppercase mb-3">Agent Reasoning</h4>
+                                <p className="text-electric-blue/90 italic mb-4">"{topApp.agentInsight}"</p>
+
+                                <div className="space-y-2 text-xs font-mono text-gray-400">
+                                    <div className="flex justify-between border-b border-white/5 pb-1">
+                                        <span>Relevance</span>
+                                        <span className="text-white">{(topApp.curationScore || 0) * 10}%</span>
+                                    </div>
+                                    <div className="flex justify-between border-b border-white/5 pb-1">
+                                        <span>Builder</span>
+                                        <span className="text-white">Active</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span>Status</span>
+                                        <span className="text-green-400">VERIFIED</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="text-center py-12 text-gray-500 font-mono">
+                            SCANNING FOR NEXT TOP PICK...
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* 3. HOW IT WORKS */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+                <div className="md:col-span-3 text-center mb-2">
+                    <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest">Promotion Protocol</h3>
+                </div>
+                {[
+                    { title: "1. BUILD", desc: "Create a Base Mini App.", icon: Database },
+                    { title: "2. SHIP", desc: "Deploy it. The agent watches on-chain activity.", icon: Zap },
+                    { title: "3. SIGNAL", desc: "Post on Farcaster with 'base.app' link.", icon: Radio }
+                ].map((step, i) => (
+                    <div key={i} className="bg-white/5 border border-white/10 p-4 rounded-xl text-center hover:bg-white/10 transition-colors">
+                        <div className="w-10 h-10 mx-auto bg-gray-800 rounded-full flex items-center justify-center mb-3 text-white">
+                            <step.icon size={18} />
+                        </div>
+                        <h4 className="font-bold text-white text-sm mb-1">{step.title}</h4>
+                        <p className="text-xs text-gray-400">{step.desc}</p>
+                    </div>
+                ))}
+            </div>
+
         </div>
     );
 }

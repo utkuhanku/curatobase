@@ -19,7 +19,7 @@ export default function HomeView({
                 <button
                     onClick={() => setViewMode(viewMode === 'RADAR' ? 'TERMINAL' : 'RADAR')}
                     className={`
-                        flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono tracking-wider border transition-all
+                        flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono tracking-wider border transition-all text-left
                         ${viewMode === 'RADAR'
                             ? 'bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-white/30'
                             : 'bg-electric-blue/10 border-electric-blue text-electric-blue shadow-[0_0_15px_rgba(22,82,240,0.3)]'
@@ -27,7 +27,10 @@ export default function HomeView({
                     `}
                 >
                     <Terminal size={14} />
-                    {viewMode === 'RADAR' ? 'ACCESS_TERMINAL_FEED' : 'RETURN_TO_RADAR'}
+                    <div>
+                        <span className="block font-bold">{viewMode === 'RADAR' ? 'ENTER_MATRIX' : 'EXIT_MATRIX'}</span>
+                        <span className="opacity-60 text-[10px]">{viewMode === 'RADAR' ? 'View Raw Agent Data' : 'Return to Human UI'}</span>
+                    </div>
                 </button>
             </div>
 
