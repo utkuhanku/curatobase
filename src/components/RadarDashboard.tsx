@@ -1,9 +1,9 @@
-
 "use client";
 
 import { motion } from "framer-motion";
-import { Hexagon, Radio, Zap, Activity, Database, Globe, Cpu, Scan, Signal, Award, ChevronRight } from "lucide-react";
+import { Activity, ShieldCheck, Zap, Database, Search, Filter, Play, Scan, Award, ChevronRight, Smartphone, CheckCircle2, XCircle, Clock, Radio } from "lucide-react";
 import Link from "next/link";
+import { GlassCard } from "@/components/ui/GlassCard";
 
 // Mock data for display - in production this would be passed as props
 const stats = {

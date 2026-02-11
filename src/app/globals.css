@@ -3,146 +3,57 @@
 @tailwind utilities;
 
 :root {
-  --crt-bg: #050607;
-  --crt-green: #1652F0;
-  /* Electric Blue */
-  --crt-green-dim: #4B85FF;
-  --crt-green-dark: #0A1A33;
-  --crt-border: #163060;
-  --crt-amber: #FFD166;
-  --crt-red: #FF4D4D;
-  --crt-gold: #FFD700;
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #1c1c1e;
+  --card-foreground: #ffffff;
+  --primary: #0A84FF;
+  /* Apple Blue */
+  --primary-foreground: #ffffff;
+  --muted: #1c1c1e;
+  --muted-foreground: #8e8e93;
+  --border: #38383a;
 }
 
 body {
-  background: var(--crt-bg);
-  color: var(--crt-green);
-  font-family: Arial, Helvetica, sans-serif;
-  overflow-x: hidden;
-}
-
-@keyframes scanline {
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(100vh);
-  }
-}
-
-@keyframes flicker {
-  0% {
-    opacity: 0.97;
-  }
-
-  5% {
-    opacity: 0.95;
-  }
-
-  10% {
-    opacity: 0.9;
-  }
-
-  15% {
-    opacity: 0.95;
-  }
-
-  20% {
-    opacity: 0.99;
-  }
-
-  50% {
-    opacity: 0.95;
-  }
-
-  100% {
-    opacity: 0.98;
-  }
-}
-
-.crt-overlay {
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  background-size: 100% 2px, 3px 100%;
-  pointer-events: none;
-}
-
-.scanline::before {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
-  background-size: 100% 4px;
-  pointer-events: none;
-  z-index: 50;
-}
-
-.scanline::after {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(18, 16, 16, 0.1);
-  opacity: 0;
-  z-index: 50;
-  pointer-events: none;
-  animation: flicker 0.15s infinite;
-}
-
-.crt-text-glow {
-  text-shadow: 0 0 5px rgba(0, 255, 122, 0.5);
-}
-
-.crt-box-glow {
-  box-shadow: 0 0 10px rgba(0, 255, 122, 0.1), inset 0 0 20px rgba(0, 255, 122, 0.05);
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @layer utilities {
+  .glass-card {
+    @apply bg-[#1c1c1e]/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg;
+  }
+
+  .glass-button {
+    @apply bg-white/10 hover:bg-white/20 active:bg-white/10 backdrop-blur-md transition-all duration-200 rounded-full font-medium;
+  }
+
   .text-balance {
     text-wrap: balance;
   }
+}
 
-  .glass-panel {
-    @apply bg-white/5 border border-glass-border backdrop-blur-md rounded-xl;
+/* Smooth gradients for "Premium" feel */
+.bg-gradient-premium {
+  background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-}
 
-/* Cyber Grid Background */
-.cyber-grid {
-  background-size: 40px 40px;
-  background-image:
-    linear-gradient(to right, rgba(22, 82, 240, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(22, 82, 240, 0.05) 1px, transparent 1px);
-  mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
-  min-height: 100vh;
-  width: 100vw;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  pointer-events: none;
-}
-
-
-.clip-corner-tr {
-  clip-path: polygon(0 0,
-      calc(100% - 20px) 0,
-      100% 20px,
-      100% 100%,
-      0 100%);
-}
-
-.clip-corner-sample {
-  clip-path: polygon(0 0,
-      100% 0,
-      100% calc(100% - 15px),
-      calc(100% - 15px) 100%,
-      0 100%);
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
