@@ -26,7 +26,8 @@ import FarcasterProvider from '@/components/FarcasterProvider';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={`${mono.variable} font-mono bg-black text-[#1652F0]`}>
-            <body className="min-h-screen flex flex-col p-4 md:p-8 max-w-3xl mx-auto selection:bg-[#001133] selection:text-white cyber-grid">
+            <body className="min-h-screen flex flex-col p-4 md:p-8 max-w-3xl mx-auto selection:bg-[#001133] selection:text-white relative">
+                <div className="cyber-grid" />
                 <FarcasterProvider>
                     {/* HEADER */}
                     <header className="mb-8 border-b border-[#163060] pb-4">
