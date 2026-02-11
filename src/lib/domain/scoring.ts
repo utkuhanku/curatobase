@@ -53,6 +53,17 @@ export class ScoringEngine {
         if (shillRisk > 40) reasons.push('POSSIBLE_SHILL');
         if (grade === 'D') reasons.push('NO_EXTERNAL_PROOF');
 
+        // v7: STRICT REWARD CHECK
+        // If they promise a reward but provided no TX hash, it's likely engagement bait (Spam).
+        // checks logic: if candidate type is REWARD but evidence.txHashes is empty?
+        // Better: check the rewardCheck status passed in context, but scoring doesn't receive context yet.
+        // Quick fix: Check evidence keywords vs validation.
+        const hasClaimKeywords = /\b(prize|reward|USDC|ETH|sent|payout|won)\b/i.test(candidate.cast.text);
+        if (hasClaimKeywords && ev.txHashes.length === 0 && grade !== 'A') {
+            shillRisk += 50;
+            reasons.push('UNVERIFIED_REWARD_CLAIM');
+        }
+
         // 3. Relevance & Confidence - SOFT WEIGHTING
         let relevance = 0;
         let confidence = candidate.confidenceScore * 50;

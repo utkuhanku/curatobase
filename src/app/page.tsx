@@ -1,4 +1,4 @@
-import { DiscoveryFeed } from "@/components/DiscoveryFeed";
+import { TerminalFeed } from "@/components/TerminalFeed";
 import Link from "next/link";
 import { Zap, Radio } from "lucide-react";
 import AgentPulse from "@/components/AgentPulse";
@@ -44,7 +44,7 @@ export default async function Home() {
                 </div>
             </div>
 
-            <DiscoveryFeed />
+            <TerminalFeed />
 
             <footer className="text-center text-xs text-gray-700 font-mono py-8">
                 SYSTEM_ID: CURATO_V1 // STATUS: ONLINE
