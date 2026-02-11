@@ -4,7 +4,8 @@
 
 :root {
   --crt-bg: #050607;
-  --crt-green: #1652F0; /* Electric Blue */
+  --crt-green: #1652F0;
+  /* Electric Blue */
   --crt-green-dim: #4B85FF;
   --crt-green-dark: #0A1A33;
   --crt-border: #163060;
@@ -111,4 +112,29 @@ body {
   .glass-panel {
     @apply bg-white/5 border border-glass-border backdrop-blur-md rounded-xl;
   }
+}
+
+/* Cyber Grid Background */
+.cyber-grid {
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgba(22, 82, 240, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(22, 82, 240, 0.05) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
+}
+
+.clip-corner-tr {
+  clip-path: polygon(0 0,
+      calc(100% - 20px) 0,
+      100% 20px,
+      100% 100%,
+      0 100%);
+}
+
+.clip-corner-sample {
+  clip-path: polygon(0 0,
+      100% 0,
+      100% calc(100% - 15px),
+      calc(100% - 15px) 100%,
+      0 100%);
 }

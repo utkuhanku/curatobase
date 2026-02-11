@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { CurationStatus } from "@/lib/types";
-import { Hexagon, Radio, Zap, Activity, Info, Eye, Database, Globe } from "lucide-react";
+import { Hexagon, Radio, Zap, Activity, Info, Eye, Database, Globe, Cpu } from "lucide-react";
+import { CyberCard } from "@/components/ui/CyberCard";
 import Link from "next/link";
 
 export async function RadarDashboard() {
@@ -19,125 +20,135 @@ export async function RadarDashboard() {
     });
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
 
-            {/* 1. AGENT STATE CARD (The "Scanner") */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden group hover:border-electric-blue/30 transition-colors">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><Radio size={80} /></div>
-                    <div className="relative z-10">
-                        <div className="flex items-center gap-2 mb-2 text-electric-blue">
-                            <Activity size={18} className="animate-pulse" />
-                            <h3 className="text-sm font-bold tracking-widest">LIVE SCANNER</h3>
+            {/* 1. DATA MATRIX */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Left: Global Scanner Stats */}
+                <CyberCard title="NETWORK_ACTIVITY" icon={<Activity size={14} />} variant="scanner">
+                    <div className="flex items-baseline justify-between mb-2">
+                        <span className="text-4xl font-bold text-white tracking-tighter">{stats.scanned.toLocaleString()}</span>
+                        <span className="text-xs font-mono text-electric-blue animate-pulse">● LIVE</span>
+                    </div>
+                    <div className="text-xs text-gray-500 font-mono mb-4">
+                        FARCASTER CASTS INTERCEPTED (24H)
+                    </div>
+                    <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                        <div className="h-full bg-electric-blue w-[75%] shadow-[0_0_10px_#1652F0]"></div>
+                    </div>
+                    <p className="mt-4 text-[11px] text-gray-400 leading-relaxed border-l-2 border-electric-blue/30 pl-3">
+                        The Agent autonomously scans the Optimism Superchain text stream for "base.app" signatures and shipping keywords.
+                    </p>
+                </CyberCard>
+
+                {/* Right: Curation Funnel */}
+                <CyberCard title="CURATION_ENGINE" icon={<Cpu size={14} />}>
+                    <div className="grid grid-cols-2 gap-4 text-center">
+                        <div className="p-3 bg-white/5 rounded border border-white/5">
+                            <div className="text-2xl font-bold text-white">{stats.candidates}</div>
+                            <div className="text-[10px] text-gray-500 uppercase">Filtered</div>
                         </div>
-                        <p className="text-3xl font-bold text-white mb-1">{stats.scanned.toLocaleString()}</p>
-                        <p className="text-sm text-gray-400">Casts analyzed in the last 24h</p>
-
-                        <div className="mt-4 pt-4 border-t border-white/5 text-xs text-gray-500 leading-relaxed">
-                            The Agent continuously reads the Farcaster stream, looking for new apps, keywords like "launched" or "shipped", and valid <span className="text-gray-300 font-mono">base.app</span> URLs.
+                        <div className="p-3 bg-green-500/10 rounded border border-green-500/20">
+                            <div className="text-2xl font-bold text-green-400">{stats.curated}</div>
+                            <div className="text-[10px] text-green-500 uppercase">Verified</div>
                         </div>
                     </div>
-                </div>
-
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden group hover:border-green-500/30 transition-colors">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><Database size={80} /></div>
-                    <div className="relative z-10">
-                        <div className="flex items-center gap-2 mb-2 text-green-400">
-                            <Database size={18} />
-                            <h3 className="text-sm font-bold tracking-widest">CURATION ENGINE</h3>
+                    <div className="mt-4 space-y-2">
+                        <div className="flex items-center gap-3 text-xs text-gray-400 font-mono">
+                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full shadow-[0_0_5px_#00ff00]" />
+                            <span>REPUTATION_CHECK_PASSED</span>
                         </div>
-                        <p className="text-3xl font-bold text-white mb-1">{stats.candidates} <span className="text-lg text-gray-500 font-normal">detected</span></p>
-                        <p className="text-sm text-gray-400">Only {stats.curated} passed the quality filter.</p>
-
-                        <div className="mt-4 pt-4 border-t border-white/5 text-xs text-gray-500 leading-relaxed">
-                            Not every app makes it. The Agent filters for:
-                            <ul className="mt-1 space-y-1 text-gray-400 font-mono">
-                                <li className="flex items-center gap-2"><span className="text-green-500">✓</span> Verified Builder ID</li>
-                                <li className="flex items-center gap-2"><span className="text-green-500">✓</span> Functioning URL</li>
-                                <li className="flex items-center gap-2"><span className="text-green-500">✓</span> No Spam/Shill patterns</li>
-                            </ul>
+                        <div className="flex items-center gap-3 text-xs text-gray-400 font-mono">
+                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full shadow-[0_0_5px_#00ff00]" />
+                            <span>URL_REACHABILITY_VERIFIED</span>
+                        </div>
+                        <div className="flex items-center gap-3 text-xs text-gray-400 font-mono">
+                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full shadow-[0_0_5px_#00ff00]" />
+                            <span>NO_SPAM_DETECTED</span>
                         </div>
                     </div>
-                </div>
+                </CyberCard>
             </div>
 
-            {/* 2. TOP SIGNAL (The Spotlight) */}
-            <div className="border border-electric-blue/30 bg-gradient-to-br from-electric-blue/10 to-black rounded-2xl p-1">
-                <div className="bg-[#050607]/80 backdrop-blur-sm rounded-[14px] p-6 md:p-8">
-                    <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-2 text-electric-blue">
-                            <Zap size={18} fill="currentColor" />
-                            <h3 className="text-sm font-bold tracking-widest">TOP DETECTED SIGNAL</h3>
-                        </div>
-                        <span className="text-[10px] bg-electric-blue/20 text-electric-blue px-2 py-1 rounded border border-electric-blue/20">
-                            AUTONOMOUS SELECTION
-                        </span>
-                    </div>
-
+            {/* 2. SPOTLIGHT MODULE */}
+            <div className="relative">
+                <div className="absolute -top-3 left-4 bg-[#050607] px-2 text-[10px] font-mono text-electric-blue border border-electric-blue/30 rounded z-10">
+                    INCOMING_SIGNAL_DETECTED
+                </div>
+                <CyberCard className="border-electric-blue/40 shadow-[0_0_30px_rgba(22,82,240,0.1)]">
                     {topApp ? (
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div className="md:col-span-2">
-                                <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">{topApp.name}</h2>
-                                <p className="text-gray-300 text-lg leading-relaxed mb-6">{topApp.description}</p>
-
-                                <div className="flex flex-wrap gap-3">
+                        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+                            {/* App Info */}
+                            <div className="md:col-span-3 space-y-4">
+                                <div>
+                                    <h2 className="text-4xl font-black text-white tracking-tight mb-2">{topApp.name}</h2>
+                                    <p className="text-base text-gray-300 leading-relaxed font-light border-l border-white/20 pl-4">
+                                        {topApp.description}
+                                    </p>
+                                </div>
+                                <div className="flex gap-3 pt-2">
                                     {topApp.urls && JSON.parse(topApp.urls).baseApp && (
-                                        <a href={JSON.parse(topApp.urls).baseApp} target="_blank" className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors">
-                                            <Hexagon size={16} /> Open Mini App
+                                        <a href={JSON.parse(topApp.urls).baseApp} target="_blank"
+                                            className="px-5 py-2.5 bg-white text-black font-bold text-sm rounded bg-gradient-to-r from-white to-gray-200 hover:to-white transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(255,255,255,0.3)] hover:scale-105 transform duration-200">
+                                            <Hexagon size={16} fill="black" /> OPEN MINI APP
                                         </a>
                                     )}
                                     {topApp.urls && JSON.parse(topApp.urls).website && (
-                                        <a href={JSON.parse(topApp.urls).website} target="_blank" className="flex items-center gap-2 bg-white/10 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-white/20 transition-colors">
-                                            <Globe size={16} /> Website
+                                        <a href={JSON.parse(topApp.urls).website} target="_blank"
+                                            className="px-5 py-2.5 bg-white/5 text-white font-bold text-sm rounded border border-white/10 hover:bg-white/10 transition-all flex items-center gap-2">
+                                            <Globe size={16} /> WEBSITE
                                         </a>
                                     )}
                                 </div>
                             </div>
 
-                            <div className="bg-white/5 rounded-xl p-4 border border-white/5 text-sm">
-                                <h4 className="text-gray-500 font-mono text-xs uppercase mb-3">Agent Reasoning</h4>
-                                <p className="text-electric-blue/90 italic mb-4">"{topApp.agentInsight}"</p>
-
-                                <div className="space-y-2 text-xs font-mono text-gray-400">
-                                    <div className="flex justify-between border-b border-white/5 pb-1">
-                                        <span>Relevance</span>
-                                        <span className="text-white">{(topApp.curationScore || 0) * 10}%</span>
+                            {/* Agent Analysis */}
+                            <div className="md:col-span-2 bg-black/40 rounded-lg p-4 border border-white/5 font-mono text-xs">
+                                <div className="text-[10px] text-gray-500 uppercase mb-3 tracking-widest border-b border-white/5 pb-1">Agent Analysis Log</div>
+                                <div className="space-y-3">
+                                    <div>
+                                        <span className="text-gray-500 block mb-0.5">INSIGHT</span>
+                                        <span className="text-electric-blue">"{topApp.agentInsight}"</span>
                                     </div>
-                                    <div className="flex justify-between border-b border-white/5 pb-1">
-                                        <span>Builder</span>
-                                        <span className="text-white">Active</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Status</span>
-                                        <span className="text-green-400">VERIFIED</span>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <span className="text-gray-500 block mb-0.5">SCORE</span>
+                                            <span className="text-white text-lg font-bold">{(topApp.curationScore || 0)}/100</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-gray-500 block mb-0.5">BUILDER</span>
+                                            <span className="text-white">VERIFIED</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     ) : (
-                        <div className="text-center py-12 text-gray-500 font-mono">
-                            SCANNING FOR NEXT TOP PICK...
+                        <div className="text-center py-12 text-gray-500 font-mono animate-pulse">
+                            SCANNING_MEMPOOL...
                         </div>
                     )}
-                </div>
+                </CyberCard>
             </div>
 
-            {/* 3. HOW IT WORKS */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-                <div className="md:col-span-3 text-center mb-2">
-                    <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest">Promotion Protocol</h3>
-                </div>
+            {/* 3. PROTOCOL INSTRUCTIONS */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[
-                    { title: "1. BUILD", desc: "Create a Base Mini App.", icon: Database },
-                    { title: "2. SHIP", desc: "Deploy it. The agent watches on-chain activity.", icon: Zap },
-                    { title: "3. SIGNAL", desc: "Post on Farcaster with 'base.app' link.", icon: Radio }
-                ].map((step, i) => (
-                    <div key={i} className="bg-white/5 border border-white/10 p-4 rounded-xl text-center hover:bg-white/10 transition-colors">
-                        <div className="w-10 h-10 mx-auto bg-gray-800 rounded-full flex items-center justify-center mb-3 text-white">
-                            <step.icon size={18} />
+                    { title: "BUILD", desc: "Create a Base Mini App", step: "01", icon: Database },
+                    { title: "SHIP", desc: "Deploy via verified Builder ID", step: "02", icon: Zap },
+                    { title: "SIGNAL", desc: "Post 'base.app' link on Farcaster", step: "03", icon: Radio }
+                ].map((item, i) => (
+                    <div key={i} className="group relative bg-[#0a0a0a] border border-white/10 p-5 rounded-lg hover:border-white/20 transition-all">
+                        <div className="absolute top-3 right-3 text-[50px] font-black text-white/5 leading-none select-none group-hover:text-white/10 transition-colors">
+                            {item.step}
                         </div>
-                        <h4 className="font-bold text-white text-sm mb-1">{step.title}</h4>
-                        <p className="text-xs text-gray-400">{step.desc}</p>
+                        <div className="relative z-10">
+                            <div className="w-8 h-8 bg-electric-blue/10 text-electric-blue rounded flex items-center justify-center mb-3">
+                                <item.icon size={16} />
+                            </div>
+                            <h3 className="font-bold text-white text-sm tracking-wide mb-1">{item.title}</h3>
+                            <p className="text-xs text-gray-500">{item.desc}</p>
+                        </div>
                     </div>
                 ))}
             </div>
