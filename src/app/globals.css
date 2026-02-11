@@ -121,7 +121,15 @@ body {
     linear-gradient(to right, rgba(22, 82, 240, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(22, 82, 240, 0.05) 1px, transparent 1px);
   mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
+  min-height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  pointer-events: none;
 }
+
 
 .clip-corner-tr {
   clip-path: polygon(0 0,
