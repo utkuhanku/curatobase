@@ -1,4 +1,4 @@
-```
+
 "use client";
 
 import { motion } from "framer-motion";
@@ -23,12 +23,12 @@ const topApp = {
 export function RadarDashboard() {
     return (
         <div className="relative space-y-8 p-2">
-            
+
             {/* 1. EXECUTIVE SUMMARY ROW */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
+
                 {/* METRIC: NETWORK VOLUME */}
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
@@ -48,7 +48,7 @@ export function RadarDashboard() {
                 </motion.div>
 
                 {/* METRIC: QUALITY FILTER */}
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.1 }}
@@ -68,7 +68,7 @@ export function RadarDashboard() {
                 </motion.div>
 
                 {/* METRIC: CURATED SELECTION */}
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.2 }}
@@ -90,11 +90,11 @@ export function RadarDashboard() {
 
 
             {/* 2. FEATURED SIGNAL (The "Frame") */}
-            <motion.div 
-                 initial={{ opacity: 0, scale: 0.98 }}
-                 animate={{ opacity: 1, scale: 1 }}
-                 transition={{ duration: 0.5, delay: 0.3 }}
-                 className="relative"
+            <motion.div
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="relative"
             >
                 {/* Header Label */}
                 <div className="flex items-center gap-2 mb-3 px-1">
@@ -109,10 +109,10 @@ export function RadarDashboard() {
                 <div className="bg-[#050505] border border-blue-900/30 rounded-2xl overflow-hidden relative">
                     {/* Background Grid Accent */}
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,#1652f00a_1px,transparent_1px),linear-gradient(to_bottom,#1652f00a_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
-                    
+
                     {topApp ? (
                         <div className="relative z-10 p-8 md:p-10 grid grid-cols-1 md:grid-cols-5 gap-10 items-center">
-                            
+
                             {/* App Details */}
                             <div className="md:col-span-3 space-y-6">
                                 <div>
@@ -123,11 +123,11 @@ export function RadarDashboard() {
                                         {topApp.description}
                                     </p>
                                 </div>
-                                
+
                                 <div className="flex flex-wrap gap-3">
                                     {topApp.urls && JSON.parse(topApp.urls).baseApp && (
-                                        <a href={JSON.parse(topApp.urls).baseApp} target="_blank" 
-                                           className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm rounded-lg transition-all flex items-center gap-2 shadow-lg shadow-blue-900/20 group">
+                                        <a href={JSON.parse(topApp.urls).baseApp} target="_blank"
+                                            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm rounded-lg transition-all flex items-center gap-2 shadow-lg shadow-blue-900/20 group">
                                             Open Mini App <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
                                         </a>
                                     )}
@@ -139,7 +139,7 @@ export function RadarDashboard() {
                                 <div className="absolute -top-3 left-4 bg-[#050505] px-2 text-[10px] text-blue-400 font-mono uppercase tracking-widest">
                                     Agent Analysis
                                 </div>
-                                
+
                                 <div className="space-y-4">
                                     <div>
                                         <div className="text-[10px] text-gray-500 uppercase font-medium mb-1">Score</div>
@@ -147,7 +147,7 @@ export function RadarDashboard() {
                                             {topApp.curationScore} <span className="text-sm text-gray-600 font-normal">/ 100</span>
                                         </div>
                                     </div>
-                                    
+
                                     <div>
                                         <div className="text-[10px] text-gray-500 uppercase font-medium mb-1">Reasoning</div>
                                         <p className="text-sm text-blue-200/80 leading-relaxed italic">
@@ -166,29 +166,29 @@ export function RadarDashboard() {
                                 </div>
                             </div>
                         </div>
-                     ) : (
+                    ) : (
                         <div className="text-center py-24">
                             <div className="inline-block p-4 rounded-full bg-white/5 mb-4">
                                 <Scan size={32} className="text-gray-500 animate-pulse" />
                             </div>
                             <p className="text-gray-500 font-medium">Scanning network for new signals...</p>
                         </div>
-                     )}
+                    )}
                 </div>
             </motion.div>
 
             {/* 3. HOW IT WORKS (Simplified) */}
-             <motion.div 
-                 initial={{ opacity: 0 }}
-                 animate={{ opacity: 1 }}
-                 transition={{ duration: 0.5, delay: 0.5 }}
-                 className="pt-8 border-t border-white/5"
-             >
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="pt-8 border-t border-white/5"
+            >
                 <div className="flex justify-between items-end mb-6">
                     <h3 className="text-sm font-bold text-white tracking-wide">How Curato Works</h3>
                     <Link href="/about" className="text-xs text-blue-500 hover:text-blue-400 transition-colors">Learn more &rarr;</Link>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {[
                         { title: "1. Monitor", desc: "Agent scans Base chain & Farcaster" },
@@ -206,9 +206,9 @@ export function RadarDashboard() {
                         </div>
                     ))}
                 </div>
-             </motion.div>
+            </motion.div>
 
         </div>
     );
 }
-```
+
