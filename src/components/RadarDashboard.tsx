@@ -177,7 +177,76 @@ export function RadarDashboard() {
                 </div>
             </motion.div>
 
-            {/* 3. HOW IT WORKS (Simplified) */}
+            {/* 3. LIVE SCANNER FEED (Transparency Log) */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+            >
+                {/* A. RECENT ACTIVITY LOG */}
+                <div className="bg-[#050607] border border-white/10 rounded-xl overflow-hidden flex flex-col h-[320px]">
+                    <div className="px-4 py-3 border-b border-white/5 bg-white/[0.02] flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                            <h3 className="text-xs font-mono font-bold text-gray-400 tracking-widest">LIVE_SCANNER_LOG</h3>
+                        </div>
+                        <div className="text-[10px] font-mono text-gray-600">ts: {new Date().toISOString().split('T')[1].split('.')[0]}</div>
+                    </div>
+
+                    <div className="p-4 overflow-y-auto space-y-3 font-mono text-xs custom-scrollbar">
+                        {[
+                            { time: "10s ago", source: "warpcast", slug: "base-god-frame", status: "REJECTED", reason: "LOW_REPUTATION_SCORE", color: "text-red-500" },
+                            { time: "45s ago", source: "onchain", slug: "0x82...9a12", status: "PENDING", reason: "ANALYZING_CONTRACT...", color: "text-yellow-500" },
+                            { time: "2m ago", source: "warpcast", slug: "super-dapp-v2", status: "VERIFIED", reason: "HIGH_CONFIDENCE_SIGNAL", color: "text-green-500" },
+                            { time: "5m ago", source: "base-scan", slug: "0x11...b3c4", status: "REJECTED", reason: "NO_VERIFIED_SOURCE", color: "text-red-500" },
+                            { time: "12m ago", source: "warpcast", slug: "spam-bot-9000", status: "REJECTED", reason: "SPAM_HEURISTIC_MATCH", color: "text-red-500" },
+                            { time: "15m ago", source: "onchain", slug: "0xab...8812", status: "PENDING", reason: "AWAITING_BLOCK_CONFIRMATION", color: "text-yellow-500" },
+                        ].map((log, i) => (
+                            <div key={i} className="grid grid-cols-12 gap-2 items-center hover:bg-white/[0.02] p-1 rounded transition-colors group">
+                                <div className="col-span-2 text-gray-600">{log.time}</div>
+                                <div className="col-span-3 text-blue-900/60 truncate group-hover:text-blue-500 transition-colors">[{log.source}]</div>
+                                <div className="col-span-3 text-gray-400 truncate">{log.slug}</div>
+                                <div className={`col-span-4 text-right font-bold ${log.color} flex justify-end gap-2`}>
+                                    <span>{log.status}</span>
+                                </div>
+                                <div className="col-span-12 text-[10px] text-gray-700 pl-2 border-l border-white/5 mt-1 truncate">
+                                    &gt; {log.reason}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* B. PROMOTION PROTOCOL STEPS (Moved here) */}
+                <div className="flex flex-col justify-between">
+                    <div className="flex items-center gap-4 mb-6">
+                        <div className="h-px bg-white/10 flex-grow" />
+                        <h3 className="text-xs font-mono font-bold text-gray-600 tracking-[0.3em]">PROMOTION_PROTOCOL_V1</h3>
+                        <div className="h-px bg-white/10 flex-grow" />
+                    </div>
+
+                    <div className="space-y-4 flex-grow">
+                        {[
+                            { step: "01", title: "BUILD", sub: "ON BASE", icon: Database, desc: "Deploy your app on Base. The Agent monitors on-chain contracts and deployments." },
+                            { step: "02", title: "SIGNAL", sub: "ON FARCASTER", icon: Radio, desc: "Post with your 'base.app' link. This is the trigger signal the Agent listens for." },
+                            { step: "03", title: "EARN", sub: "CURATION", icon: Award, desc: "High signal apps are verified and automatically promoted to this dashboard." }
+                        ].map((s, i) => (
+                            <div key={i} className="group relative p-4 border border-white/5 hover:border-white/20 hover:bg-white/[0.02] transition-colors rounded-xl flex items-start gap-4">
+                                <div className="text-2xl font-black text-white/10 font-mono group-hover:text-electric-blue/20 transition-colors mt-1">{s.step}</div>
+                                <div>
+                                    <h4 className="text-sm font-black text-white tracking-tight mb-1 flex items-center gap-2">
+                                        {s.title} <span className="text-[10px] font-mono text-electric-blue font-normal px-1.5 py-0.5 rounded bg-electric-blue/10 border border-electric-blue/20">{s.sub}</span>
+                                    </h4>
+                                    <p className="text-xs text-gray-500 leading-relaxed group-hover:text-gray-400 transition-colors">{s.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </motion.div>
+
+            {/* 4. HOW IT WORKS (Simplified) */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -210,5 +279,5 @@ export function RadarDashboard() {
 
         </div>
     );
-}
 
+}
