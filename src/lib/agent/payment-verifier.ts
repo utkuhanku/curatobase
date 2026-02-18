@@ -40,6 +40,15 @@ export async function verifyPayment(txHash: string): Promise<PaymentStatus> {
 
         if (isDirectPayment) {
             if (valueInEth >= SIGNAL_PRICE_ETH) {
+                // Check TTL (24 hours)
+                const currentBlock = await client.getBlock();
+                const txBlock = await client.getBlock({ blockHash: receipt.blockHash });
+                const ageSeconds = Number(currentBlock.timestamp) - Number(txBlock.timestamp);
+
+                if (ageSeconds > 86400) {
+                    return { status: 'INVALID', reason: 'Payment expired (>24h)' };
+                }
+
                 return { status: 'PAID', amount: valueInEth, sender: tx.from };
             } else {
                 return { status: 'INVALID', reason: `Insufficient amount. Sent: ${valueInEth}, Required: ${SIGNAL_PRICE_ETH}` };

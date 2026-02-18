@@ -9,7 +9,14 @@ export async function GET(req: NextRequest) {
         return NextResponse.json(
             {
                 error: "Payment Required",
-                message: "This is a premium autonomous signal. Please pay accessing the headers instructions."
+                message: "This is a premium autonomous signal.",
+                payment_instructions: {
+                    to: process.env.REVENUE_CONTRACT_ADDRESS,
+                    amount: "0.0001 ETH",
+                    chainId: 8453,
+                    reason: "Signal Access (24h Pass)",
+                    method: "Send ETH then retry request with 'x-payment-tx' header containing the hash."
+                }
             },
             {
                 status: 402,
