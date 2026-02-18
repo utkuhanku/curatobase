@@ -1,24 +1,26 @@
 import { createPublicClient, http, parseAbiItem } from 'viem';
 import { base } from 'viem/chains';
 
-const REVENUE_CONTRACT = process.env.REVENUE_CONTRACT_ADDRESS as `0x${string}`;
 const SIGNAL_PRICE_ETH = 0.0001; // $0.30 - Low barrier to entry
-
-if (!REVENUE_CONTRACT) {
-    throw new Error("REVENUE_CONTRACT_ADDRESS not set");
-}
-
-const client = createPublicClient({
-    chain: base,
-    transport: http(process.env.BASE_RPC_URL)
-});
 
 export type PaymentStatus =
     | { status: 'PAID'; amount: number; sender: string }
     | { status: 'INVALID'; reason: string }
     | { status: 'PENDING' };
 
+function getClient() {
+    return createPublicClient({
+        chain: base,
+        transport: http(process.env.BASE_RPC_URL)
+    });
+}
+
 export async function verifyPayment(txHash: string): Promise<PaymentStatus> {
+    const REVENUE_CONTRACT = process.env.REVENUE_CONTRACT_ADDRESS as `0x${string}`;
+    if (!REVENUE_CONTRACT) throw new Error("REVENUE_CONTRACT_ADDRESS not set");
+
+    const client = getClient();
+
     try {
         const receipt = await client.getTransactionReceipt({
             hash: txHash as `0x${string}`
@@ -65,9 +67,9 @@ export async function verifyPayment(txHash: string): Promise<PaymentStatus> {
 
 export function getPaymentHeaders() {
     return {
-        'X-Wallet-Address': REVENUE_CONTRACT,
+        'X-Wallet-Address': process.env.REVENUE_CONTRACT_ADDRESS || 'NOT_CONFIGURED',
         'X-Price': `${SIGNAL_PRICE_ETH} ETH`,
         'X-Builder-Code': 'curatobase.eth',
-        'X-Payment-Instruction': `Send ${SIGNAL_PRICE_ETH} ETH to ${REVENUE_CONTRACT} on Base Mainnet. Retry request with 'x-payment-tx' header.`
+        'X-Payment-Instruction': `Send ${SIGNAL_PRICE_ETH} ETH to ${process.env.REVENUE_CONTRACT_ADDRESS} on Base Mainnet. Retry request with 'x-payment-tx' header.`
     };
 }

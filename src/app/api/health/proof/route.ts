@@ -3,20 +3,30 @@ import { createPublicClient, http, formatEther, type Hex } from 'viem';
 import { base } from 'viem/chains';
 import { getLastRun, getHistory } from '@/lib/agent/history';
 
-// Environment & Config
-const REVENUE_CONTRACT = process.env.REVENUE_CONTRACT_ADDRESS as `0x${string}`;
-const COMPUTE_WALLET = process.env.COMPUTE_WALLET_ADDRESS as `0x${string}`;
-const BUILDER_CODE = process.env.BUILDER_CODE || 'curatobase'; // Default fallback
-
-// Viem Client
-const client = createPublicClient({
-    chain: base,
-    transport: http(process.env.BASE_RPC_URL)
-});
+function getClient() {
+    return createPublicClient({
+        chain: base,
+        transport: http(process.env.BASE_RPC_URL)
+    });
+}
 
 export const dynamic = 'force-dynamic'; // Ensure no caching for real-time proof
 
 export async function GET() {
+    const REVENUE_CONTRACT = process.env.REVENUE_CONTRACT_ADDRESS as `0x${string}`;
+    const COMPUTE_WALLET = process.env.COMPUTE_WALLET_ADDRESS as `0x${string}`;
+    const BUILDER_CODE = process.env.BUILDER_CODE || 'curatobase';
+
+    // Graceful fallback if env vars missing (e.g. during build)
+    if (!REVENUE_CONTRACT || !COMPUTE_WALLET) {
+        return NextResponse.json({
+            status: "BUILD_MODE",
+            message: "Environment variables not loaded."
+        }, { status: 200 });
+    }
+
+    const client = getClient();
+
     try {
         // 1. Fetch Chain Data (Parallel)
         const [
