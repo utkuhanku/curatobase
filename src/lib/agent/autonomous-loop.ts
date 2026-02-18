@@ -10,25 +10,25 @@ const REVENUE_ABI = ABI.abi;
 
 dotenv.config();
 
-const REVENUE_CONTRACT = process.env.REVENUE_CONTRACT_ADDRESS as `0x${string}`;
-const PRIVATE_KEY = process.env.COMPUTE_PRIVATE_KEY as `0x${string}`;
-const BUILDER_CODE = process.env.BUILDER_CODE || 'curatobase';
-
-if (!REVENUE_CONTRACT || !PRIVATE_KEY) {
-    throw new Error("Missing Env Vars: REVENUE_CONTRACT_ADDRESS or COMPUTE_PRIVATE_KEY");
-}
-
-const account = privateKeyToAccount(PRIVATE_KEY);
-const transport = http(process.env.BASE_RPC_URL);
-
-const publicClient = createPublicClient({ chain: base, transport });
-const walletClient = createWalletClient({ account, chain: base, transport });
-
 // Thresholds
 const MIN_COMPUTE_BALANCE = parseEther('0.002');
 const REFILL_AMOUNT = parseEther('0.005');
 
 export async function runAutonomousCycle() {
+    const REVENUE_CONTRACT = process.env.REVENUE_CONTRACT_ADDRESS as `0x${string}`;
+    const PRIVATE_KEY = process.env.COMPUTE_PRIVATE_KEY as `0x${string}`;
+    const BUILDER_CODE = process.env.BUILDER_CODE || 'curatobase';
+
+    if (!REVENUE_CONTRACT || !PRIVATE_KEY) {
+        throw new Error("Missing Env Vars: REVENUE_CONTRACT_ADDRESS or COMPUTE_PRIVATE_KEY");
+    }
+
+    const account = privateKeyToAccount(PRIVATE_KEY);
+    const transport = http(process.env.BASE_RPC_URL);
+
+    const publicClient = createPublicClient({ chain: base, transport });
+    const walletClient = createWalletClient({ account, chain: base, transport });
+
     const runId = randomUUID();
     const startedAt = new Date().toISOString();
     const txHashes: string[] = [];
