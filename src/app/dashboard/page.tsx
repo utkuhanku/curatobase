@@ -34,7 +34,26 @@ export default function DashboardPage() {
     }, []);
 
     if (loading) return <div className="min-h-screen bg-black text-white flex items-center justify-center font-mono">INITIALIZING UPLINK...</div>;
-    if (!data) return <div className="min-h-screen bg-black text-white p-10 font-mono">CONNECTION FAILED</div>;
+
+    // Handle error or build mode state
+    if (!data || (data as any).status === 'BUILD_MODE' || !data.network) {
+        return (
+            <div className="min-h-screen bg-black text-white p-10 font-mono flex flex-col items-center justify-center text-center gap-4">
+                <h1 className="text-2xl text-red-500">SYSTEM CONFIGURATION PENDING</h1>
+                <p className="text-gray-400 max-w-md">
+                    The autonomous agent is deployed but waiting for environment variables.
+                </p>
+                <div className="bg-white/5 p-4 rounded text-xs text-left w-full max-w-lg space-y-2">
+                    <p className="text-blue-400">Required Vercel Env Vars:</p>
+                    <ul className="list-disc pl-4 text-gray-500">
+                        <li>REVENUE_CONTRACT_ADDRESS</li>
+                        <li>COMPUTE_WALLET_ADDRESS</li>
+                        <li>BASE_RPC_URL</li>
+                    </ul>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <main className="min-h-screen p-4 md:p-8 bg-black text-white font-mono selection:bg-blue-500/30">
