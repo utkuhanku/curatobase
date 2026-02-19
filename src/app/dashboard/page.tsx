@@ -3,6 +3,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { useEffect, useState } from 'react';
 import { ArrowUpRight, Zap, ShieldCheck, Activity } from 'lucide-react';
 import Link from 'next/link';
+import { SignalHero } from "@/components/SignalHero";
 
 type ProofData = {
     financials: {
