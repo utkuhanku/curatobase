@@ -181,8 +181,29 @@ export async function runAutonomousCycle() {
                     authorStats: rep
                 };
 
+                const deepLink = `https://warpcast.com/${author}/${cast.hash.slice(0, 10)}`; // Construct Deep Link
+
                 console.log(`[💎 SIGNAL FOUND] ${curationData.gem}`);
+                console.log(`[🔗 DEEP LINK] ${deepLink}`);
                 console.log(`[🧠 ANALYSIS] ${curationData.sentiment} | ${curationData.authorStats}`);
+
+                // 4. Save Proof (Inside Try to capture URL)
+                const proof: AgentRunProof = {
+                    runId,
+                    startedAt,
+                    finishedAt: new Date().toISOString(),
+                    scannedRange,
+                    signalsFound: 1,
+                    curatedGem: curationData.gem,
+                    signalUrl: deepLink, // Pass the link!
+                    sentiment: curationData.sentiment,
+                    authorStats: curationData.authorStats,
+                    onchainTxHashes: txHashes,
+                    status: 'SUCCESS'
+                };
+                addRun(proof);
+                console.log(`[📝 PROOF] Run recorded in history.`);
+                return; // Exit successfully
             } else {
                 console.log(`[⚠️ NO DATA] No casts found. Using fallback.`);
             }
@@ -190,22 +211,22 @@ export async function runAutonomousCycle() {
             console.error(`[⚠️ DATA FAIL] Fetch failed, using fallback.`, fetchError);
         }
 
-        // 4. Save Proof
+        // Fallback or Empty Run Proof
         const proof: AgentRunProof = {
             runId,
             startedAt,
             finishedAt: new Date().toISOString(),
             scannedRange,
-            signalsFound: 1,
-            curatedGem: curationData.gem,
+            signalsFound: 0,
+            curatedGem: curationData.gem, // Use default fallback gem
+            signalUrl: "https://warpcast.com", // Default fallback link
             sentiment: curationData.sentiment,
             authorStats: curationData.authorStats,
             onchainTxHashes: txHashes,
             status: 'SUCCESS'
         };
-
         addRun(proof);
-        console.log(`[📝 PROOF] Run recorded in history.`);
+        console.log(`[📝 PROOF] Run recorded (fallback/empty).`);
 
     } catch (error: any) {
         console.error(`[🚨 ERROR] Cycle failed:`, error);

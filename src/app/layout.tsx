@@ -9,8 +9,18 @@ const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 export const metadata = {
     title: 'CuratoBase | Autonomous Agent',
     description: 'Editorial Trust Logs for Base Miniapps',
+    openGraph: {
+        title: 'CuratoBase | Autonomous Agent',
+        description: 'The Intelligence Layer for Base Ecosystem.',
+        images: ['/api/og'],
+    },
     other: {
         "base:app_id": "698b1100abdd1887a89d98a0",
+        "fc:frame": "vNext",
+        "fc:frame:image": "https://curatobase.vercel.app/api/og", // Dynamic OG
+        "fc:frame:button:1": "Enter Terminal",
+        "fc:frame:button:1:action": "link",
+        "fc:frame:button:1:target": "https://curatobase.vercel.app/dashboard",
     }
 };
 

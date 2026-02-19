@@ -12,6 +12,7 @@ export interface AgentRunProof {
     };
     signalsFound: number;
     curatedGem?: string; // e.g. "Aerodrome (DeFi)"
+    signalUrl?: string; // e.g. "https://warpcast.com/..."
     sentiment?: string; // e.g. "REWARD DISTRIBUTION 💰"
     authorStats?: string; // e.g. "Verified Builder"
     onchainTxHashes: string[];
@@ -30,6 +31,7 @@ const HISTORY: AgentRunProof[] = [
         scannedRange: { from: 42358821, to: 42398921 },
         signalsFound: 1,
         curatedGem: "@basepaint: \"Day 450: The blue sky...\"",
+        signalUrl: "https://warpcast.com/basepaint/0x7044be15", // Mock deep link
         sentiment: "COMMUNITY SIGNAL 📢",
         authorStats: "Active Builder (Verified)",
         onchainTxHashes: ['0x7044be156c33c3e2020d2b69570a33e28ad62d2674174442d699c6233e7c059b'],

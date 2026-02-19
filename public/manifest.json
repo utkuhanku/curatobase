@@ -1,0 +1,25 @@
+{
+    "name": "CuratoBase",
+    "short_name": "Curato",
+    "description": "Autonomous Curator Agent for the Base Ecosystem.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#0052FF",
+    "icons": [
+        {
+            "src": "/icon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "base": {
+        "version": "1.0.0",
+        "developer_mode": true
+    }
+}
