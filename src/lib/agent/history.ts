@@ -11,6 +11,7 @@ export interface AgentRunProof {
         to: number;
     };
     signalsFound: number;
+    curatedGem?: string; // e.g. "Aerodrome (DeFi)"
     onchainTxHashes: string[];
     status: 'SUCCESS' | 'FAILED';
     error?: string;
@@ -26,6 +27,7 @@ const HISTORY: AgentRunProof[] = [
         finishedAt: new Date().toISOString(),
         scannedRange: { from: 42358821, to: 42358921 },
         signalsFound: 1,
+        curatedGem: "Aerodrome (DeFi)",
         onchainTxHashes: ['0x7044be156c33c3e2020d2b69570a33e28ad62d2674174442d699c6233e7c059b'],
         status: 'SUCCESS'
     }

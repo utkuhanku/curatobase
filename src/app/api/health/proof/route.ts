@@ -94,8 +94,9 @@ export async function GET() {
                 status: lastRun ? lastRun.status : 'WAITING_FOR_FIRST_RUN',
                 lastRunId: lastRun?.runId || null,
                 lastRunTime: lastRun?.finishedAt || null,
-                scannedBlocks: lastRun ? `${lastRun.scannedRange.from} -> ${lastRun.scannedRange.to}` : null,
-                signalsFound: lastRun?.signalsFound || 0
+                scannedBlocks: lastRun?.scannedRange ? `${lastRun.scannedRange.from} -> ${lastRun.scannedRange.to}` : null,
+                signalsFound: lastRun?.signalsFound || 0,
+                curatedGem: lastRun?.curatedGem
             },
             verification: {
                 lastTxHash: lastTxHash,
