@@ -179,6 +179,5 @@ export default function PrestigePage() {
                 <p>REGISTRY_ID: 0x12..9a // IMMUTABLE RECORD</p>
             </div>
         </div>
-        </div >
     );
 }
