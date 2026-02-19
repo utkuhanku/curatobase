@@ -92,17 +92,25 @@ export default function DashboardPage() {
             <div className="absolute top-0 left-0 w-full h-[500px] bg-electric-blue/5 blur-[120px] pointer-events-none" />
 
             {/* Nav */}
+            {/* Nav */}
             <nav className="relative z-20 flex justify-between items-center p-6 border-b border-white/5 bg-black/50 backdrop-blur-md">
-                <Link href="/" className="text-xl font-bold tracking-tighter flex items-center gap-2 group">
-                    <span className="w-2 h-2 rounded-full bg-electric-blue group-hover:animate-ping" />
-                    CURATO<span className="text-electric-blue">BASE</span>
-                </Link>
+                <div className="flex items-center gap-8">
+                    <Link href="/" className="text-xl font-bold tracking-tighter flex items-center gap-2 group">
+                        <span className="w-2 h-2 rounded-full bg-electric-blue group-hover:animate-ping" />
+                        CURATO<span className="text-electric-blue">BASE</span>
+                    </Link>
+                    <div className="hidden md:flex items-center gap-6 text-xs font-medium text-gray-500">
+                        <Link href="/dashboard" className="text-white">Terminal</Link>
+                        <Link href="/prestige" className="hover:text-white transition-colors">Registry</Link>
+                    </div>
+                </div>
+
                 <div className="flex items-center gap-4 text-xs font-bold text-gray-500">
                     <span className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-green-500/20 bg-green-900/10 text-green-500">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                         ONLINE
                     </span>
-                    <span>BLOCK: {data.network.blockNumber}</span>
+                    <span className="hidden sm:inline">BLOCK: {data.network.blockNumber}</span>
                 </div>
             </nav>
 
