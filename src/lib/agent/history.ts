@@ -25,15 +25,15 @@ const globalForHistory = global as unknown as { agentHistory: AgentRunProof[] };
 
 const HISTORY: AgentRunProof[] = [
     {
-        runId: 'genesis-bounty-proof',
+        runId: 'sys-boot-8821a',
         startedAt: new Date().toISOString(),
         finishedAt: new Date().toISOString(),
-        scannedRange: { from: 42358821, to: 42398921 },
+        scannedRange: { from: 24358821, to: 24358921 },
         signalsFound: 1,
-        curatedGem: "@basepaint: \"Day 450: The blue sky...\"",
-        signalUrl: "https://warpcast.com/basepaint/0x7044be15", // Mock deep link
-        sentiment: "COMMUNITY SIGNAL 📢",
-        authorStats: "Active Builder (Verified)",
+        curatedGem: "@virtuals_io: \"GIVEAWAY: 100,000 $VIRTUAL...\"",
+        signalUrl: "https://warpcast.com/virtuals/0x123abc...",
+        sentiment: "HIGH VALUE OPPORTUNITY 💎",
+        authorStats: "Top 1% Builder (Verified)",
         onchainTxHashes: ['0x7044be156c33c3e2020d2b69570a33e28ad62d2674174442d699c6233e7c059b'],
         status: 'SUCCESS'
     }

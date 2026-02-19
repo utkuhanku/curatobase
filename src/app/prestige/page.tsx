@@ -14,8 +14,7 @@ export default function PrestigePage() {
                     </div>
                     <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Trusted Operators</h1>
                     <p className="text-gray-400 mt-2 max-w-xl leading-relaxed">
-                        Applications that have maintained a &gt;99% trust score over 30+ days.
-                        Validated for consistent reward distribution and uptime.
+                        Applications that have maintained high integrity scores based on on-chain behavior and community feedback.
                     </p>
                 </div>
                 <div className="flex gap-2">
@@ -41,20 +40,22 @@ export default function PrestigePage() {
                         </div>
 
                         <h3 className="text-2xl font-bold text-white mb-2">Moxie</h3>
-                        <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                            Consistently high reward distribution and verified on-chain proofs.
-                            Top-tier reputation in the Farcaster ecosystem.
-                        </p>
+                        <div className="space-y-3 mt-4">
+                            <div className="text-xs text-gray-400 bg-white/5 p-3 rounded border border-white/5">
+                                <span className="block text-[10px] text-gray-500 uppercase font-bold mb-1">Trigger Reason</span>
+                                "Consistent daily reward distribution to &gt;10k users. Zero incident reports."
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5">
+                    <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5 mt-6">
                         <div>
                             <div className="text-[10px] font-medium text-gray-500 uppercase">Trust Score</div>
                             <div className="text-xl font-bold text-white">99.9%</div>
                         </div>
                         <div>
-                            <div className="text-[10px] font-medium text-gray-500 uppercase">Since</div>
-                            <div className="text-xl font-bold text-white">Jan 2024</div>
+                            <div className="text-[10px] font-medium text-gray-500 uppercase">Metric</div>
+                            <div className="text-sm text-gray-300">Reward Consistency</div>
                         </div>
                     </div>
                 </GlassCard>
@@ -72,20 +73,22 @@ export default function PrestigePage() {
                         </div>
 
                         <h3 className="text-2xl font-bold text-white mb-2">Aerodrome</h3>
-                        <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                            Top-tier liquidity layer with automated reward verification.
-                            Central trading hub for Base.
-                        </p>
+                        <div className="space-y-3 mt-4">
+                            <div className="text-xs text-gray-400 bg-white/5 p-3 rounded border border-white/5">
+                                <span className="block text-[10px] text-gray-500 uppercase font-bold mb-1">Trigger Reason</span>
+                                "Dominant liquidity layer. Smart contracts verified and audited."
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5">
+                    <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5 mt-6">
                         <div>
                             <div className="text-[10px] font-medium text-gray-500 uppercase">Trust Score</div>
                             <div className="text-xl font-bold text-white">99.5%</div>
                         </div>
                         <div>
-                            <div className="text-[10px] font-medium text-gray-500 uppercase">Since</div>
-                            <div className="text-xl font-bold text-white">Feb 2024</div>
+                            <div className="text-[10px] font-medium text-gray-500 uppercase">Metric</div>
+                            <div className="text-sm text-gray-300">Liquidity Depth</div>
                         </div>
                     </div>
                 </GlassCard>
@@ -103,19 +106,22 @@ export default function PrestigePage() {
                         </div>
 
                         <h3 className="text-2xl font-bold text-white mb-2">Virtuals</h3>
-                        <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                            Leading AI agent launchpad. High volume of verifiable contract deployments.
-                        </p>
+                        <div className="space-y-3 mt-4">
+                            <div className="text-xs text-gray-400 bg-white/5 p-3 rounded border border-white/5">
+                                <span className="block text-[10px] text-gray-500 uppercase font-bold mb-1">Trigger Reason</span>
+                                "High velocity of new agent deployments. Strong dev community traction."
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5">
+                    <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5 mt-6">
                         <div>
                             <div className="text-[10px] font-medium text-gray-500 uppercase">Trust Score</div>
                             <div className="text-xl font-bold text-white">96.2%</div>
                         </div>
                         <div>
-                            <div className="text-[10px] font-medium text-gray-500 uppercase">Since</div>
-                            <div className="text-xl font-bold text-white">Nov 2024</div>
+                            <div className="text-[10px] font-medium text-gray-500 uppercase">Metric</div>
+                            <div className="text-sm text-gray-300">Contract Velocity</div>
                         </div>
                     </div>
                 </GlassCard>

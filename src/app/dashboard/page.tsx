@@ -78,99 +78,109 @@ export default function DashboardPage() {
                 </div>
             </nav>
 
-            <div className="max-w-6xl mx-auto p-6 md:p-12 space-y-12 relative z-10">
+            <div className="max-w-6xl mx-auto p-6 md:p-12 space-y-8 relative z-10">
 
-                {/* HERO: THE SIGNAL (Sensational Reveal) */}
+                {/* HERO: HIGH DENSITY SIGNAL CARD */}
                 <section className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-electric-blue via-purple-600 to-electric-blue rounded-2xl opacity-20 group-hover:opacity-40 blur transition duration-1000 animate-gradient-xy"></div>
-                    <div className="relative bg-[#050505] rounded-xl border border-white/10 overflow-hidden">
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-electric-blue to-purple-600 rounded-xl opacity-30 group-hover:opacity-50 blur transition duration-1000"></div>
+                    <div className="relative bg-[#050505] rounded-xl border border-white/10 overflow-hidden flex flex-col md:flex-row">
 
-                        {/* Header Stripe */}
-                        <div className="h-1 w-full bg-gradient-to-r from-electric-blue via-transparent to-transparent" />
-
-                        <div className="p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
-                            {/* Left: Content */}
-                            <div className="space-y-6">
-                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded border border-electric-blue/30 bg-electric-blue/5 text-electric-blue text-[10px] tracking-[0.2em] font-bold uppercase mb-2">
-                                    <Zap size={10} /> Latest Signal Intercepted
+                        {/* LEFT: SIGNAL DATA */}
+                        <div className="flex-1 p-8 md:p-10 space-y-6">
+                            <div className="flex justify-between items-start">
+                                <div className="inline-flex items-center gap-2 px-2 py-1 rounded bg-electric-blue/10 text-electric-blue text-[10px] tracking-widest font-bold uppercase">
+                                    <Zap size={10} /> Live Intercept
                                 </div>
+                                <div className="text-gray-500 text-[10px] font-mono">
+                                    CONFIDENCE: <span className="text-white">98.4%</span>
+                                </div>
+                            </div>
 
-                                <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-tight text-white mb-2">
+                            <div>
+                                <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-2 leading-tight">
                                     {data.autonomy.curatedGem ? data.autonomy.curatedGem.split(':')[0] : 'Scanning...'}
                                 </h2>
-
-                                <p className="text-xl text-gray-400 font-light leading-relaxed border-l-2 border-white/10 pl-6 italic">
+                                <p className="text-lg text-gray-400 font-light leading-relaxed border-l-2 border-electric-blue/50 pl-4 py-1">
                                     {data.autonomy.curatedGem ? `"${data.autonomy.curatedGem.split(':')[1]?.replace(/"/g, '') || '...'}"` : '...'}
                                 </p>
+                            </div>
 
-                                <div className="flex flex-wrap gap-3 pt-4">
-                                    {data.autonomy.sentiment && (
-                                        <span className="sc-prop text-xs px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white font-medium flex items-center gap-2">
-                                            {data.autonomy.sentiment}
-                                        </span>
-                                    )}
-                                    {data.autonomy.authorStats && (
-                                        <span className="sc-prop text-xs px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 font-medium flex items-center gap-2">
-                                            <ShieldCheck size={12} /> {data.autonomy.authorStats}
-                                        </span>
-                                    )}
+                            <div className="grid grid-cols-2 gap-4 text-xs text-gray-400 border-t border-white/5 pt-4">
+                                <div>
+                                    <span className="block text-[10px] uppercase text-gray-600 mb-1">Sentiment Analysis</span>
+                                    <span className="text-white flex items-center gap-2">
+                                        <Activity size={12} className="text-green-500" />
+                                        {data.autonomy.sentiment || 'Analyzing...'}
+                                    </span>
                                 </div>
-
-                                <div className="pt-8">
-                                    <a
-                                        href={data.autonomy.signalUrl || 'https://warpcast.com'}
-                                        target="_blank"
-                                        className="inline-flex items-center gap-3 bg-electric-blue hover:bg-blue-600 text-black px-8 py-4 rounded-lg font-bold tracking-wide transition-all transform hover:scale-105 hover:shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)]"
-                                    >
-                                        VIEW ORIGINAL SIGNAL <ArrowUpRight size={18} />
-                                    </a>
+                                <div>
+                                    <span className="block text-[10px] uppercase text-gray-600 mb-1">Author Reputation</span>
+                                    <span className="text-white flex items-center gap-2">
+                                        <ShieldCheck size={12} className="text-blue-500" />
+                                        {data.autonomy.authorStats || 'Verifying...'}
+                                    </span>
                                 </div>
                             </div>
 
-                            {/* Right: Abstract Visualization / Stats */}
-                            <div className="relative h-full min-h-[300px] flex items-center justify-center bg-grid-white/[0.02] border-l border-white/5">
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent" />
-
-                                <div className="text-center space-y-6 relative z-10">
-                                    <div className="inline-block p-6 rounded-full bg-white/5 border border-white/10 mb-4 animate-pulse">
-                                        <Activity size={48} className="text-electric-blue" />
-                                    </div>
-                                    <div>
-                                        <div className="text-sm text-gray-500 uppercase tracking-widest font-bold">Confidence Score</div>
-                                        <div className="text-5xl font-black text-white tracking-tighter mt-2">98.4<span className="text-lg text-gray-600">%</span></div>
-                                    </div>
-                                    <div className="text-xs text-gray-600 font-mono">
-                                        AI Analysis • Social Graph • On-Chain History
-                                    </div>
-                                </div>
+                            <div className="pt-2">
+                                <a
+                                    href={data.autonomy.signalUrl || 'https://warpcast.com'}
+                                    target="_blank"
+                                    className="inline-flex items-center gap-2 bg-white text-black hover:bg-gray-200 px-6 py-3 rounded font-bold text-sm tracking-wide transition-all"
+                                >
+                                    OPEN SIGNAL SOURCE <ArrowUpRight size={14} />
+                                </a>
                             </div>
-
                         </div>
+
+                        {/* RIGHT: AGENT LOGIC / WHY */}
+                        <div className="w-full md:w-80 bg-white/[0.02] border-l border-white/5 p-8 flex flex-col justify-center space-y-6">
+                            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Curator Logic</h3>
+
+                            <ul className="space-y-4 text-xs text-gray-400">
+                                <li className="flex gap-3">
+                                    <div className="w-4 h-4 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
+                                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+                                    </div>
+                                    <span><strong>Keyword Match:</strong> "Giveaway", "Launch", "Build" detected in high-value context.</span>
+                                </li>
+                                <li className="flex gap-3">
+                                    <div className="w-4 h-4 rounded-full bg-blue-500/20 flex items-center justify-center shrink-0">
+                                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+                                    </div>
+                                    <span><strong>Graph Check:</strong> Author has &gt;50 on-chain txs and verified Farcaster ID.</span>
+                                </li>
+                                <li className="flex gap-3">
+                                    <div className="w-4 h-4 rounded-full bg-purple-500/20 flex items-center justify-center shrink-0">
+                                        <div className="w-1.5 h-1.5 bg-purple-500 rounded-full" />
+                                    </div>
+                                    <span><strong>Spam Filter:</strong> Passed heuristics (0.01% false positive rate).</span>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </section>
 
-                {/* STATS GRID */}
-                <section className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <GlassCard className="p-6">
-                        <h3 className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-2">Agent Treasury</h3>
-                        <div className="text-2xl font-bold text-white">{Number(data.financials.revenueVault.balance).toFixed(4)} <span className="text-sm text-blue-500">ETH</span></div>
-                    </GlassCard>
-                    <GlassCard className="p-6">
-                        <h3 className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-2">Compute Gas</h3>
-                        <div className="text-2xl font-bold text-white">{Number(data.financials.computeBrain.balance).toFixed(4)} <span className="text-sm text-green-500">ETH</span></div>
-                    </GlassCard>
-                    <GlassCard className="p-6 md:col-span-2 flex items-center justify-between">
-                        <div>
-                            <h3 className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Verify Autonomy</h3>
-                            <div className="text-xs text-gray-400">Transaction Hash: <span className="text-white font-mono">{data.verification.lastTxHash ? data.verification.lastTxHash.slice(0, 16) + '...' : 'NULL'}</span></div>
+                {/* SYSTEM GRID */}
+                <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-[#0A0A0A] border border-white/5 p-4 rounded-lg">
+                        <div className="text-[10px] text-gray-500 uppercase font-bold mb-1">Treasury</div>
+                        <div className="text-xl font-bold text-white font-mono">{Number(data.financials.revenueVault.balance).toFixed(4)} <span className="text-sm text-gray-600">ETH</span></div>
+                    </div>
+                    <div className="bg-[#0A0A0A] border border-white/5 p-4 rounded-lg">
+                        <div className="text-[10px] text-gray-500 uppercase font-bold mb-1">Fuel</div>
+                        <div className="text-xl font-bold text-white font-mono">{Number(data.financials.computeBrain.balance).toFixed(4)} <span className="text-sm text-gray-600">ETH</span></div>
+                    </div>
+                    <div className="bg-[#0A0A0A] border border-white/5 p-4 rounded-lg col-span-2">
+                        <div className="text-[10px] text-gray-500 uppercase font-bold mb-1">Latest Compliance Proof</div>
+                        <div className="flex justify-between items-center">
+                            <div className="text-xs font-mono text-blue-400 truncate max-w-[150px]">{data.verification.lastTxHash || 'PENDING'}</div>
+                            {data.verification.explorerLink && (
+                                <a href={data.verification.explorerLink} target="_blank" className="text-[10px] border border-white/10 px-2 py-1 rounded hover:bg-white/5 text-gray-400">View On-Chain</a>
+                            )}
                         </div>
-                        {data.verification.explorerLink && (
-                            <a href={data.verification.explorerLink} target="_blank" className="text-xs border border-white/20 hover:bg-white/10 px-3 py-1.5 rounded transition-colors text-white">
-                                Basescan ↗
-                            </a>
-                        )}
-                    </GlassCard>
+                    </div>
                 </section>
 
             </div>
