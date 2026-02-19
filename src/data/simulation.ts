@@ -1,7 +1,40 @@
 export const SIMULATION_DATA = [
     {
-        type: 'SOCIAL_SIGNAL',
+        type: 'GAME_EVENT',
         timestamp: 'Just now',
+        handle: 'wordrain',
+        action: 'PVP_MATCH',
+        message: 'High Stakes: user.eth vs warrior.eth (Prize: 50 USDC).',
+        url: 'https://wordrain.base.eth',
+        sentiment: 'COMPETITIVE_HEAT',
+        confidence: 99.5,
+        hash: '0x10...aa'
+    },
+    {
+        type: 'SOCIAL_SIGNAL',
+        timestamp: '1s ago',
+        handle: 'arbase',
+        action: 'AR_DROP',
+        message: 'Legendary "Golden Cube" found by @hunter in Central Park.',
+        url: 'https://arbase.app',
+        sentiment: 'GEO_LOCATION',
+        confidence: 97.2,
+        hash: '0x22...bb'
+    },
+    {
+        type: 'IDENTITY_MINT',
+        timestamp: '3s ago',
+        handle: 'baseme',
+        action: 'PROFILE_UPDATE',
+        message: 'New verified profile minted. "Builder Score" updated to 950.',
+        url: 'https://base.me',
+        sentiment: 'IDENTITY_PROOF',
+        confidence: 98.0,
+        hash: '0x33...cc'
+    },
+    {
+        type: 'SOCIAL_SIGNAL',
+        timestamp: '5s ago',
         handle: 'basepaint',
         action: 'MINT_DETECTED',
         message: 'Day 455: "Neon Horizons" is now live. 24h open edition.',

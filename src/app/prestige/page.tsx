@@ -1,9 +1,10 @@
 "use client";
 
 import { GlassCard } from "@/components/ui/GlassCard";
-import { ExternalLink, Zap, Lock, ShieldCheck, BadgeCheck, Activity, Trophy, Gift } from "lucide-react";
+import { ExternalLink, Zap, Lock, ShieldCheck, BadgeCheck, Activity, Trophy, Gift, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { fetchRegistry, BaseApp } from "@/lib/registry";
 
 const SYSTEM_STATS = [
     { label: "Total Value Secured", value: "$4.2B", change: "+12%" },
@@ -11,148 +12,47 @@ const SYSTEM_STATS = [
     { label: "Rewards Distributed", value: "450 ETH", change: "Last 30d" },
 ];
 
-const TRUSTED_APPS = [
-    {
-        name: "Aerodrome",
-        category: "DeFi",
-        description: "The central trading and liquidity marketplace on Base. The engine of the ecosystem.",
-        trustScore: 99.8,
-        triggerReason: "Dominant liquidity layer. $142M+ TVL. Audited by Spearbit.",
-        metric: "Liquidity Depth",
-        metricValue: "$580M",
-        url: "https://aerodrome.finance",
-        icon: "✈️"
-    },
-    {
-        name: "BasePaint",
-        category: "Art / Social",
-        description: "Collaborative daily pixel art canvas. A community ritual on Base.",
-        trustScore: 99.5,
-        triggerReason: "400+ consecutive daily mints. 5,000+ unique artists.",
-        metric: "Artists Paid",
-        metricValue: "320 ETH",
-        url: "https://basepaint.xyz",
-        icon: "🎨"
-    },
-    {
-        name: "Virtuals Protocol",
-        category: "AI / Agents",
-        description: "The infrastructure for co-owning and deploying autonomous AI agents.",
-        trustScore: 98.9,
-        triggerReason: "Verified Agent Factory contract. High-velocity deployments.",
-        metric: "Agents Live",
-        metricValue: "1,200+",
-        url: "https://virtuals.io",
-        icon: "🤖"
-    },
-    {
-        name: "Zora",
-        category: "NFT / Creator",
-        description: "The best place to mint and collect onchain media.",
-        trustScore: 99.7,
-        triggerReason: "Standard for NFT metadata. Millions of mints secured.",
-        metric: "Mints (24h)",
-        metricValue: "45,230",
-        url: "https://zora.co",
-        icon: "orb"
-    },
-    {
-        name: "Blackbird",
-        category: "Consumer / Loyalty",
-        description: "Restaurant loyalty platform powered by Base.",
-        trustScore: 98.5,
-        triggerReason: "Real-world utility verified. 100+ NYC partner locations.",
-        metric: "Check-ins",
-        metricValue: "125k",
-        url: "https://blackbird.xyz",
-        icon: "🍽️"
-    },
-    {
-        name: "Moonwell",
-        category: "DeFi / Lending",
-        description: "Simple, open lending and borrowing protocol.",
-        trustScore: 99.1,
-        triggerReason: "Top lending protocol. Risk management by Gauntlet.",
-        metric: "Total Supplied",
-        metricValue: "$340M",
-        url: "https://moonwell.fi",
-        icon: "🌑"
-    },
-    {
-        name: "Farcaster",
-        category: "Social",
-        description: "Sufficiently decentralized social network.",
-        trustScore: 99.9,
-        triggerReason: "The social layer of Base. 500k+ active users.",
-        metric: "DAU",
-        metricValue: "65k",
-        url: "https://warpcast.com",
-        icon: "🦄"
-    },
-    {
-        name: "Highlight",
-        category: "Generative Art",
-        description: "Tools for generative art on Ethereum and Base.",
-        trustScore: 97.8,
-        triggerReason: "Verified generative contracts. Zero tooling exploits.",
-        metric: "Artworks",
-        metricValue: "2.5M",
-        url: "https://highlight.xyz",
-        icon: "🖌️"
-    },
-    {
-        name: "Paragraph",
-        category: "Publishing",
-        description: "Web3 newsletter and publishing platform.",
-        trustScore: 98.2,
-        triggerReason: "Reliable content distribution. On-chain subscription model.",
-        metric: "Writers",
-        metricValue: "15k",
-        url: "https://paragraph.xyz",
-        icon: "✍️"
-    },
-    {
-        name: "Seamless",
-        category: "DeFi",
-        description: "Native lending and borrowing on Base.",
-        trustScore: 96.5,
-        triggerReason: "First native lending market. Integrated ecosystem rewards.",
-        metric: "TVL",
-        metricValue: "$85M",
-        url: "https://seamlessprotocol.com",
-        icon: "🧵"
-    },
-    {
-        name: "Bountycaster",
-        category: "Work / Earn",
-        description: "Service to post and discover bounties on Farcaster.",
-        trustScore: 97.0,
-        triggerReason: "High fulfillment rate. Verified payouts on-chain.",
-        metric: "Bounties Paid",
-        metricValue: "$500k+",
-        url: "https://bountycaster.xyz",
-        icon: "💰"
-    },
-    {
-        name: "Talent Protocol",
-        category: "Identity",
-        description: "Resume on-chain. Build your professional reputation.",
-        trustScore: 95.5,
-        triggerReason: "Standard for on-chain professional identity.",
-        metric: "Passports",
-        metricValue: "250k",
-        url: "https://talentprotocol.com",
-        icon: "🆔"
-    }
-];
-
 export default function PrestigePage() {
-    const [apps, setApps] = useState(TRUSTED_APPS);
-    const [lastChecked, setLastChecked] = useState(new Date());
+    const [apps, setApps] = useState<BaseApp[]>([]);
+    const [isScanning, setIsScanning] = useState(true);
+    const [scanProgress, setScanProgress] = useState(0);
+    const [lastChecked, setLastChecked] = useState<Date | null>(null);
 
+    // Initial Scan Simulation
     useEffect(() => {
-        // Hydration fix: ensure consistent initial render
-        setLastChecked(new Date());
+        let mounted = true;
+
+        // Simulate scanning progress
+        const scanInterval = setInterval(() => {
+            setScanProgress(prev => {
+                if (prev >= 100) {
+                    clearInterval(scanInterval);
+                    return 100;
+                }
+                return prev + 5;
+            });
+        }, 50);
+
+        fetchRegistry().then(data => {
+            if (mounted) {
+                // Wait for scan animation to "finish" visually
+                setTimeout(() => {
+                    setApps(data);
+                    setIsScanning(false);
+                    setLastChecked(new Date());
+                }, 1200);
+            }
+        });
+
+        return () => {
+            mounted = false;
+            clearInterval(scanInterval);
+        };
+    }, []);
+
+    // Live Ticker Effect (Post-Scan)
+    useEffect(() => {
+        if (isScanning) return;
 
         const interval = setInterval(() => {
             setLastChecked(new Date());
