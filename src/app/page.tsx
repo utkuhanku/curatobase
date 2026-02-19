@@ -17,7 +17,10 @@ export default async function Home() {
                     <p className="text-gray-500 font-mono text-sm mt-1">Autonomous Curator Agent</p>
                 </div>
                 <div className="flex flex-col items-end gap-2">
-                    <nav className="flex gap-4 text-sm font-bold font-mono">
+                    <nav className="flex items-center gap-4 text-sm font-bold font-mono">
+                        <Link href="/dashboard" className="bg-electric-blue text-black px-4 py-1.5 rounded hover:bg-blue-400 transition-colors uppercase tracking-widest text-xs">
+                            Launch App
+                        </Link>
                         <Link href="/reports" className="text-gray-500 hover:text-white transition-colors pb-1">Logs</Link>
                         <Link href="/about" className="text-gray-500 hover:text-white transition-colors pb-1">About</Link>
                     </nav>

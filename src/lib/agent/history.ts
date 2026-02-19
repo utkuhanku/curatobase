@@ -27,9 +27,11 @@ const HISTORY: AgentRunProof[] = [
         runId: 'genesis-bounty-proof',
         startedAt: new Date().toISOString(),
         finishedAt: new Date().toISOString(),
-        scannedRange: { from: 42358821, to: 42358921 },
+        scannedRange: { from: 42358821, to: 42398921 },
         signalsFound: 1,
-        curatedGem: "Aerodrome (DeFi)",
+        curatedGem: "@basepaint: \"Day 450: The blue sky...\"",
+        sentiment: "COMMUNITY SIGNAL 📢",
+        authorStats: "Active Builder (Verified)",
         onchainTxHashes: ['0x7044be156c33c3e2020d2b69570a33e28ad62d2674174442d699c6233e7c059b'],
         status: 'SUCCESS'
     }
