@@ -96,7 +96,9 @@ export async function GET() {
                 lastRunTime: lastRun?.finishedAt || null,
                 scannedBlocks: lastRun?.scannedRange ? `${lastRun.scannedRange.from} -> ${lastRun.scannedRange.to}` : null,
                 signalsFound: lastRun?.signalsFound || 0,
-                curatedGem: lastRun?.curatedGem
+                curatedGem: lastRun?.curatedGem,
+                sentiment: lastRun?.sentiment,
+                authorStats: lastRun?.authorStats
             },
             verification: {
                 lastTxHash: lastTxHash,

@@ -12,6 +12,8 @@ export interface AgentRunProof {
     };
     signalsFound: number;
     curatedGem?: string; // e.g. "Aerodrome (DeFi)"
+    sentiment?: string; // e.g. "REWARD DISTRIBUTION 💰"
+    authorStats?: string; // e.g. "Verified Builder"
     onchainTxHashes: string[];
     status: 'SUCCESS' | 'FAILED';
     error?: string;

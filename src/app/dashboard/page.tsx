@@ -12,6 +12,8 @@ type ProofData = {
         lastRunTime: string | null;
         signalsFound: number;
         curatedGem?: string;
+        sentiment?: string;
+        authorStats?: string;
     };
     verification: {
         lastTxHash: string | null;
@@ -124,15 +126,30 @@ export default function DashboardPage() {
                         <span className="text-xs text-gray-500">Curato Engine</span>
                     </div>
                     <div className="p-6 relative z-10 flex flex-col gap-2">
-                        <div className="text-3xl font-bold text-white tracking-tight">
+                        <div className="text-xl font-bold text-white tracking-tight break-words">
                             {data.autonomy.curatedGem || 'Scanning...'}
                         </div>
-                        <div className="text-xs text-gray-400">
+
+                        {/* Intelligent Analysis Chips */}
+                        <div className="flex gap-2 mt-2 flex-wrap">
+                            {data.autonomy.sentiment && (
+                                <span className={`text-[10px] px-2 py-1 rounded border ${data.autonomy.sentiment.includes('SCAM') ? 'border-red-500 text-red-400 bg-red-950' : 'border-blue-500 text-blue-400 bg-blue-950'}`}>
+                                    {data.autonomy.sentiment}
+                                </span>
+                            )}
+                            {data.autonomy.authorStats && (
+                                <span className="text-[10px] px-2 py-1 rounded border border-green-500 text-green-400 bg-green-950">
+                                    {data.autonomy.authorStats}
+                                </span>
+                            )}
+                        </div>
+
+                        <div className="text-xs text-gray-400 mt-2">
                             Identified as a high-velocity protocol in the Base ecosystem.
                         </div>
                         <div className="mt-2 flex gap-2">
-                            <a href="https://base.org/ecosystem" target="_blank" className="text-[10px] bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded transition-colors">
-                                View on Base Ecosystem ↗
+                            <a href="https://warpcast.com" target="_blank" className="text-[10px] bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded transition-colors">
+                                View Source ↗
                             </a>
                         </div>
                     </div>
