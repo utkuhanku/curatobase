@@ -73,7 +73,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Financial Health Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <GlassCard className="p-6 flex flex-col gap-4">
                         <div className="flex items-center justify-between">
                             <span className="text-sm text-gray-400">Revenue Vault</span>
@@ -82,7 +82,7 @@ export default function DashboardPage() {
                         <div className="text-3xl font-bold tracking-tight">
                             {Number(data.financials.revenueVault.balance).toFixed(4)}
                         </div>
-                        <div className="text-[10px] text-gray-600 break-all">{data.financials.revenueVault.address}</div>
+                        <div className="text-[10px] text-gray-600 break-all">{data.financials.revenueVault.address.slice(0, 8)}...</div>
                     </GlassCard>
 
                     <GlassCard className="p-6 flex flex-col gap-4">
@@ -93,7 +93,23 @@ export default function DashboardPage() {
                         <div className="text-3xl font-bold tracking-tight">
                             {Number(data.financials.computeBrain.balance).toFixed(4)}
                         </div>
-                        <div className="text-[10px] text-gray-600 break-all">{data.financials.computeBrain.address}</div>
+                        <div className="text-[10px] text-gray-600 break-all">{data.financials.computeBrain.address.slice(0, 8)}...</div>
+                    </GlassCard>
+
+                    {/* Novelty Metric: Runway */}
+                    <GlassCard className="p-6 flex flex-col gap-4 relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
+                        <div className="flex items-center justify-between relative z-10">
+                            <span className="text-sm text-gray-400">Survival Runway</span>
+                            <span className="text-xs text-yellow-400 border border-yellow-500/30 px-2 py-1 rounded">EST</span>
+                        </div>
+                        <div className="text-3xl font-bold tracking-tight relative z-10">
+                            {/* Assume 0.0005 ETH burn per day for calculation */}
+                            {((Number(data.financials.revenueVault.balance) + Number(data.financials.computeBrain.balance)) / 0.0005).toFixed(0)} <span className="text-lg font-normal text-gray-500">Days</span>
+                        </div>
+                        <div className="text-[10px] text-green-400 relative z-10">
+                            Based on current burn rate
+                        </div>
                     </GlassCard>
                 </div>
 

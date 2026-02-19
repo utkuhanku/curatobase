@@ -1,0 +1,48 @@
+openapi: 3.0.1
+info:
+  title: CuratoBase Signal API
+  description: Verifiable Base ecosystem signals. Requires ETH payment.
+  version: 'v1'
+servers:
+  - url: https://curatobase.vercel.app
+paths:
+  /api/v1/signal/latest:
+    get:
+      operationId: getLatestSignal
+      summary: Get the latest premium signal
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignalResponse'
+        "402":
+          description: Payment Required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRequired'
+components:
+  schemas:
+    SignalResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+        data:
+          type: object
+    PaymentRequired:
+      type: object
+      properties:
+        error:
+          type: string
+        payment_instructions:
+          type: object
+          properties:
+            to:
+              type: string
+            amount:
+              type: string
+            chainId:
+              type: integer

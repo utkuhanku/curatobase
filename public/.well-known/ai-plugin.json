@@ -1,0 +1,17 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "CuratoBase Agent",
+    "name_for_model": "curatobase",
+    "description_for_human": "An autonomous agent on Base that sells premium ecosystem signals for ETH via x402 payment.",
+    "description_for_model": "Plugin for purchasing verifiable Base ecosystem signals. Requires ETH payment on Base Mainnet. Returns 402 with instructions if unpaid.",
+    "auth": {
+        "type": "none"
+    },
+    "api": {
+        "type": "openapi",
+        "url": "https://curatobase.vercel.app/.well-known/openapi.yaml"
+    },
+    "logo_url": "https://curatobase.vercel.app/logo.png",
+    "contact_email": "hello@curatobase.com",
+    "legal_info_url": "https://curatobase.vercel.app/legal"
+}
