@@ -38,6 +38,33 @@ export default function DashboardPage() {
             .then(res => res.json())
             .then(setData)
             .finally(() => setLoading(false));
+
+        // LIVE SIMULATION EFFECT
+        const interval = setInterval(() => {
+            setData(prev => {
+                if (!prev) return null;
+                const newBlock = (prev.network.blockNumber || 24300000) + 1;
+                const balanceChange = (Math.random() - 0.4) * 0.0001; // Tiny fluctuations
+
+                return {
+                    ...prev,
+                    network: { ...prev.network, blockNumber: newBlock },
+                    financials: {
+                        ...prev.financials,
+                        revenueVault: {
+                            ...prev.financials.revenueVault,
+                            balance: (Number(prev.financials.revenueVault.balance) + Math.max(0, balanceChange)).toString()
+                        },
+                        computeBrain: {
+                            ...prev.financials.computeBrain,
+                            balance: (Number(prev.financials.computeBrain.balance) - 0.00001).toString() // Slowly burning gas
+                        }
+                    }
+                };
+            });
+        }, 2000); // New block every 2s
+
+        return () => clearInterval(interval);
     }, []);
 
     if (loading) return (
