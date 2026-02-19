@@ -83,12 +83,14 @@ export async function runAutonomousCycle() {
             }
         } else {
             console.log(`[✅ HEALTHY] Gas levels sufficient.`);
+        }
 
-            // --- BOUNTY DEMO MODE: ALWAYS PROVE EXISTENCE ---
-            // Even if we don't need a refill, we want to prove we are alive and running on-chain
-            // so the dashboard updates with the latest verification.
-            // We send a 0 ETH self-transaction with the Builder Code.
+        // --- BOUNTY DEMO MODE: ALWAYS PROVE EXISTENCE ---
+        // Even if we don't need a refill (or failed to refill), we want to prove we are alive 
+        // and running on-chain so the dashboard updates with the latest verification.
+        // We send a 0 ETH self-transaction with the Builder Code.
 
+        if (computeBalance > parseEther('0.0001')) {
             console.log(`[📡 SIGNAL] Sending Keep-Alive Proof...`);
 
             let data: Hex = '0x';
@@ -98,16 +100,22 @@ export async function runAutonomousCycle() {
                 console.log(`[🏗️ BUILDER] Appended code '${BUILDER_CODE}' to signal.`);
             }
 
-            const hash = await walletClient.sendTransaction({
-                to: account.address, // Self-send
-                value: 0n,
-                data: data,
-                chain: base
-            });
+            try {
+                const hash = await walletClient.sendTransaction({
+                    to: account.address, // Self-send
+                    value: 0n,
+                    data: data,
+                    chain: base
+                });
 
-            console.log(`[✅ ALIVE TX] Hash: ${hash}`);
-            await publicClient.waitForTransactionReceipt({ hash });
-            txHashes.push(hash);
+                console.log(`[✅ ALIVE TX] Hash: ${hash}`);
+                await publicClient.waitForTransactionReceipt({ hash });
+                txHashes.push(hash);
+            } catch (txError: any) {
+                console.error(`[⚠️ TX FAIL] Keep-alive failed: ${txError.message}`);
+            }
+        } else {
+            console.log(`[⚠️ NO GAS] Skipping keep-alive signal.`);
         }
 
         // 3. Work (Simulated)
