@@ -104,7 +104,7 @@ export default function PrestigePage() {
                         LIVE MONITORING
                     </div>
                     <div className="text-[10px] text-gray-600 mt-2 font-mono">
-                        LAST AUDIT: {lastChecked.toLocaleTimeString()}
+                        LAST AUDIT: {lastChecked ? lastChecked.toLocaleTimeString() : "Pending..."}
                     </div>
                 </div>
             </div>
