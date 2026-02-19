@@ -118,58 +118,51 @@ export async function runAutonomousCycle() {
             console.log(`[⚠️ NO GAS] Skipping keep-alive signal.`);
         }
 
-        // 3. Work (Niche Ecosystem Curation via Base-Org Data)
+        // 3. Work (Real-Time Social Signal via Farcaster)
         console.log(`[🔎 SCANNING] Scanned blocks ${scannedRange.from} -> ${scannedRange.to}`);
 
-        let selectedGem = "BasePaint (Art)";
+        let selectedGem = "Word Rain (Game)"; // Fallback
 
         try {
-            console.log(`[🌐 FETCH] Querying Base Ecosystem Data...`);
-            // Raw JSON from Base Org's ecosystem repository
-            const response = await fetch('https://raw.githubusercontent.com/base-org/ecosystem-data/main/apps.json');
+            // Rotational Search Terms to find "New Builders" and "Opportunities"
+            const SEARCH_TERMS = [
+                "base launch",
+                "base build",
+                "base bounty",
+                "ethdenver base",
+                "word rain base" // Explicitly monitoring user's project as requested
+            ];
+
+            const term = SEARCH_TERMS[Math.floor(Math.random() * SEARCH_TERMS.length)];
+            console.log(`[🌐 FETCH] Searching Farcaster for: "${term}"...`);
+
+            // Public Farcaster Search API
+            const response = await fetch(`https://searchcaster.xyz/api/search?text=${encodeURIComponent(term)}&count=5`);
 
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-            const apps = await response.json();
+            const data = await response.json();
+            const casts = data.casts || [];
 
-            // Filter for "Niche" categories (Art, Social, Gaming) to find hidden gems,
-            // rather than just generic DeFi.
-            const nicheApps = apps.filter((app: any) => {
-                const tags = (app.tags || []).map((t: string) => t.toLowerCase());
-                const category = (app.category || "").toLowerCase();
+            if (casts.length > 0) {
+                // Select a cast from the top results
+                const cast = casts[Math.floor(Math.random() * casts.length)];
 
-                return (
-                    tags.includes("social") ||
-                    tags.includes("art") ||
-                    tags.includes("gaming") ||
-                    tags.includes("music") ||
-                    category === "social" ||
-                    category === "nft"
-                );
-            });
+                // Extract meaningful signal
+                const author = cast.body.username || cast.author.username;
+                const text = cast.body.data?.text || cast.text || "";
 
-            console.log(`[📊 DATA] Found ${nicheApps.length} niche apps (Social/Art/Game).`);
+                // Truncate text for display
+                const shortText = text.slice(0, 50) + (text.length > 50 ? "..." : "");
 
-            if (nicheApps.length > 0) {
-                // Randomly select one "Hidden Gem"
-                const gem = nicheApps[Math.floor(Math.random() * nicheApps.length)];
-
-                // Format: "Name (Category)"
-                // Fallback to "App" if category is missing
-                const cat = gem.tags?.[0] || gem.category || "Dapp";
-                // Capitalize first letter
-                const fmtCat = cat.charAt(0).toUpperCase() + cat.slice(1);
-
-                selectedGem = `${gem.name} (${fmtCat})`;
-                console.log(`[💎 GEM FOUND] Identified high-affinity signal: ${selectedGem}`);
+                selectedGem = `@${author}: "${shortText}"`;
+                console.log(`[💎 SIGNAL FOUND] From Farcaster: ${selectedGem}`);
             } else {
-                // Fallback if filter returns empty (unlikely)
-                const gem = apps[Math.floor(Math.random() * apps.length)];
-                selectedGem = `${gem.name} (Base App)`;
+                console.log(`[⚠️ NO DATA] No recent casts found for "${term}". Using fallback.`);
             }
 
         } catch (fetchError) {
-            console.error(`[⚠️ DATA FAIL] Base Ecosystem fetch failed, using fallback.`, fetchError);
+            console.error(`[⚠️ DATA FAIL] Searchcaster fetch failed, using fallback.`, fetchError);
         }
 
         signalsFound = 1;
