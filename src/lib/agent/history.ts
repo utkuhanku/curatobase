@@ -82,7 +82,6 @@ const HISTORY: AgentRunProof[] = [
         finishedAt: new Date(Date.now() - 1000 * 60 * 359).toISOString(),
         scannedRange: { from: 24358521, to: 24358621 },
         signalsFound: 0,
-        scannedCount: 142,
         onchainTxHashes: [],
         status: 'SUCCESS'
     }
