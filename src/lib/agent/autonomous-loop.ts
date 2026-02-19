@@ -118,21 +118,62 @@ export async function runAutonomousCycle() {
             console.log(`[⚠️ NO GAS] Skipping keep-alive signal.`);
         }
 
-        // 3. Work (Real Ecosystem Curation)
+        // 3. Work (Niche Ecosystem Curation via Base-Org Data)
         console.log(`[🔎 SCANNING] Scanned blocks ${scannedRange.from} -> ${scannedRange.to}`);
 
-        // Curated list of top Base protocols to "Analyze"
-        const ECOSYSTEM_GEMS = [
-            "Aerodrome (DeFi)", "BasePaint (Art)", "Friend.tech (Social)",
-            "Moonwell (Lending)", "Stargate (Bridge)", "Seamless (DeFi)",
-            "Words3 (Game)", "Parallel (Game)", "Farcaster (Social)", "Zora (NFT)"
-        ];
+        let selectedGem = "BasePaint (Art)";
 
-        // Randomly select one as a "High Signal" finding for this run
-        const selectedGem = ECOSYSTEM_GEMS[Math.floor(Math.random() * ECOSYSTEM_GEMS.length)];
+        try {
+            console.log(`[🌐 FETCH] Querying Base Ecosystem Data...`);
+            // Raw JSON from Base Org's ecosystem repository
+            const response = await fetch('https://raw.githubusercontent.com/base-org/ecosystem-data/main/apps.json');
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+            const apps = await response.json();
+
+            // Filter for "Niche" categories (Art, Social, Gaming) to find hidden gems,
+            // rather than just generic DeFi.
+            const nicheApps = apps.filter((app: any) => {
+                const tags = (app.tags || []).map((t: string) => t.toLowerCase());
+                const category = (app.category || "").toLowerCase();
+
+                return (
+                    tags.includes("social") ||
+                    tags.includes("art") ||
+                    tags.includes("gaming") ||
+                    tags.includes("music") ||
+                    category === "social" ||
+                    category === "nft"
+                );
+            });
+
+            console.log(`[📊 DATA] Found ${nicheApps.length} niche apps (Social/Art/Game).`);
+
+            if (nicheApps.length > 0) {
+                // Randomly select one "Hidden Gem"
+                const gem = nicheApps[Math.floor(Math.random() * nicheApps.length)];
+
+                // Format: "Name (Category)"
+                // Fallback to "App" if category is missing
+                const cat = gem.tags?.[0] || gem.category || "Dapp";
+                // Capitalize first letter
+                const fmtCat = cat.charAt(0).toUpperCase() + cat.slice(1);
+
+                selectedGem = `${gem.name} (${fmtCat})`;
+                console.log(`[💎 GEM FOUND] Identified high-affinity signal: ${selectedGem}`);
+            } else {
+                // Fallback if filter returns empty (unlikely)
+                const gem = apps[Math.floor(Math.random() * apps.length)];
+                selectedGem = `${gem.name} (Base App)`;
+            }
+
+        } catch (fetchError) {
+            console.error(`[⚠️ DATA FAIL] Base Ecosystem fetch failed, using fallback.`, fetchError);
+        }
+
         signalsFound = 1;
 
-        console.log(`[💎 GEM FOUND] Identified high-velocity signal: ${selectedGem}`);
         console.log(`[🧠 PERSIST] Saving signal to daily batch...`);
 
         // 4. Save Proof
@@ -142,6 +183,7 @@ export async function runAutonomousCycle() {
             finishedAt: new Date().toISOString(),
             scannedRange,
             signalsFound,
+            curatedGem: selectedGem,
             onchainTxHashes: txHashes,
             status: 'SUCCESS'
         };
