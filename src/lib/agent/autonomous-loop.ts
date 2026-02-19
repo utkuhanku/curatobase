@@ -39,8 +39,9 @@ function analyzeSentiment(text: string): { type: string; confidence: string; lab
 }
 
 export async function runAutonomousCycle() {
-    const REVENUE_CONTRACT = process.env.REVENUE_CONTRACT_ADDRESS as `0x${ string } `;
-    const PRIVATE_KEY = process.env.COMPUTE_PRIVATE_KEY as `0x${ string } `;
+    // FORCE_UPDATE: Switch to 'any' to bypass strict hex check on Vercel
+    const REVENUE_CONTRACT = process.env.REVENUE_CONTRACT_ADDRESS as any;
+    const PRIVATE_KEY = process.env.COMPUTE_PRIVATE_KEY as any;
     const BUILDER_CODE = process.env.BUILDER_CODE || 'curatobase';
 
     if (!REVENUE_CONTRACT || !PRIVATE_KEY) {
