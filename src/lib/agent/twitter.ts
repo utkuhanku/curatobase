@@ -47,10 +47,9 @@ export class TwitterAgent {
 
         try {
             // Global search query to find Base apps across the entire platform
-            // Searches for any tweet containing "base.app" AND a relevant launch/reward keyword
-            // Filters out retweets to reduce noise and rate limit consumption.
-            // Note: Basic API tier may limit query length or complexity, but this is a standard v2 query.
-            const query = `("base.app/app/" OR "base.app") (reward OR built OR launch OR live OR deployed OR prize) -is:retweet`;
+            // Searches for any tweet containing "base.app". Dropped restrictive keyword filters
+            // to ensure wide net catching, specifically for users like utkus_eth.
+            const query = `(url:"base.app" OR "base.app") -is:retweet`;
 
             console.log(`   Query: ${query}`);
 

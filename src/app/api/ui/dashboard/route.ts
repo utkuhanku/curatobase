@@ -44,11 +44,18 @@ export async function GET() {
 
         // Determine source URL
         let signalUrl = topApp.signals[0]?.urls ? JSON.parse(topApp.signals[0].urls)[0] : null;
+        if (!signalUrl && topApp.signals[0]?.urls) {
+            try {
+                const parsed = JSON.parse(topApp.signals[0].urls);
+                if (parsed.app) signalUrl = parsed.app;
+                else if (parsed.demo) signalUrl = parsed.demo;
+            } catch (e) { }
+        }
         if (!signalUrl && urls.app) signalUrl = urls.app;
         if (!signalUrl && urls.baseApp) signalUrl = urls.baseApp;
         if (!signalUrl && urls.demo) signalUrl = urls.demo;
         if (!signalUrl && urls.website) signalUrl = urls.website;
-        if (!signalUrl) signalUrl = `https://base.app/app/${topApp.name.toLowerCase().replace(/\\s+/g, '-')}`;
+        if (!signalUrl) signalUrl = `https://base.org`;
 
         let sentiment = "UNKNOWN_SIGNAL";
         if (topApp.curationScore > 80) sentiment = "HIGHLY POSITIVE";

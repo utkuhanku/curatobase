@@ -8,13 +8,13 @@ export interface BaseAppSignal {
 
 export class BaseAppDetector {
     static detect(text: string, embeds: any[] = []): BaseAppSignal {
-        // Regex for base.app URLs
-        const regex = /https?:\/\/(?:www\.)?base\.app\/app\/([a-zA-Z0-9-]+)/i;
+        // Regex for base.app URLs, handles both base.app/app/slug and just base.app
+        const regex = /https?:\/\/(?:www\.)?base\.app(?:\/?(?:app\/)?([a-zA-Z0-9_-]+))?/i;
 
         // Check Text
         const textMatch = text.match(regex);
         if (textMatch) {
-            return { isBaseApp: true, appSlug: textMatch[1], appUrl: textMatch[0] };
+            return { isBaseApp: true, appSlug: textMatch[1] || 'unknown-app', appUrl: textMatch[0] };
         }
 
         // Check Embeds (Cast Embeds are usually { url: ... })
@@ -22,7 +22,7 @@ export class BaseAppDetector {
             if (embed.url) {
                 const embedMatch = embed.url.match(regex);
                 if (embedMatch) {
-                    return { isBaseApp: true, appSlug: embedMatch[1], appUrl: embed.url };
+                    return { isBaseApp: true, appSlug: embedMatch[1] || 'unknown-app', appUrl: embed.url };
                 }
             }
         }

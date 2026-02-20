@@ -87,6 +87,14 @@ export class PromotionEngine {
             score += 50;
         }
 
+        // --- NEW BLOCK: DIRECT APP INTENT ---
+        // Apps driving direct adoption via base.app links are high priority
+        const isDirectAppPromo = ctx.hasDemo && ctx.rewardStatus !== 'NONE';
+        if (isDirectAppPromo) {
+            reasons.push("DIRECT_APP_PROMO");
+            score += 60;
+        }
+
         // --- DETERMINE STATUS ---
         // PRESTIGE Check (Strict)
         let prestigePoints = 0;
@@ -94,13 +102,14 @@ export class PromotionEngine {
         if (ctx.hasRepo) prestigePoints++;
         if (ctx.seenCount >= 5) prestigePoints++;
         if (ctx.uniqueRepliers >= 5) prestigePoints++;
+        if (isDirectAppPromo) prestigePoints++; // Bonus prestige for direct builders
 
         // Status Logic
         let status = CurationStatus.WATCHLIST; // Default baseline if proof exists
         let ready = false;
 
-        // TOP PICK Requirements: (Time OR Engagement) AND Proof
-        const isTopPick = (isTimeReady || isEngagementReady) && hasExternalProof;
+        // TOP PICK Requirements: (Time OR Engagement OR DirectPromo) AND Proof
+        const isTopPick = (isTimeReady || isEngagementReady || isDirectAppPromo) && hasExternalProof;
 
         if (prestigePoints >= 2 && isTopPick) {
             status = CurationStatus.CURATED;
@@ -110,7 +119,8 @@ export class PromotionEngine {
             ready = true;
         } else if (!hasExternalProof) {
             status = CurationStatus.IGNORED;
-        } else if (ctx.uniqueRepliers === 0) {
+        } else if (ctx.uniqueRepliers === 0 && !isDirectAppPromo) {
+            // Only silence if no engagement AND no direct promo
             status = CurationStatus.SILENCE;
         }
 
