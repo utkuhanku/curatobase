@@ -205,6 +205,11 @@ async function main() {
 
         verdict.status = finalStatus; // Apply enforced status
 
+        // Add distinct praise for Organic Reward triggers
+        if (promotion.reasons.includes("ORGANIC_REWARD_TRIGGER")) {
+            verdict.text = `Organic builder rewarding the ecosystem. Automatically triggered for top-tier promotion out of respect for their distribution. \n\n${verdict.text}`;
+        }
+
         // Collect for Publishing
         if (finalStatus === CurationStatus.CURATED) finalPrestige.push(item.fullObject);
         if (finalStatus === CurationStatus.TOP_PICK) finalTopPicks.push(item.fullObject);
@@ -243,7 +248,9 @@ async function main() {
             create: {
                 id: candidate.cast.castHash,
                 // appKey removed as it is not in schema
-                name: baseAppSignal.appSlug || `App ${candidate.cast.castHash.substring(0, 6)}`,
+                name: baseAppSignal.appSlug
+                    ? baseAppSignal.appSlug.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+                    : (candidate.cast.authorUsername ? `Project by @${candidate.cast.authorUsername}` : `App ${candidate.cast.castHash.substring(0, 6)}`),
                 description: candidate.cast.text,
                 status: finalStatus,
                 curationScore: scores.relevanceScore || 0, // FIXED

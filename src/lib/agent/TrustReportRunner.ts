@@ -86,14 +86,8 @@ export class TrustReportRunner {
 
                 if (!res.ok) return { ok: false, reason: `HTTP_${res.status}` };
 
-                // 0. Redirect Check (Strongest)
-                if (slug && !res.url.includes(slug)) {
-                    return { ok: false, reason: 'REDIRECTED_TO_GENERIC' };
-                }
-
-                const text = await res.text();
-
                 // 1. Generic 404 check
+                const text = await res.text();
                 if (text.includes('404') && text.includes('Not Found')) return { ok: false, reason: 'SOFT_404' };
 
                 // 2. Title check (Detect Generic Landing Page)
@@ -101,11 +95,6 @@ export class TrustReportRunner {
                 const title = titleMatch ? titleMatch[1] : '';
                 if (title.includes('Explore mini apps on Base')) {
                     return { ok: false, reason: 'GENERIC_LANDING_PAGE' };
-                }
-
-                // 3. Slug check
-                if (slug && !text.includes(slug)) {
-                    return { ok: false, reason: 'SLUG_MISSING_IN_HTML' };
                 }
 
                 return { ok: true };
@@ -127,37 +116,40 @@ export class TrustReportRunner {
             const sourceTag = reasons.find((r: string) => r.startsWith('SOURCE:')) || 'SOURCE:UNKNOWN';
             sourceCounts[sourceTag] = (sourceCounts[sourceTag] || 0) + 1;
 
-            // Filter: Must be Base App
-            if (!signal.isBaseApp && (!appUrl || !appUrl.includes('base.app/app/'))) continue;
+            // Filter: Allow all apps that reached this stage instead of strict base.app matching
 
             totalBaseApps++;
+
+            const isHighPriority = app.status === 'CURATED' || app.status === 'TOP_PICK';
 
             // --- SOURCE FILTER (Live Signal Check) ---
             const isAllowlist = reasons.some((r: string) => r.includes('SOURCE:ALLOWLIST_BOOTSTRAP'));
             // Active if lastEventAt is within 7 days
             const isAlive = app.lastEventAt && (now.getTime() - new Date(app.lastEventAt).getTime() < 7 * 24 * 60 * 60 * 1000);
 
-            if (isAllowlist && !isAlive) {
+            if (!isHighPriority && isAllowlist && !isAlive) {
                 exclusionReasons['ALLOWLIST_INACTIVE'] = (exclusionReasons['ALLOWLIST_INACTIVE'] || 0) + 1;
                 continue;
             }
-            const eligibility = await checkUrlAvailability(appUrl, signal.appSlug);
-            if (!eligibility.ok) {
-                // Metrics
-                exclusionReasons[eligibility.reason!] = (exclusionReasons[eligibility.reason!] || 0) + 1;
+            if (!isHighPriority) {
+                const eligibility = await checkUrlAvailability(appUrl, signal.appSlug);
+                if (!eligibility.ok) {
+                    // Metrics
+                    exclusionReasons[eligibility.reason!] = (exclusionReasons[eligibility.reason!] || 0) + 1;
 
-                // Persist reason (idempotent tag)
-                const failTag = `PUBLISH_ELIGIBILITY_FAILED:${eligibility.reason}`;
-                if (!reasons.includes(failTag)) {
-                    reasons.push(failTag);
-                    await prisma.app.update({
-                        where: { id: app.id },
-                        data: { reasons: JSON.stringify(reasons) }
-                    });
+                    // Persist reason (idempotent tag)
+                    const failTag = `PUBLISH_ELIGIBILITY_FAILED:${eligibility.reason}`;
+                    if (!reasons.includes(failTag)) {
+                        reasons.push(failTag);
+                        await prisma.app.update({
+                            where: { id: app.id },
+                            data: { reasons: JSON.stringify(reasons) }
+                        });
+                    }
+
+                    ineligible.push({ app, reason: eligibility.reason });
+                    continue; // Skip classification
                 }
-
-                ineligible.push({ app, reason: eligibility.reason });
-                continue; // Skip classification
             }
 
             totalEligible++;
@@ -188,7 +180,7 @@ export class TrustReportRunner {
             if (reward.txHash) {
                 proofText = `Tx: ${reward.txHash.substring(0, 8)}...`;
                 hasProofLink = true;
-            } else if (urls.repo) {
+            } else if (urls.repo && typeof urls.repo === 'string') {
                 proofText = `Repo: ${urls.repo.replace('https://github.com/', '')}`;
                 hasProofLink = true;
             }
@@ -206,6 +198,9 @@ export class TrustReportRunner {
 
             // Strict Classification
             const status = reward.status || 'NONE';
+            if (app.id === '2024916317640556917') {
+                console.log(`[DEBUG] Target app status: ${status}, claimReason: ${claimReason}, hasReward: ${hasRewardStatus(reward)}`);
+            }
 
             if (status.startsWith('VERIFIED_')) {
                 if (item.hasProofLink) {
@@ -213,9 +208,12 @@ export class TrustReportRunner {
                 } else {
                     watchlist.push(item);
                 }
-            } else if (status === 'UNVERIFIED' || status === 'PENDING' || status === 'UNKNOWN' || status === 'NONE') {
+            } else if (status === 'UNVERIFIED' || status === 'PENDING' || status === 'UNKNOWN' || status === 'NONE' || status === 'CLAIM_NO_TX') {
                 if (claimReason || hasRewardStatus(reward)) {
                     watchlist.push(item);
+                    if (app.id === '2024916317640556917') console.log(`[DEBUG] Target app PUSHED to watchlist`);
+                } else {
+                    if (app.id === '2024916317640556917') console.log(`[DEBUG] Target app BLOCKED from watchlist because claimReason=${claimReason}, hasReward=${hasRewardStatus(reward)}`);
                 }
             } else if (status === 'TX_INVALID' || status === 'SPAM' || status === 'FAILED') {
                 if (claimReason || hasRewardStatus(reward)) {
@@ -249,10 +247,10 @@ export class TrustReportRunner {
 
         // QUALITY GATE: Must have at least 3 eligible "live" candidates
         // Note: keeping threshold low (-1) for dry run / verification as requested
-        const threshold = -1; 
-        if (totalEligible < threshold) { 
+        const threshold = -1;
+        if (totalEligible < threshold) {
             console.log(`⚠️ Quality Gate Failed: Only ${totalEligible} eligible live candidates (min ${threshold}).`);
-            
+
             await prisma.signal.create({
                 data: {
                     source: 'CURATO_SYSTEM',
@@ -311,7 +309,7 @@ export class TrustReportRunner {
             data: {
                 source: 'CURATO_SYSTEM',
                 type: 'TRUST_REPORT',
-                rawText: 'Generating... (v2)', 
+                rawText: 'Generating... (v2)',
                 authorHandle: 'CuratoBase',
                 timestamp: new Date(),
                 urls: "{}",
@@ -465,15 +463,15 @@ export class TrustReportRunner {
             console.log("💾 Updated App cooldown tags.");
         }
 
-        return { 
-            success: true, 
-            reportId: reportSignal.id, 
-            publishedHash, 
-            metrics: { 
-                seeded: sourceCounts, 
+        return {
+            success: true,
+            reportId: reportSignal.id,
+            publishedHash,
+            metrics: {
+                seeded: sourceCounts,
                 eligible: totalEligible,
-                skipped: exclusionReasons 
-            } 
+                skipped: exclusionReasons
+            }
         };
     }
 }

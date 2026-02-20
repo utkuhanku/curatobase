@@ -28,7 +28,7 @@ export class RewardVerifier {
      */
     static async verify(text: string): Promise<RewardCheckResult> {
         // 1. Detect Intent
-        const hasClaimKeywords = /\b(prize|reward(s|ed)?|USDC|ETH|sent|payout|won)\b/i.test(text);
+        const hasClaimKeywords = /\b(prize|reward(s|ed)?|USDC|ETH|sent|payout|won|giveaway|airdrop|distribute(d|s)?|giv(en|ing)\s*away)\b/i.test(text);
 
         // 2. Extract Hash
         const txMatch = text.match(/0x[a-fA-F0-9]{64}/);

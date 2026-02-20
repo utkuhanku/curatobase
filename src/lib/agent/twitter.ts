@@ -47,9 +47,9 @@ export class TwitterAgent {
 
         try {
             // Global search query to find Base apps across the entire platform
-            // Searches for any tweet containing "base.app". Dropped restrictive keyword filters
-            // to ensure wide net catching, specifically for users like utkus_eth.
-            const query = `(url:"base.app" OR "base.app") -is:retweet`;
+            // Expanded to catch not just direct links, but builders announcing reward pools
+            // like @kingyru and @0x_fokki who often use terms like "mini app", "usdc", "reward".
+            const query = `("base.app" OR "base.app/app" OR (("mini app" OR miniapp OR "base app" OR @baseapp) (reward OR usdc OR eth OR prize OR airdrop OR pool))) -is:retweet -is:reply`;
 
             console.log(`   Query: ${query}`);
 

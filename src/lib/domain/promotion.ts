@@ -31,12 +31,16 @@ export class PromotionEngine {
         const sorted = [...inputs].sort((a, b) => b.result.score - a.result.score);
 
         for (const item of sorted) {
-            if (item.result.status === CurationStatus.CURATED && prestigeCount < 1) {
+            // "Be triggered to promote" - always bypass quotas for builders who distribute rewards to their users organically
+            const isOrganicRewardTrigger = item.result.reasons.includes("ORGANIC_REWARD_TRIGGER");
+
+            // Allow infinite quotas for organic reward distributors
+            if (item.result.status === CurationStatus.CURATED && (prestigeCount < 3 || isOrganicRewardTrigger)) {
                 finalStatuses.set(item.id, CurationStatus.CURATED);
-                prestigeCount++;
-            } else if ((item.result.status === CurationStatus.CURATED || item.result.status === CurationStatus.TOP_PICK) && topPickCount < 2) {
+                if (!isOrganicRewardTrigger) prestigeCount++;
+            } else if ((item.result.status === CurationStatus.CURATED || item.result.status === CurationStatus.TOP_PICK) && (topPickCount < 5 || isOrganicRewardTrigger)) {
                 finalStatuses.set(item.id, CurationStatus.TOP_PICK);
-                topPickCount++;
+                if (!isOrganicRewardTrigger) topPickCount++;
             } else {
                 // Downgrade overflow
                 finalStatuses.set(item.id, CurationStatus.WATCHLIST);
@@ -87,12 +91,14 @@ export class PromotionEngine {
             score += 50;
         }
 
-        // --- NEW BLOCK: DIRECT APP INTENT ---
-        // Apps driving direct adoption via base.app links are high priority
-        const isDirectAppPromo = ctx.hasDemo && ctx.rewardStatus !== 'NONE';
-        if (isDirectAppPromo) {
-            reasons.push("DIRECT_APP_PROMO");
-            score += 60;
+        // --- NEW BLOCK: ORGANIC REWARD TRIGGER ---
+        // "Be triggered to promote"
+        // Builders organically distributing rewards (USDC/ETH/Airdrops) to their users
+        // via a verified Base App, Demo, or Repo. This is the ultimate goal of the agent.
+        const isOrganicRewardTrigger = ctx.rewardStatus !== 'NONE' && (ctx.hasDemo || ctx.hasRepo);
+        if (isOrganicRewardTrigger) {
+            reasons.push("ORGANIC_REWARD_TRIGGER");
+            score += 100; // Guaranteed top priority
         }
 
         // --- DETERMINE STATUS ---
@@ -102,14 +108,14 @@ export class PromotionEngine {
         if (ctx.hasRepo) prestigePoints++;
         if (ctx.seenCount >= 5) prestigePoints++;
         if (ctx.uniqueRepliers >= 5) prestigePoints++;
-        if (isDirectAppPromo) prestigePoints++; // Bonus prestige for direct builders
+        if (isOrganicRewardTrigger) prestigePoints++; // Bonus prestige
 
         // Status Logic
         let status = CurationStatus.WATCHLIST; // Default baseline if proof exists
         let ready = false;
 
-        // TOP PICK Requirements: (Time OR Engagement OR DirectPromo) AND Proof
-        const isTopPick = (isTimeReady || isEngagementReady || isDirectAppPromo) && hasExternalProof;
+        // TOP PICK Requirements: (Time OR Engagement OR OrganicReward) AND Proof
+        const isTopPick = (isTimeReady || isEngagementReady || isOrganicRewardTrigger) && hasExternalProof;
 
         if (prestigePoints >= 2 && isTopPick) {
             status = CurationStatus.CURATED;
@@ -119,8 +125,8 @@ export class PromotionEngine {
             ready = true;
         } else if (!hasExternalProof) {
             status = CurationStatus.IGNORED;
-        } else if (ctx.uniqueRepliers === 0 && !isDirectAppPromo) {
-            // Only silence if no engagement AND no direct promo
+        } else if (ctx.uniqueRepliers === 0 && !isOrganicRewardTrigger) {
+            // Only silence if no engagement AND no organic reward trigger
             status = CurationStatus.SILENCE;
         }
 

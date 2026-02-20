@@ -17,6 +17,18 @@ export class BaseAppDetector {
             return { isBaseApp: true, appSlug: textMatch[1] || 'unknown-app', appUrl: textMatch[0] };
         }
 
+        // Check Quotes for App Name (e.g. mini app called "Base Me")
+        const nameMatch = text.match(/(?:mini\s?app|project).*?(?:called|named|\bis\b)?\s*["“'”]([^"“'”]{3,20})["“'”]/i);
+        if (nameMatch) {
+            const slug = nameMatch[1].toLowerCase().replace(/\s+/g, '-');
+            return { isBaseApp: true, appSlug: slug, appUrl: undefined };
+        }
+
+        // Catch generic but strong announcements (e.g., "Base Me mini app")
+        if (/(mini\s?app|base\s?app)/i.test(text)) {
+            return { isBaseApp: true, appSlug: undefined, appUrl: undefined };
+        }
+
         // Check Embeds (Cast Embeds are usually { url: ... })
         for (const embed of embeds) {
             if (embed.url) {
@@ -47,9 +59,9 @@ export class RepoDetector {
 
 export class DemoDetector {
     static detect(text: string, embeds: any[] = []): boolean {
-        // Generic "App" hosting
-        const keywords = ['vercel.app', 'netlify.app', 'replit.com', 'fly.dev', 'railway.app'];
-        const check = (s: string) => keywords.some(k => s.includes(k));
+        // Generic "App" hosting or explicit textual claims
+        const keywords = ['vercel.app', 'netlify.app', 'replit.com', 'fly.dev', 'railway.app', 'mini app', 'miniapp', 'base app'];
+        const check = (s: string) => keywords.some(k => s.toLowerCase().includes(k));
 
         if (check(text)) return true;
         for (const embed of embeds) {
