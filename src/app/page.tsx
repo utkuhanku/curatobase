@@ -1,8 +1,23 @@
 import { GlassCard } from "@/components/ui/GlassCard";
 import { ArrowRight, Terminal, ShieldCheck, Activity, Zap } from "lucide-react";
 import Link from "next/link";
+import { PrismaClient } from '@prisma/client';
 
-export default function Home() {
+export const revalidate = 60; // Revalidate every 60 seconds
+
+export default async function Home() {
+    const prisma = new PrismaClient();
+
+    // Fetch real metrics
+    const totalSignals = await prisma.signal.count();
+    const verifiedApps = await prisma.app.count({ where: { status: 'CURATED' } });
+
+    // Format large numbers
+    const formatNumber = (num: number) => {
+        if (num > 1000) return (num / 1000).toFixed(1) + 'k';
+        return num.toString();
+    };
+
     return (
         <main className="min-h-screen bg-[#030303] text-white flex flex-col relative overflow-hidden font-mono selection:bg-electric-blue/30">
 
@@ -62,7 +77,7 @@ export default function Home() {
                 {/* Mini Stats */}
                 <div className="grid grid-cols-3 gap-8 mt-16 pt-8 border-t border-white/5 w-full max-w-lg mx-auto animate-fade-in-up delay-500">
                     <div className="text-center">
-                        <div className="text-2xl font-bold text-white mb-1">24.5k</div>
+                        <div className="text-2xl font-bold text-white mb-1">{formatNumber(totalSignals)}</div>
                         <div className="text-[10px] text-gray-500 uppercase tracking-widest">Signals Scanned</div>
                     </div>
                     <div className="text-center">
@@ -70,7 +85,7 @@ export default function Home() {
                         <div className="text-[10px] text-gray-500 uppercase tracking-widest">Uptime</div>
                     </div>
                     <div className="text-center">
-                        <div className="text-2xl font-bold text-white mb-1">3</div>
+                        <div className="text-2xl font-bold text-white mb-1">{verifiedApps}</div>
                         <div className="text-[10px] text-gray-500 uppercase tracking-widest">Verified Apps</div>
                     </div>
                 </div>
