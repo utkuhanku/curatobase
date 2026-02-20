@@ -4,14 +4,6 @@ export class TwitterAgent {
     private client: TwitterApi | null = null;
     private hasConfig = false;
 
-    // List of key Base ecosystem builders/pioneers to monitor
-    // Hardcoded for now, could be moved to DB or config
-    private PIONEERS = [
-        'jessepollak', // Jesse Pollak
-        'brian_armstrong' // Brian Armstrong
-        // Add more key figures here
-    ];
-
     constructor() {
         // For search/read-only, we generally just need the Bearer Token 
         // OR the AppKey/Secret for app-only auth. 
@@ -50,19 +42,15 @@ export class TwitterAgent {
             return [];
         }
 
-        console.log("🐦 Fetching ecosystem signals from X (Twitter)...");
+        console.log("🐦 Fetching ecosystem signals globally from X (Twitter)...");
         const results: any[] = [];
 
         try {
-            // Construct a search query:
-            // "base.app" OR "reward" from specific users, OR just "base.app" globally if we want (rate limits apply).
-            // For precision, let's search for "base.app" from our pioneers OR in general with high engagement.
-            // A simple query to start: tweets from pioneers containing "base.app" or "build"
-
-            const fromQuery = this.PIONEERS.map(p => `from:${p}`).join(' OR ');
-            // Query: (from:jessepollak OR from:...) (base.app OR reward OR build)
-            // Note: Twitter v2 basic search limits apply.
-            const query = `(${fromQuery}) (base.app OR reward)`;
+            // Global search query to find Base apps across the entire platform
+            // Searches for any tweet containing "base.app" AND a relevant launch/reward keyword
+            // Filters out retweets to reduce noise and rate limit consumption.
+            // Note: Basic API tier may limit query length or complexity, but this is a standard v2 query.
+            const query = `("base.app/app/" OR "base.app") (reward OR built OR launch OR live OR deployed OR prize) -is:retweet`;
 
             console.log(`   Query: ${query}`);
 
