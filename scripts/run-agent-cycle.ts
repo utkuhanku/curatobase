@@ -10,6 +10,7 @@ import { CurationStatus } from '../src/lib/types';
 import { BaseAppDetector, DemoDetector, RepoDetector } from '../src/lib/domain/detectors';
 import { RewardVerifier } from '../src/lib/domain/rewards';
 import { AgentPublisher } from '../src/lib/agent/publisher';
+import { TwitterAgent } from '../src/lib/agent/twitter';
 
 const prisma = new PrismaClient();
 const neynarKey = process.env.NEYNAR_API_KEY || "NEYNAR_API_DOCS";
@@ -65,7 +66,7 @@ async function main() {
                         const oldest = newCasts[newCasts.length - 1];
                         if (oldest && new Date(oldest.timestamp).getTime() < SEVEN_DAYS_AGO) break;
 
-                        cursor = feed.next.cursor;
+                        cursor = feed.next?.cursor || undefined;
                         if (!cursor) break;
 
                     } catch (e) {
@@ -92,7 +93,16 @@ async function main() {
             });
 
             const results = await Promise.all([...promises, globalTrending]);
-            const allCasts = results.flat();
+            let allCasts = results.flat();
+
+            // Fetch from Twitter
+            try {
+                const twitterAgent = new TwitterAgent();
+                const twitterSignals = await twitterAgent.fetchEcosystemSignals();
+                allCasts = [...allCasts, ...twitterSignals];
+            } catch (tErr) {
+                console.log("⚠️ Twitter fetch failed.", tErr);
+            }
 
             // Dedup by hash
             const seen = new Set();

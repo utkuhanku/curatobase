@@ -32,6 +32,7 @@ async function main() {
         const promo = breakdown.promotion || {};
         const reward = breakdown.rewardCheck || {};
         const reasons = app.reasons ? JSON.parse(app.reasons) : [];
+        const source = breakdown.candidate?.cast?.source || 'FARCASTER';
 
         // Cooldown: If picked recently, skip
         if (reasons.includes('DAILY_PICK')) {
@@ -54,7 +55,8 @@ async function main() {
             isRewardVerified,
             isRepoVerified,
             slug: signal.appSlug || app.name,
-            reason: isRewardVerified ? 'Reward Verified' : 'Open Source'
+            reason: isRewardVerified ? 'Reward Verified' : 'Open Source',
+            source
         };
     }).filter(c => c !== null);
 
@@ -98,6 +100,7 @@ async function main() {
     if (pick.isRewardVerified) points.push("💰 Reward Verified (Onchain)");
     if (pick.isRepoVerified) points.push("💻 Open Source");
     points.push("📱 Native Base App");
+    if (pick.source === 'TWITTER') points.push("🐦 Discovered via X Ecosystem");
 
     const auditUrl = `https://curatobase.com/audit?id=${pick.app.id}`; // In production this would be real URL
     const appUrl = `https://base.app/app/${pick.slug}`;
@@ -139,7 +142,7 @@ async function main() {
             const result = await neynar.publishCast(signerUuid, text, {
                 embeds: [{ url: appUrl }]
             });
-            console.log(`🚀 PUBLISHED! Hash: ${result.cast.hash}`);
+            console.log(`🚀 PUBLISHED! Hash: ${(result as any).cast?.hash || (result as any).hash}`);
 
             // Update DB - Mark as promoted (reset cooldown via updatedAt)
             await prisma.app.update({

@@ -40,10 +40,11 @@ export default async function AuditPage() {
                 updatedAt: app.updatedAt.toISOString(),
                 description: app.description || "",
                 urls: {
-                    sourceCast: `https://warpcast.com/${builderHandle}/${app.id}`,
+                    sourceCast: urls.sourceCast || `https://warpcast.com/${builderHandle}/${app.id}`,
                     baseApp: signal.appUrl || urls.app || null,
                     demo: urls.demo?.[0] || null
                 },
+                source: breakdown.candidate?.cast?.source || 'FARCASTER',
                 insight: (app as any).agentInsight || "Analysis pending.",
                 confidence: (app.builder as any)?.confidenceLevel || "NORMAL",
 

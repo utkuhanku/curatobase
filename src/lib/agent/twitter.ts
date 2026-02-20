@@ -4,12 +4,25 @@ export class TwitterAgent {
     private client: TwitterApi | null = null;
     private hasConfig = false;
 
+    // List of key Base ecosystem builders/pioneers to monitor
+    // Hardcoded for now, could be moved to DB or config
+    private PIONEERS = [
+        'jessepollak', // Jesse Pollak
+        'brian_armstrong' // Brian Armstrong
+        // Add more key figures here
+    ];
+
     constructor() {
+        // For search/read-only, we generally just need the Bearer Token 
+        // OR the AppKey/Secret for app-only auth. 
+        // We will use the existing env variables.
         const appKey = process.env.TWITTER_API_KEY;
         const appSecret = process.env.TWITTER_API_SECRET;
         const accessToken = process.env.TWITTER_ACCESS_TOKEN;
         const accessSecret = process.env.TWITTER_ACCESS_SECRET;
 
+        // For V2 search, a Bearer token is often easiest, but user context works too.
+        // We will try to instantiate with what we have.
         if (appKey && appSecret && accessToken && accessSecret) {
             this.client = new TwitterApi({
                 appKey,
@@ -18,78 +31,90 @@ export class TwitterAgent {
                 accessSecret,
             });
             this.hasConfig = true;
+        } else if (process.env.TWITTER_BEARER_TOKEN) {
+            // Fallback to app-only bearer token if provided
+            this.client = new TwitterApi(process.env.TWITTER_BEARER_TOKEN);
+            this.hasConfig = true;
         } else {
-            console.warn("⚠️ Twitter Agent missing keys in env. Publishing will be skipped.");
+            console.warn("⚠️ Twitter Agent missing keys in env. Ingestion will be skipped.");
         }
     }
 
-    async postCycleSummary(cycleId: string, curatedApps: any[], topPicks: any[]) {
+    /**
+     * Fetches recent tweets from Base pioneers or containing specific keywords.
+     * Returns an array formatted similarly to Neynar Casts for the ingest pipeline.
+     */
+    async fetchEcosystemSignals(): Promise<any[]> {
         if (!this.hasConfig || !this.client) {
-            console.log("🚫 Twitter Agent disabled (no keys). Skipping post.");
-            return;
+            console.log("🚫 Twitter Agent disabled (no keys). Skipping Twitter fetch.");
+            return [];
         }
 
-        const PRESTIGE_LIMIT = 3;
-        const PICK_LIMIT = 5;
+        console.log("🐦 Fetching ecosystem signals from X (Twitter)...");
+        const results: any[] = [];
 
-        // Construct Thread / Post
-        // Limit to 280 chars logic or thread.
-        // Simplified strategy: Single compact post or simple thread.
-        // User requirements: "List of TOP PICK and PRESTIGE apps" with "appKey", "proof summary", "reward status", "anchor".
-
-        // Let's make a thread.
-        // Tweet 1: Header + Stat
-        const date = new Date().toISOString().split('T')[0];
-        let threadText = [`🤖 CuratoBase Cycle ${cycleId} [${date}]\n\nPrestige: ${curatedApps.length}\nTop Picks: ${topPicks.length}\n\n#Base #BuildOnBase`];
-
-        // Tweet 2...N: The Apps
-        const allApps = [...curatedApps, ...topPicks];
-
-        for (const app of allApps) {
-            const breakdown = app.scoreBreakdown ? JSON.parse(app.scoreBreakdown) : {};
-            const facts = breakdown.appFacts || {};
-            const verdict = app.agentInsight || "No summary";
-
-            const isPrestige = app.status === 'CURATED';
-            const badge = isPrestige ? "🏆 PRESTIGE" : "⭐ TOP PICK";
-
-            const lines = [
-                `${badge}: ${facts.appKey || app.name}`,
-                `📝 ${verdict.replace("Proof summary: ", "")}`,
-            ];
-
-            if (facts.rewardVerified) {
-                const rewardIcon = facts.rewardVerified === 'VERIFIED' ? '✅' : '⚠️';
-                lines.push(`💰 Reward: ${facts.rewardVerified} ${rewardIcon}`);
-            }
-
-            if (isPrestige && breakdown.tags?.includes("ANCHORED")) {
-                // We'd ideally link the tx, but user asked for "anchor tx".
-                // We likely don't have the tx hash in the 'app' object directly unless we query Signal or store it.
-                // run-agent-cycle stores it in StateStore, but not easily accessible here?
-                // Actually we just updated prisma to have it logic? No.
-                // We can imply it from "ANCHORED" tag for now or just say "Anchored".
-                lines.push(`⚓ Anchored on-chain`);
-            }
-
-            threadText.push(lines.join('\n'));
-        }
-
-        // Post Thread
         try {
-            console.log("🐦 Posting to X...");
-            if (allApps.length === 0) {
-                console.log("   No apps to publish.");
-                return;
+            // Construct a search query:
+            // "base.app" OR "reward" from specific users, OR just "base.app" globally if we want (rate limits apply).
+            // For precision, let's search for "base.app" from our pioneers OR in general with high engagement.
+            // A simple query to start: tweets from pioneers containing "base.app" or "build"
+
+            const fromQuery = this.PIONEERS.map(p => `from:${p}`).join(' OR ');
+            // Query: (from:jessepollak OR from:...) (base.app OR reward OR build)
+            // Note: Twitter v2 basic search limits apply.
+            const query = `(${fromQuery}) (base.app OR reward)`;
+
+            console.log(`   Query: ${query}`);
+
+            // Fetch recent (last 7 days for standard v2 search)
+            const searchBase = await this.client.v2.search(query, {
+                'tweet.fields': ['created_at', 'public_metrics', 'entities', 'author_id'],
+                'expansions': ['author_id'],
+                'user.fields': ['username', 'name'],
+                max_results: 50 // Keep small to avoid rate limits
+            });
+
+            // Process results
+            const tweets = searchBase.tweets || [];
+            const includes = searchBase.includes;
+
+            for (const tweet of tweets) {
+                // Find author details
+                const author = includes?.users?.find((u: any) => u.id === tweet.author_id);
+
+                // Map to a "Cast-like" object so our normalizer can handle it easily
+                const normalizedTweet = {
+                    hash: tweet.id, // Use tweet ID as hash
+                    text: tweet.text,
+                    author: {
+                        username: author?.username || 'unknown_twitter_user',
+                        displayName: author?.name || 'Unknown',
+                        fid: 0 // No FID for Twitter users, indicate it's external
+                    },
+                    timestamp: tweet.created_at || new Date().toISOString(),
+                    replies: { count: tweet.public_metrics?.reply_count || 0 },
+                    reactions: { count: tweet.public_metrics?.like_count || 0 },
+                    recasts: { count: tweet.public_metrics?.retweet_count || 0 }, // Map RTs to recasts
+                    embeds: [], // We could parse tweet.entities.urls here, but normalizer also checks text
+                    source: 'TWITTER' // Custom flag to identify origin
+                };
+
+                // Extract URLs from entities to pass as embeds to mimic Farcaster
+                if (tweet.entities && tweet.entities.urls) {
+                    normalizedTweet.embeds = tweet.entities.urls.map((u: any) => ({
+                        url: u.expanded_url || u.url
+                    })) as any;
+                }
+
+                results.push(normalizedTweet);
             }
 
-            // Simple robust threading
-            // twitter-api-v2 .tweetThread
-            await this.client.v2.tweetThread(threadText);
-            console.log("✅ Posted to X successfully.");
+            console.log(`✅ Fetched ${results.length} signals from X.`);
 
-        } catch (error) {
-            console.error("❌ Failed to post to X:", error);
+        } catch (error: any) {
+            console.error("❌ Failed to fetch from X:", error?.message || error);
         }
+
+        return results;
     }
 }

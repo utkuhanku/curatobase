@@ -25,6 +25,7 @@ export type TerminalApp = {
     updatedAt: string;
     description: string;
     urls: { sourceCast?: string, baseApp?: string, demo?: string };
+    source: string;
     insight: string;
     confidence: string;
 };
@@ -224,7 +225,10 @@ export default function Terminal({ data, reports, lastCycle }: TerminalProps) {
                                                 <div className="text-[#7CFFB2] font-bold truncate group-hover:text-[#00FF7A] text-xs">
                                                     {app.appKey}
                                                 </div>
-                                                <div className="text-[#2B5C3F] text-[10px] truncate">@{app.builderHandle}</div>
+                                                <div className="text-[#2B5C3F] text-[10px] truncate">
+                                                    @{app.builderHandle}
+                                                    {app.source === 'TWITTER' ? <span className="ml-2 text-blue-400 opacity-80">[X]</span> : <span className="ml-2 opacity-50">[FC]</span>}
+                                                </div>
                                             </div>
 
                                             {/* Status */}
@@ -296,6 +300,10 @@ export default function Terminal({ data, reports, lastCycle }: TerminalProps) {
                                         <div className="flex justify-between border-b border-[#0A2A1A]/50 pb-1 border-dashed">
                                             <span className="opacity-60 text-[#2B5C3F]">SEEN_COUNT</span>
                                             <span>{selectedApp.seenCount} CYCLES</span>
+                                        </div>
+                                        <div className="flex justify-between border-b border-[#0A2A1A]/50 pb-1 border-dashed">
+                                            <span className="opacity-60 text-[#2B5C3F]">SOURCE</span>
+                                            <span>{selectedApp.source === 'TWITTER' ? 'X (TWITTER)' : 'FARCASTER'}</span>
                                         </div>
                                     </div>
                                 </section>

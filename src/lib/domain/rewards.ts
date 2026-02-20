@@ -70,9 +70,13 @@ export class RewardVerifier {
             // For now, if "sent reward" and tx success, we lean verified.
             return { status: 'UNVERIFIED', txHash, details: 'Tx successful but no value/transfer logs detected' };
 
-        } catch (error) {
-            console.error("Reward verification error:", error);
+        } catch (error: any) {
             // Likely not found or RPC error
+            if (error.name === 'TransactionReceiptNotFoundError' || error.message?.includes('could not be found')) {
+                console.log(`⚠️ Reward verification: Tx ${txHash} not yet mined or not found on Base.`);
+            } else {
+                console.log(`⚠️ Reward verification issue: ${error.message || 'Unknown RPC error'}`);
+            }
             return { status: 'UNVERIFIED', txHash, details: 'RPC Error or Not Found' };
         }
     }

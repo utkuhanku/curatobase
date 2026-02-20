@@ -53,6 +53,9 @@ export class CastNormalizer {
         if (neynarCast.warpcast_url || neynarCast.sourceUrl) {
             sourceUrl = neynarCast.warpcast_url || neynarCast.sourceUrl;
             sourceUrlStatus = "OK";
+        } else if (neynarCast.source === 'TWITTER' && rawUsername && rawHash) {
+            sourceUrl = `https://twitter.com/${rawUsername}/status/${rawHash}`;
+            sourceUrlStatus = "OK";
         } else {
             // Check Primitives for Fallback
             if (rawHash) {
@@ -105,7 +108,7 @@ export class CastNormalizer {
             embeds: embeds,
             mentions: neynarCast.mentioned_profiles?.map((p: any) => p.username) || [],
             channelId: neynarCast.channel?.id || neynarCast.parent_url,
-            source: sourceTag,
+            source: neynarCast.source || sourceTag,
 
             sourceUrl,
             sourceUrlStatus,
