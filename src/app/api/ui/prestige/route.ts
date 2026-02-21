@@ -39,8 +39,23 @@ export async function GET() {
             if (postUrl === `https://base.org` && urls.demo) postUrl = urls.demo;
             if (postUrl === `https://base.org` && urls.website) postUrl = urls.website;
 
-            // Name
-            const name = app.name?.startsWith('App 0x') ? `Project ${app.id.substring(0, 6)}` : app.name;
+            // Name Resolution
+            let name = app.name;
+            const isPlaceholder = name?.startsWith('App 0x') || name?.startsWith('Project by @');
+
+            if (isPlaceholder && app.description) {
+                // Try to find the app name in the description (e.g. '@DropCast', or capitalized words after 'on')
+                const onMatch = app.description.match(/on\s+@?([A-Za-z0-xyz]+)/i);
+                if (onMatch && onMatch[1] && onMatch[1].toLowerCase() !== 'base' && onMatch[1].toLowerCase() !== 'farcaster') {
+                    name = onMatch[1];
+                } else {
+                    // Fallback to Author handle as the project name
+                    const builderMatch = app.description.match(/by\s+@([A-Za-z0-9_]+)/i);
+                    name = builderMatch ? `Studio ${builderMatch[1]}` : `Curation Target`;
+                }
+            } else if (name?.startsWith('App 0x')) {
+                name = `Curation Target`;
+            }
 
             return {
                 id: app.id,

@@ -72,8 +72,23 @@ export async function GET() {
             } catch (e) { }
         }
 
+        let displayTitle = topApp.name || `Discovered App`;
+        const isPlaceholder = displayTitle.startsWith('App 0x') || displayTitle.startsWith('Project by @');
+
+        if (isPlaceholder && topApp.description) {
+            const onMatch = topApp.description.match(/on\s+@?([A-Za-z0-xyz]+)/i);
+            if (onMatch && onMatch[1] && onMatch[1].toLowerCase() !== 'base' && onMatch[1].toLowerCase() !== 'farcaster') {
+                displayTitle = onMatch[1];
+            } else {
+                const builderMatch = topApp.description.match(/by\s+@([A-Za-z0-9_]+)/i);
+                displayTitle = builderMatch ? `Studio ${builderMatch[1]}` : `Curation Target`;
+            }
+        } else if (displayTitle.startsWith('App 0x')) {
+            displayTitle = `Curation Target`;
+        }
+
         const payload = {
-            title: topApp.name || `Discovered App ${topApp.id.substring(0, 6)}`,
+            title: displayTitle,
             subtitle: topApp.description?.substring(0, 100) || `High-signal application discovered by autonomous agent.`,
             confidence: `${topApp.curationScore.toFixed(1)}%`,
             sentiment,
