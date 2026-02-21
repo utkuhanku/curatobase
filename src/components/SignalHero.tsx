@@ -41,88 +41,52 @@ export function SignalHero() {
 
     return (
         <section className={`relative group transition-all duration-1000 ${animate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            <div className="absolute -inset-1 bg-gradient-to-tr from-[#1652F0]/20 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition duration-1000 pointer-events-none"></div>
-            <div className="relative bg-[#030303]/80 backdrop-blur-xl rounded-2xl border border-white/[0.05] overflow-hidden flex flex-col md:flex-row min-h-[400px]">
+            <div className="absolute -inset-1 bg-gradient-to-tr from-[#1652F0]/20 to-purple-500/10 rounded-[40px] opacity-0 group-hover:opacity-100 blur-2xl transition duration-1000 pointer-events-none"></div>
+            <div className="relative bg-[#030303]/90 backdrop-blur-2xl rounded-[40px] border border-white/[0.03] overflow-hidden min-h-[500px] flex flex-col justify-center items-center text-center p-8 md:p-24 shadow-2xl">
 
-                {/* LEFT: SIGNAL DATA */}
-                <div className="flex-1 p-8 md:p-12 space-y-6 flex flex-col justify-center">
-                    <div className="flex justify-between items-start">
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1652F0]/10 text-[#1652F0] text-[10px] tracking-widest font-bold uppercase border border-[#1652F0]/20">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#1652F0] animate-pulse"></span>
-                            Live Intelligence
-                        </div>
-                        <div className="text-gray-500 text-[10px] font-mono uppercase tracking-widest">
-                            CONFIDENCE: <span className="text-white font-bold">{signal.confidence}</span>
-                        </div>
+                <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-[#1652F0]/5 text-[#1652F0] text-[10px] tracking-[0.3em] font-bold uppercase border border-[#1652F0]/10 mb-12">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#1652F0] animate-pulse shadow-[0_0_10px_#1652F0]"></span>
+                    Live Intercept
+                </div>
+
+                <div className="max-w-4xl space-y-8">
+                    <h2 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-gray-100 to-gray-500 leading-[0.9] text-balance">
+                        {signal.title}
+                    </h2>
+
+                    <p className="text-xl md:text-2xl text-gray-400 font-light leading-relaxed text-balance mx-auto max-w-2xl">
+                        {signal.subtitle}
+                    </p>
+                </div>
+
+                <div className="mt-16 pt-12 border-t border-white/[0.03] w-full max-w-2xl grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div className="flex flex-col items-center">
+                        <span className="text-[10px] uppercase text-gray-600 mb-2 font-bold tracking-widest whitespace-nowrap">Confidence</span>
+                        <span className="text-xl text-white font-mono tracking-tighter">{signal.confidence}</span>
                     </div>
-
-                    <div>
-                        <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400 mb-4 leading-tight text-balance">
-                            {signal.title}
-                        </h2>
-                        <p className="text-lg text-gray-400 font-light leading-relaxed border-l-2 border-[#1652F0]/50 pl-4 py-1">
-                            {signal.subtitle}
-                        </p>
+                    <div className="flex flex-col items-center">
+                        <span className="text-[10px] uppercase text-gray-600 mb-2 font-bold tracking-widest whitespace-nowrap">Sentiment</span>
+                        <span className="text-white flex items-center gap-2 font-mono tracking-tighter text-xl">
+                            {signal.sentiment}
+                        </span>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-4 text-xs text-gray-400 border-t border-white/[0.05] pt-6">
-                        <div>
-                            <span className="block text-[10px] uppercase text-gray-600 mb-1.5 font-bold tracking-widest">Sentiment Analysis</span>
-                            <span className="text-white flex items-center gap-2 font-mono">
-                                <Activity size={14} className="text-[#00FF7A]" />
-                                {signal.sentiment}
-                            </span>
-                        </div>
-                        <div>
-                            <span className="block text-[10px] uppercase text-gray-600 mb-1.5 font-bold tracking-widest">Author Reputation</span>
-                            <span className="text-white flex items-center gap-2 font-mono">
-                                <ShieldCheck size={14} className="text-[#1652F0]" />
-                                {signal.authorStats}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="pt-6 mt-auto">
-                        <a
-                            href={signal.signalUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 bg-white text-black hover:bg-gray-200 px-6 py-3 rounded-full font-bold text-xs tracking-widest uppercase transition-all"
-                        >
-                            Access Raw Signal <ArrowUpRight size={14} />
-                        </a>
+                    <div className="flex flex-col items-center col-span-2 md:col-span-2">
+                        <span className="text-[10px] uppercase text-gray-600 mb-2 font-bold tracking-widest whitespace-nowrap">Primary Driver</span>
+                        <span className="text-sm text-gray-300 font-light leading-snug max-w-[200px] text-balance">
+                            {signal.reason}
+                        </span>
                     </div>
                 </div>
 
-                {/* RIGHT: AGENT LOGIC / WHY */}
-                <div className="w-full md:w-96 bg-gradient-to-b from-white/[0.02] to-transparent border-l border-white/[0.05] p-8 md:p-12 flex flex-col justify-center space-y-8">
-                    <div>
-                        <h3 className="text-[10px] font-bold text-[#1652F0] uppercase tracking-widest mb-2 flex items-center gap-2">
-                            <Zap size={10} /> Curator Logic
-                        </h3>
-                        <div className="h-px w-8 bg-[#1652F0]/30" />
-                    </div>
-
-                    <ul className="space-y-6 text-sm text-gray-300 font-light leading-relaxed">
-                        <li className="flex gap-4">
-                            <div className="w-6 h-6 rounded-full bg-[#00FF7A]/10 flex items-center justify-center shrink-0 mt-0.5 border border-[#00FF7A]/20">
-                                <div className="w-1.5 h-1.5 bg-[#00FF7A] rounded-full" />
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-widest mb-1">Primary Driver</span>
-                                <span>{signal.reason}</span>
-                            </div>
-                        </li>
-                        <li className="flex gap-4">
-                            <div className="w-6 h-6 rounded-full bg-[#1652F0]/10 flex items-center justify-center shrink-0 mt-0.5 border border-[#1652F0]/20">
-                                <div className="w-1.5 h-1.5 bg-[#1652F0] rounded-full" />
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-widest mb-1">Classification</span>
-                                <span>{signal.category} module triggered.</span>
-                            </div>
-                        </li>
-                    </ul>
+                <div className="mt-16">
+                    <a
+                        href={signal.signalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-3 bg-white text-black hover:bg-gray-200 px-8 py-4 rounded-full font-black text-xs tracking-[0.2em] uppercase transition-all duration-500 shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:scale-105 group"
+                    >
+                        Access Raw Signal <ArrowUpRight size={16} className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+                    </a>
                 </div>
 
             </div>
