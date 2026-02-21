@@ -52,18 +52,18 @@ export default async function Home() {
 
                 {/* LEFT: Copy & CTAs */}
                 <div className="w-full lg:w-[50%] flex flex-col items-center lg:items-start text-center lg:text-left shrink-0 z-20">
-                    <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-[100px] border border-white/10 bg-white/5 backdrop-blur-md text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-gray-300 mb-8 sm:mb-10 animate-fade-in-up font-mono">
+                    <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-[100px] border border-white/10 bg-white/5 backdrop-blur-md text-[9px] sm:text-[11px] font-bold tracking-[0.2em] text-gray-300 mb-6 sm:mb-10 animate-fade-in-up font-mono">
                         <span className="w-2 h-2 rounded-full bg-[#00FF7A] animate-pulse shadow-[0_0_12px_#00FF7A]" />
                         AUTONOMOUS CURATOR
                     </div>
 
-                    <h1 className="text-5xl sm:text-7xl lg:text-7xl xl:text-[6.5rem] font-black tracking-tighter mb-8 leading-[0.95] text-white animate-fade-in-up delay-100 text-balance w-full">
-                        Curating the<br className="hidden lg:block" />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1652F0] to-cyan-400 lg:ml-0 mx-2">On-Chain</span><br className="hidden lg:block" />
-                        Economy.
+                    <h1 className="text-[clamp(3.5rem,8vw,6.5rem)] lg:text-7xl xl:text-[6.5rem] font-black tracking-tighter mb-6 lg:mb-8 leading-[0.9] text-white animate-fade-in-up delay-100 flex flex-col items-center lg:items-start w-full">
+                        <span>Curating the</span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1652F0] to-cyan-400">On-Chain</span>
+                        <span>Economy.</span>
                     </h1>
 
-                    <p className="text-gray-400 text-lg sm:text-xl lg:text-2xl max-w-xl mb-12 leading-relaxed font-light animate-fade-in-up delay-200 tracking-tight text-balance">
+                    <p className="text-gray-400 text-base sm:text-lg lg:text-xl max-w-lg mb-10 lg:mb-12 leading-relaxed font-light animate-fade-in-up delay-200 tracking-tight">
                         An autonomous AI agent monitoring the Base ecosystem. We intercept noisy social signals, verify on-chain proofs, and index top builders.
                     </p>
 
@@ -80,18 +80,18 @@ export default async function Home() {
                     </div>
 
                     {/* Metric Band Built-in */}
-                    <div className="flex items-center justify-center lg:justify-start gap-12 sm:gap-16 mt-16 pt-10 border-t border-white/[0.05] animate-fade-in-up delay-400 w-full max-w-md mx-auto lg:mx-0">
+                    <div className="flex items-center justify-center lg:justify-start gap-12 sm:gap-16 mt-12 lg:mt-16 pt-8 lg:pt-10 border-t border-white/[0.05] animate-fade-in-up delay-400 w-full max-w-md mx-auto lg:mx-0">
                         <div className="flex flex-col items-center lg:items-start">
-                            <div className="text-4xl sm:text-5xl font-black text-white mb-2 tracking-tighter tabular-nums flex items-baseline gap-1">
+                            <div className="text-3xl sm:text-5xl font-black text-white mb-1 lg:mb-2 tracking-tighter tabular-nums flex items-baseline gap-1">
                                 {formatNumber(totalSignals)}
-                                <span className="text-[#1652F0] text-lg tracking-normal font-medium">sigs</span>
+                                <span className="text-[#1652F0] text-sm lg:text-lg tracking-normal font-medium">sigs</span>
                             </div>
                             <div className="text-[9px] sm:text-[10px] text-gray-500 uppercase font-bold tracking-[0.2em] font-mono flex items-center gap-1.5"><Activity size={12} /> Analyzed</div>
                         </div>
                         <div className="flex flex-col items-center lg:items-start">
-                            <div className="text-4xl sm:text-5xl font-black text-white mb-2 tracking-tighter tabular-nums flex items-baseline gap-1">
+                            <div className="text-3xl sm:text-5xl font-black text-white mb-1 lg:mb-2 tracking-tighter tabular-nums flex items-baseline gap-1">
                                 {verifiedApps}
-                                <span className="text-[#00FF7A] text-lg tracking-normal font-medium">ok</span>
+                                <span className="text-[#00FF7A] text-sm lg:text-lg tracking-normal font-medium">ok</span>
                             </div>
                             <div className="text-[9px] sm:text-[10px] text-gray-500 uppercase font-bold tracking-[0.2em] font-mono flex items-center gap-1.5"><Shield size={12} /> Curated</div>
                         </div>
