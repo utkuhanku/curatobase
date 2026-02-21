@@ -30,10 +30,10 @@ export function SignalHero() {
 
     if (!signal) {
         return (
-            <div className="h-[400px] w-full bg-[#050505] rounded-xl border border-white/5 flex items-center justify-center">
-                <div className="flex flex-col items-center gap-4 opacity-50">
-                    <Zap size={24} className="animate-pulse text-electric-blue" />
-                    <div className="text-[10px] font-mono tracking-widest text-electric-blue">LOADING LATEST SIGNAL...</div>
+            <div className="h-[400px] w-full bg-[#030303] rounded-2xl border border-white/[0.03] flex items-center justify-center">
+                <div className="flex flex-col items-center gap-4 opacity-30">
+                    <Zap size={24} className="animate-pulse text-[#1652F0]" />
+                    <div className="text-[10px] font-mono tracking-widest text-[#1652F0]">AWAITING INTERCEPT...</div>
                 </div>
             </div>
         );
@@ -41,74 +41,86 @@ export function SignalHero() {
 
     return (
         <section className={`relative group transition-all duration-1000 ${animate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-electric-blue to-purple-600 rounded-xl opacity-30 group-hover:opacity-50 blur transition duration-1000"></div>
-            <div className="relative bg-[#050505] rounded-xl border border-white/10 overflow-hidden flex flex-col md:flex-row min-h-[400px]">
+            <div className="absolute -inset-1 bg-gradient-to-tr from-[#1652F0]/20 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition duration-1000 pointer-events-none"></div>
+            <div className="relative bg-[#030303]/80 backdrop-blur-xl rounded-2xl border border-white/[0.05] overflow-hidden flex flex-col md:flex-row min-h-[400px]">
 
                 {/* LEFT: SIGNAL DATA */}
-                <div className="flex-1 p-8 md:p-10 space-y-6 flex flex-col justify-center">
+                <div className="flex-1 p-8 md:p-12 space-y-6 flex flex-col justify-center">
                     <div className="flex justify-between items-start">
-                        <div className="inline-flex items-center gap-2 px-2 py-1 rounded bg-electric-blue/10 text-electric-blue text-[10px] tracking-widest font-bold uppercase">
-                            <Zap size={10} /> Live Intercept
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1652F0]/10 text-[#1652F0] text-[10px] tracking-widest font-bold uppercase border border-[#1652F0]/20">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#1652F0] animate-pulse"></span>
+                            Live Intelligence
                         </div>
-                        <div className="text-gray-500 text-[10px] font-mono">
-                            CONFIDENCE: <span className="text-white">{signal.confidence}</span>
+                        <div className="text-gray-500 text-[10px] font-mono uppercase tracking-widest">
+                            CONFIDENCE: <span className="text-white font-bold">{signal.confidence}</span>
                         </div>
                     </div>
 
                     <div>
-                        <h2 className="text-3xl md:text-5xl font-black tracking-tight text-white mb-3 leading-tight">
+                        <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400 mb-4 leading-tight text-balance">
                             {signal.title}
                         </h2>
-                        <p className="text-lg text-gray-400 font-light leading-relaxed border-l-2 border-electric-blue/50 pl-4 py-1">
+                        <p className="text-lg text-gray-400 font-light leading-relaxed border-l-2 border-[#1652F0]/50 pl-4 py-1">
                             {signal.subtitle}
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 text-xs text-gray-400 border-t border-white/5 pt-4">
+                    <div className="grid grid-cols-2 gap-4 text-xs text-gray-400 border-t border-white/[0.05] pt-6">
                         <div>
-                            <span className="block text-[10px] uppercase text-gray-600 mb-1">Sentiment Analysis</span>
-                            <span className="text-white flex items-center gap-2">
-                                <Activity size={12} className="text-green-500" />
+                            <span className="block text-[10px] uppercase text-gray-600 mb-1.5 font-bold tracking-widest">Sentiment Analysis</span>
+                            <span className="text-white flex items-center gap-2 font-mono">
+                                <Activity size={14} className="text-[#00FF7A]" />
                                 {signal.sentiment}
                             </span>
                         </div>
                         <div>
-                            <span className="block text-[10px] uppercase text-gray-600 mb-1">Author Reputation</span>
-                            <span className="text-white flex items-center gap-2">
-                                <ShieldCheck size={12} className="text-blue-500" />
+                            <span className="block text-[10px] uppercase text-gray-600 mb-1.5 font-bold tracking-widest">Author Reputation</span>
+                            <span className="text-white flex items-center gap-2 font-mono">
+                                <ShieldCheck size={14} className="text-[#1652F0]" />
                                 {signal.authorStats}
                             </span>
                         </div>
                     </div>
 
-                    <div className="pt-4 mt-auto">
+                    <div className="pt-6 mt-auto">
                         <a
                             href={signal.signalUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 bg-white text-black hover:bg-gray-200 px-6 py-3 rounded font-bold text-sm tracking-wide transition-all"
+                            className="inline-flex items-center gap-2 bg-white text-black hover:bg-gray-200 px-6 py-3 rounded-full font-bold text-xs tracking-widest uppercase transition-all"
                         >
-                            OPEN SIGNAL SOURCE <ArrowUpRight size={14} />
+                            Access Raw Signal <ArrowUpRight size={14} />
                         </a>
                     </div>
                 </div>
 
                 {/* RIGHT: AGENT LOGIC / WHY */}
-                <div className="w-full md:w-80 bg-white/[0.02] border-l border-white/5 p-8 flex flex-col justify-center space-y-6">
-                    <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Curator Logic</h3>
+                <div className="w-full md:w-96 bg-gradient-to-b from-white/[0.02] to-transparent border-l border-white/[0.05] p-8 md:p-12 flex flex-col justify-center space-y-8">
+                    <div>
+                        <h3 className="text-[10px] font-bold text-[#1652F0] uppercase tracking-widest mb-2 flex items-center gap-2">
+                            <Zap size={10} /> Curator Logic
+                        </h3>
+                        <div className="h-px w-8 bg-[#1652F0]/30" />
+                    </div>
 
-                    <ul className="space-y-4 text-xs text-gray-400">
-                        <li className="flex gap-3">
-                            <div className="w-4 h-4 rounded-full bg-green-500/20 flex items-center justify-center shrink-0 mt-0.5">
-                                <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+                    <ul className="space-y-6 text-sm text-gray-300 font-light leading-relaxed">
+                        <li className="flex gap-4">
+                            <div className="w-6 h-6 rounded-full bg-[#00FF7A]/10 flex items-center justify-center shrink-0 mt-0.5 border border-[#00FF7A]/20">
+                                <div className="w-1.5 h-1.5 bg-[#00FF7A] rounded-full" />
                             </div>
-                            <span><strong>Selection Reason:</strong> {signal.reason}</span>
+                            <div className="flex flex-col">
+                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-widest mb-1">Primary Driver</span>
+                                <span>{signal.reason}</span>
+                            </div>
                         </li>
-                        <li className="flex gap-3">
-                            <div className="w-4 h-4 rounded-full bg-blue-500/20 flex items-center justify-center shrink-0 mt-0.5">
-                                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+                        <li className="flex gap-4">
+                            <div className="w-6 h-6 rounded-full bg-[#1652F0]/10 flex items-center justify-center shrink-0 mt-0.5 border border-[#1652F0]/20">
+                                <div className="w-1.5 h-1.5 bg-[#1652F0] rounded-full" />
                             </div>
-                            <span><strong>Category:</strong> {signal.category} match confirmed.</span>
+                            <div className="flex flex-col">
+                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-widest mb-1">Classification</span>
+                                <span>{signal.category} module triggered.</span>
+                            </div>
                         </li>
                     </ul>
                 </div>

@@ -149,18 +149,40 @@ function HighlightLog({ text }: { text: string }) {
     const lines = text.split('\n');
     return (
         <>
-            {lines.map((line, i) => {
-                let className = "";
-                if (line.includes('STATUS: DELIVERED')) className = "text-[#00FF7A] font-bold";
-                else if (line.includes('STATUS: PROMISED_UNDER_OBSERVATION')) className = "text-[#FFD166] font-bold";
-                else if (line.includes('STATUS: PROMISED_NO_PROOF')) className = "text-[#FF4D4D] font-bold";
-                else if (line.includes('USER_SIGNAL: SAFE_TO_USE')) className = "text-[#00FF7A]";
-                else if (line.includes('USER_SIGNAL: AVOID')) className = "text-[#FF4D4D]";
-                else if (line.includes('DEV CONTEXT:')) className = "text-xs opacity-50 mt-2 font-bold";
-                else if (line.includes('🔹')) className = "text-white font-bold block mb-1";
+            {(() => {
+                let inInsightBlock = false;
+                return lines.map((line, i) => {
+                    let className = "";
 
-                return <div key={i} className={className}>{line || '\u00A0'}</div>
-            })}
+                    if (line.includes('STATUS: DELIVERED')) className = "text-[#00FF7A] font-bold";
+                    else if (line.includes('STATUS: PROMISED_UNDER_OBSERVATION')) className = "text-[#FFD166] font-bold";
+                    else if (line.includes('STATUS: PROMISED_NO_PROOF')) className = "text-[#FF4D4D] font-bold";
+                    else if (line.includes('USER_SIGNAL: SAFE_TO_USE')) className = "text-[#00FF7A]";
+                    else if (line.includes('USER_SIGNAL: AVOID')) className = "text-[#FF4D4D]";
+                    else if (line.includes('DEV CONTEXT:')) {
+                        inInsightBlock = false;
+                        className = "text-xs opacity-50 mt-2 font-bold uppercase tracking-wider";
+                    }
+                    else if (line.includes('AGENT INSIGHT:')) {
+                        inInsightBlock = true;
+                        className = "text-blue-400 font-bold mt-3 uppercase tracking-wider text-xs";
+                    }
+                    else if (line.includes('🔹')) {
+                        inInsightBlock = false;
+                        className = "text-white font-bold text-lg block mb-2";
+                    }
+
+                    // Style everything inside the insight block
+                    if (inInsightBlock && !line.includes('AGENT INSIGHT:')) {
+                        // Skip empty lines to prevent floating borders
+                        if (line.trim().length > 0) {
+                            className = "text-blue-400/90 italic pl-4 border-l-2 border-blue-500/40 my-1 py-0.5";
+                        }
+                    }
+
+                    return <div key={i} className={className}>{line || '\u00A0'}</div>
+                });
+            })()}
         </>
     );
 }

@@ -32,25 +32,24 @@ export function RadarDashboard() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="p-6 rounded-xl bg-gradient-to-br from-[#080a0c] to-[#0a0c10] border border-white/5 relative overflow-hidden group hover:border-blue-500/20 transition-colors"
+                    className="p-6 md:p-8 rounded-2xl bg-[#030303] border border-white/[0.05] relative overflow-hidden group hover:bg-white/[0.02] transition-colors"
                 >
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <Activity className="text-blue-500" size={48} />
+                    <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-10 transition-opacity">
+                        <Activity className="text-[#1652F0]" size={64} />
                     </div>
                     <div className="flex flex-col h-full justify-between">
                         <div>
-                            <h3 className="text-[10px] font-bold text-blue-500/80 uppercase tracking-[0.2em] mb-3 flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#1652F0] animate-pulse"></span>
                                 Ecosystem Scan
                             </h3>
                             <div className="flex items-baseline gap-2">
-                                <span className="text-4xl font-black text-white tabular-nums tracking-tighter">1,420</span>
-                                <span className="text-xs text-gray-500 font-medium">signals</span>
+                                <span className="text-4xl md:text-5xl font-black text-white tracking-tighter tabular-nums text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400">1,420</span>
                             </div>
                         </div>
-                        <div className="mt-4 pt-4 border-t border-white/5">
-                            <p className="text-[10px] text-gray-500 leading-relaxed font-mono">
-                                Real-time ingestion of Farcaster casts and Base mainnet contract deployments.
+                        <div className="mt-6 pt-4 border-t border-white/[0.05]">
+                            <p className="text-[10px] text-gray-500 leading-relaxed font-mono uppercase tracking-widest">
+                                Signals / 24h
                             </p>
                         </div>
                     </div>
@@ -61,25 +60,24 @@ export function RadarDashboard() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.1 }}
-                    className="p-6 rounded-xl bg-gradient-to-br from-[#080a0c] to-[#0a0c10] border border-white/5 relative overflow-hidden group hover:border-amber-500/20 transition-colors"
+                    className="p-6 md:p-8 rounded-2xl bg-[#030303] border border-white/[0.05] relative overflow-hidden group hover:bg-white/[0.02] transition-colors"
                 >
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <Scan className="text-amber-500" size={48} />
+                    <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-10 transition-opacity">
+                        <Scan className="text-[#1652F0]" size={64} />
                     </div>
                     <div className="flex flex-col h-full justify-between">
                         <div>
-                            <h3 className="text-[10px] font-bold text-amber-500/80 uppercase tracking-[0.2em] mb-3 flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                AI Filtering
+                            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#1652F0]"></span>
+                                Filter Threshold
                             </h3>
                             <div className="flex items-baseline gap-2">
-                                <span className="text-4xl font-black text-white tabular-nums tracking-tighter">12</span>
-                                <span className="text-xs text-gray-500 font-medium">candidates</span>
+                                <span className="text-4xl md:text-5xl font-black text-white tracking-tighter tabular-nums text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400">12</span>
                             </div>
                         </div>
-                        <div className="mt-4 pt-4 border-t border-white/5">
-                            <p className="text-[10px] text-gray-500 leading-relaxed font-mono">
-                                Heuristic filter passing rate: 0.8%. Eliminating spam and low-effort forks.
+                        <div className="mt-6 pt-4 border-t border-white/[0.05]">
+                            <p className="text-[10px] text-gray-500 leading-relaxed font-mono uppercase tracking-widest">
+                                Valid Candidates
                             </p>
                         </div>
                     </div>
@@ -90,25 +88,24 @@ export function RadarDashboard() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.2 }}
-                    className="p-6 rounded-xl bg-gradient-to-br from-[#080a0c] to-[#0a0c10] border border-white/5 relative overflow-hidden group hover:border-green-500/20 transition-colors"
+                    className="p-6 md:p-8 rounded-2xl bg-[#030303] border border-white/[0.05] relative overflow-hidden group hover:bg-white/[0.02] transition-colors"
                 >
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <Award className="text-green-500" size={48} />
+                    <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-10 transition-opacity">
+                        <Award className="text-[#1652F0]" size={64} />
                     </div>
                     <div className="flex flex-col h-full justify-between">
                         <div>
-                            <h3 className="text-[10px] font-bold text-green-500/80 uppercase tracking-[0.2em] mb-3 flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></span>
-                                Curated Output
+                            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#00FF7A] shadow-[0_0_10px_#00FF7A]"></span>
+                                Elite Curation
                             </h3>
                             <div className="flex items-baseline gap-2">
-                                <span className="text-4xl font-black text-white tabular-nums tracking-tighter">1</span>
-                                <span className="text-xs text-gray-500 font-medium">gem found</span>
+                                <span className="text-4xl md:text-5xl font-black text-white tracking-tighter tabular-nums text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400">1</span>
                             </div>
                         </div>
-                        <div className="mt-4 pt-4 border-t border-white/5">
-                            <p className="text-[10px] text-gray-500 leading-relaxed font-mono">
-                                High-confidence signal verified by on-chain reputation and social graph.
+                        <div className="mt-6 pt-4 border-t border-white/[0.05]">
+                            <p className="text-[10px] text-gray-500 leading-relaxed font-mono uppercase tracking-widest">
+                                Promoted Project
                             </p>
                         </div>
                     </div>
@@ -133,60 +130,60 @@ export function RadarDashboard() {
                 </div>
 
                 {/* Main Card */}
-                <div className="bg-[#050505] border border-blue-900/30 rounded-2xl overflow-hidden relative">
+                <div className="bg-[#030303] border border-white/[0.05] rounded-3xl overflow-hidden relative group hover:border-[#1652F0]/20 transition-all duration-500">
                     {/* Background Grid Accent */}
-                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#1652f00a_1px,transparent_1px),linear-gradient(to_bottom,#1652f00a_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity" />
 
                     {topApp ? (
-                        <div className="relative z-10 p-8 md:p-10 grid grid-cols-1 md:grid-cols-5 gap-10 items-center">
+                        <div className="relative z-10 p-8 md:p-12 grid grid-cols-1 md:grid-cols-5 gap-10 lg:gap-16 items-center">
 
                             {/* App Details */}
-                            <div className="md:col-span-3 space-y-6">
+                            <div className="md:col-span-3 space-y-8">
                                 <div>
-                                    <h2 className="text-5xl font-bold text-white tracking-tight leading-tight mb-3">
+                                    <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400 tracking-tighter leading-tight mb-4 text-balance">
                                         {topApp.name}
                                     </h2>
-                                    <p className="text-lg text-gray-400 font-light leading-relaxed">
+                                    <p className="text-xl text-gray-400 font-light leading-relaxed text-balance">
                                         {topApp.description}
                                     </p>
                                 </div>
 
-                                <div className="flex flex-wrap gap-3">
+                                <div className="flex flex-wrap gap-4">
                                     {topApp.urls && JSON.parse(topApp.urls).baseApp && (
                                         <a href={JSON.parse(topApp.urls).baseApp} target="_blank"
-                                            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm rounded-lg transition-all flex items-center gap-2 shadow-lg shadow-blue-900/20 group">
-                                            Open Mini App <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                                            className="px-8 py-4 bg-white text-black hover:bg-gray-200 font-bold text-xs uppercase tracking-widest rounded-full transition-all flex items-center gap-3 group">
+                                            Open Application <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                                         </a>
                                     )}
                                 </div>
                             </div>
 
                             {/* Agent Analysis Panel */}
-                            <div className="md:col-span-2 bg-blue-950/10 border border-blue-900/20 rounded-xl p-6 relative">
-                                <div className="absolute -top-3 left-4 bg-[#050505] px-2 text-[10px] text-blue-400 font-mono uppercase tracking-widest">
-                                    Agent Analysis
+                            <div className="md:col-span-2 bg-gradient-to-b from-white/[0.02] to-transparent border border-white/[0.05] rounded-2xl p-8 relative">
+                                <div className="absolute -top-3 left-6 inline-flex items-center gap-2 bg-[#030303] px-3 font-mono text-[10px] text-[#1652F0] font-bold uppercase tracking-widest border border-white/[0.05] rounded-full">
+                                    <Zap size={10} /> Intelligence Report
                                 </div>
 
-                                <div className="space-y-4">
+                                <div className="space-y-6">
                                     <div>
-                                        <div className="text-[10px] text-gray-500 uppercase font-medium mb-1">Score</div>
-                                        <div className="text-3xl font-bold text-white flex items-baseline gap-2">
-                                            {topApp.curationScore} <span className="text-sm text-gray-600 font-normal">/ 100</span>
+                                        <div className="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-2">Confidence Score</div>
+                                        <div className="text-4xl font-black text-white flex items-baseline gap-2 tabular-nums">
+                                            {topApp.curationScore} <span className="text-sm text-gray-600 font-mono tracking-widest">/ 100</span>
                                         </div>
                                     </div>
 
                                     <div>
-                                        <div className="text-[10px] text-gray-500 uppercase font-medium mb-1">Reasoning</div>
-                                        <p className="text-sm text-blue-200/80 leading-relaxed italic">
+                                        <div className="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-2">Curator Reasoning</div>
+                                        <p className="text-sm text-blue-200/60 leading-relaxed font-light">
                                             "{topApp.agentInsight}"
                                         </p>
                                     </div>
 
-                                    <div className="pt-2 flex gap-2">
-                                        <div className="px-2 py-1 rounded bg-green-500/10 border border-green-500/20 text-[10px] text-green-400 font-mono">
+                                    <div className="pt-4 border-t border-white/[0.05] flex flex-wrap gap-3">
+                                        <div className="px-3 py-1.5 rounded-full bg-[#00FF7A]/10 border border-[#00FF7A]/20 text-[10px] text-[#00FF7A] font-mono tracking-widest uppercase">
                                             VERIFIED_CONTRACT
                                         </div>
-                                        <div className="px-2 py-1 rounded bg-blue-500/10 border border-blue-500/20 text-[10px] text-blue-400 font-mono">
+                                        <div className="px-3 py-1.5 rounded-full bg-[#1652F0]/10 border border-[#1652F0]/20 text-[10px] text-[#1652F0] font-mono tracking-widest uppercase">
                                             HIGH_ENGAGEMENT
                                         </div>
                                     </div>
@@ -212,27 +209,27 @@ export function RadarDashboard() {
                 className="grid grid-cols-1 lg:grid-cols-2 gap-8"
             >
                 {/* A. RECENT ACTIVITY LOG */}
-                <div className="bg-[#050607] border border-white/10 rounded-xl overflow-hidden flex flex-col h-[320px]">
-                    <div className="px-4 py-3 border-b border-white/5 bg-white/[0.02] flex justify-between items-center">
-                        <div className="flex items-center gap-2">
+                <div className="bg-[#030303] border border-white/[0.05] rounded-2xl overflow-hidden flex flex-col h-[320px]">
+                    <div className="px-6 py-4 border-b border-white/[0.05] bg-white/[0.02] flex justify-between items-center">
+                        <div className="flex items-center gap-3">
                             <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-                            <h3 className="text-xs font-mono font-bold text-gray-400 tracking-widest">LIVE_SCANNER_LOG</h3>
+                            <h3 className="text-[10px] font-mono font-bold text-gray-500 tracking-widest">LIVE_SCANNER_LOG</h3>
                         </div>
                         <div className="text-[10px] font-mono text-gray-600">ts: {new Date().toISOString().split('T')[1].split('.')[0]}</div>
                     </div>
 
-                    <div className="p-4 overflow-y-auto space-y-3 font-mono text-xs custom-scrollbar">
+                    <div className="p-4 overflow-y-auto space-y-2 font-mono text-xs custom-scrollbar">
                         {[
-                            { time: "10s ago", source: "warpcast", slug: "base-god-frame", status: "REJECTED", reason: "LOW_REPUTATION_SCORE", color: "text-red-500" },
-                            { time: "45s ago", source: "onchain", slug: "0x82...9a12", status: "PENDING", reason: "ANALYZING_CONTRACT...", color: "text-yellow-500" },
-                            { time: "2m ago", source: "warpcast", slug: "super-dapp-v2", status: "VERIFIED", reason: "HIGH_CONFIDENCE_SIGNAL", color: "text-green-500" },
-                            { time: "5m ago", source: "base-scan", slug: "0x11...b3c4", status: "REJECTED", reason: "NO_VERIFIED_SOURCE", color: "text-red-500" },
-                            { time: "12m ago", source: "warpcast", slug: "spam-bot-9000", status: "REJECTED", reason: "SPAM_HEURISTIC_MATCH", color: "text-red-500" },
-                            { time: "15m ago", source: "onchain", slug: "0xab...8812", status: "PENDING", reason: "AWAITING_BLOCK_CONFIRMATION", color: "text-yellow-500" },
+                            { time: "10s ago", source: "warpcast", slug: "base-god-frame", status: "REJECTED", reason: "LOW_REPUTATION_SCORE", color: "text-[#FF4D4D]" },
+                            { time: "45s ago", source: "onchain", slug: "0x82...9a12", status: "PENDING", reason: "ANALYZING_CONTRACT...", color: "text-[#FFD166]" },
+                            { time: "2m ago", source: "warpcast", slug: "super-dapp-v2", status: "VERIFIED", reason: "HIGH_CONFIDENCE_SIGNAL", color: "text-[#00FF7A]" },
+                            { time: "5m ago", source: "base-scan", slug: "0x11...b3c4", status: "REJECTED", reason: "NO_VERIFIED_SOURCE", color: "text-[#FF4D4D]" },
+                            { time: "12m ago", source: "warpcast", slug: "spam-bot-9000", status: "REJECTED", reason: "SPAM_HEURISTIC_MATCH", color: "text-[#FF4D4D]" },
+                            { time: "15m ago", source: "onchain", slug: "0xab...8812", status: "PENDING", reason: "AWAITING_BLOCK_CONFIRMATION", color: "text-[#FFD166]" },
                         ].map((log, i) => (
-                            <div key={i} className="grid grid-cols-12 gap-2 items-center hover:bg-white/[0.02] p-1 rounded transition-colors group">
+                            <div key={i} className="grid grid-cols-12 gap-2 items-center hover:bg-white/[0.02] p-2 rounded-lg transition-colors group">
                                 <div className="col-span-2 text-gray-600">{log.time}</div>
-                                <div className="col-span-3 text-blue-900/60 truncate group-hover:text-blue-500 transition-colors">[{log.source}]</div>
+                                <div className="col-span-3 text-[#1652F0]/60 truncate group-hover:text-[#1652F0] transition-colors">[{log.source}]</div>
                                 <div className="col-span-3 text-gray-400 truncate">{log.slug}</div>
                                 <div className={`col-span-4 text-right font-bold ${log.color} flex justify-end gap-2`}>
                                     <span>{log.status}</span>
@@ -248,9 +245,9 @@ export function RadarDashboard() {
                 {/* B. PROMOTION PROTOCOL STEPS (Moved here) */}
                 <div className="flex flex-col justify-between">
                     <div className="flex items-center gap-4 mb-6">
-                        <div className="h-px bg-white/10 flex-grow" />
+                        <div className="h-px bg-white/[0.05] flex-grow" />
                         <h3 className="text-xs font-mono font-bold text-gray-600 tracking-[0.3em]">PROMOTION_PROTOCOL_V1</h3>
-                        <div className="h-px bg-white/10 flex-grow" />
+                        <div className="h-px bg-white/[0.05] flex-grow" />
                     </div>
 
                     <div className="space-y-4 flex-grow">
@@ -259,13 +256,13 @@ export function RadarDashboard() {
                             { step: "02", title: "SIGNAL", sub: "ON FARCASTER", icon: Radio, desc: "Post with your 'base.app' link. This is the trigger signal the Agent listens for." },
                             { step: "03", title: "EARN", sub: "CURATION", icon: Award, desc: "High signal apps are verified and automatically promoted to this dashboard." }
                         ].map((s, i) => (
-                            <div key={i} className="group relative p-4 border border-white/5 hover:border-white/20 hover:bg-white/[0.02] transition-colors rounded-xl flex items-start gap-4">
-                                <div className="text-2xl font-black text-white/10 font-mono group-hover:text-electric-blue/20 transition-colors mt-1">{s.step}</div>
+                            <div key={i} className="group relative p-5 border border-white/[0.05] hover:border-white/20 hover:bg-white/[0.02] transition-colors rounded-2xl flex items-start gap-5">
+                                <div className="text-2xl font-black text-white/[0.05] font-mono group-hover:text-[#1652F0]/20 transition-colors mt-1">{s.step}</div>
                                 <div>
-                                    <h4 className="text-sm font-black text-white tracking-tight mb-1 flex items-center gap-2">
-                                        {s.title} <span className="text-[10px] font-mono text-electric-blue font-normal px-1.5 py-0.5 rounded bg-electric-blue/10 border border-electric-blue/20">{s.sub}</span>
+                                    <h4 className="text-sm font-black text-white tracking-tight mb-2 flex items-center gap-2">
+                                        {s.title} <span className="text-[10px] font-mono text-[#1652F0] font-bold tracking-widest px-2 py-0.5 rounded border border-[#1652F0]/20">{s.sub}</span>
                                     </h4>
-                                    <p className="text-xs text-gray-500 leading-relaxed group-hover:text-gray-400 transition-colors">{s.desc}</p>
+                                    <p className="text-xs text-gray-500 leading-relaxed font-light group-hover:text-gray-400 transition-colors">{s.desc}</p>
                                 </div>
                             </div>
                         ))}

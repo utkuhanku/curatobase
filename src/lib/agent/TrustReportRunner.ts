@@ -348,12 +348,19 @@ export class TrustReportRunner {
                 `   • Farcaster Activity: ${devCtx.activity}\n` +
                 `   • Signal Note: ${devCtx.signalNote}\n`;
 
+            let insightBlock = '';
+            if (item.app.agentInsight) {
+                // Ensure newlines in insight are properly indented
+                insightBlock = `\n   AGENT INSIGHT:\n   • ${item.app.agentInsight.replace(/\n/g, '\n   • ')}\n`;
+            }
+
             return `🔹 ${item.app.name} (${item.appUrl || 'No URL'})\n` +
                 description +
                 `   Promise: ${item.promiseText}\n` +
                 `   Proof: ${safeProof}\n` +
                 `   ${statusLine}\n` +
                 `   ${signalLine}\n` +
+                insightBlock +
                 devBlock;
         };
 
